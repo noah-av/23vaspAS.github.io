@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" class="active" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+<div class="main">
+
+<h1>Electronic Structure</h1>
+
+<h2>Electronic Minimization:</h2>
+
+<p>Perform a simple electronic minimization:</p>
+
+<p><b>electronicmin $structure $modification_1 $modification_2 ...</b></p>
+
+<p><b>$structure</b> refers to the base structure while <b>$modification_n</b> (optional) refers to additional moddifications to be added to the base structure (like addvacancy, addsubstitution, addadsorbate, etc. (see <a href="crystals.html">crystals</a>, <a href="surfaces.html">surfaces</a>)).</p>
+
+<h2>Density of States:</h2>
+
+<p>Calculate the density of states (DOS):</p>
+
+<p><b>densityofstates $structure $modification_1 $modification_2 ...</b></p>
+
+<p><b>$structure</b> refers to the base structure while <b>$modification_n</b> (optional) refers to additional moddifications to be added to the base structure (like addvacancy, addsubstitution, addadsorbate, etc. (see <a href="crystals.html">crystals</a>, <a href="surfaces.html">surfaces</a>)).</p>
+
+<p>Besides the ones found in <a href="tags.html">Tags / Variables</a>, the following INCAR tags will also be added to the INCAR file. You can modify these as any other variable:</p>
+
+<ul>
+<li><b>LORBIT</b> - Default = 11</li>
+<li><b>NEDOS</b> - Default = 1001</li>
+<li><b>EMAX</b> - Default = </li>
+<li><b>EMIN</b> - Default = </li>
+</ul>
+
+<p>A gnuplot file will also be prepared automatically: gnup_$structure_$GGA</p>
+
+<h2>Band Structure:</h2>
+
+<p>Coming soon ...</p>
+
+<center><p>...</p></center>
+
+</div>
+
+</body>
+</html>

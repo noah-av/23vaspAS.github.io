@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" class="active" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+<div class="main">
+
+<h1>Molecules</h1>
+
+<p>A handfull of variables are used to customize prebuilt POSCARs (see <a href="tags.html">tags</a> for more info):</p>
+
+<ul>
+<li><b>MOLECULE_CELL_SIZE_$structure</b> sets the base cell size for the cell in which the molecule is placed (in Angstrom).</li>
+<li><b>MOLECULE_ASYMETRY_$structure</b> adds a distortion to the base cell to make it cuboidal. (in Angstrom).</li>
+</ul>
+
+<p>For example, if MOLECULE_CELL_SIZE_$structure = 15, MOLECULE_ASYMETRY_$structure = 2.5, then the molecule is placed in a 12.5 x 15 x 17.5 Angstrom cell.</p>
+
+<ul>
+<li><b>POSITION_ATOM_$n_$structure</b> for $n=1,2,... sets the positions of the atoms within the molecule (array of type "x y z" in cartesian coordinates (Angstrom)) .</li>
+</ul>
+
+<p><b>$structure</b> refers to the name of the molecular structure in question. Typing $structure (after sourcing 23vaspAS) builds its POSCAR so you can easily inspect it.</p> 
+
+<p>Currently available molecules (as of v.0.1.0):</p>
+
+<!-------
+<h3>Simple molecules of one central atom:</h3>
+------->
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:160px">Name <br> </th>
+  <th style="width:160px">Molecule type</th>
+  <th style="width:160px">Prototypes</th>
+</tr>
+<tr>
+  <th>monatomic_mol</th>
+  <th>AX0En</th>
+  <th>He</th>
+</tr>
+<tr>
+  <th>diatomic_mol</th>
+  <th>AX1En</th>
+  <th>CO, O2, H2</th>
+</tr>
+<tr>
+  <th>linear_mol</th>
+  <th>AX2E0, AX2E3</th>
+  <th>CO2, HCN, N2O</th>
+</tr>
+<tr>
+  <th>bent_mol</th>
+  <th>AX2E1, AX2E2</th>
+  <th>H2O, SO2, O3</th>
+</tr>
+<tr>
+  <th>trigonalplanar_mol</th>
+  <th>AX3E0</th>
+  <th>BF3</th>
+</tr>
+<tr>
+  <th>trigonalpyramidal_mol</th>
+  <th>AX3E1</th>
+  <th>NH3</th>
+</tr>
+<tr>
+  <th>tshaped_mol</th>
+  <th>AX3E2</th>
+  <th>ClF3</th>
+</tr>
+<tr>
+  <th>tetrahedral_mol</th>
+  <th>AX4E0</th>
+  <th>CH4</th>
+</tr>
+<tr>
+  <th>disphoreal_mol</th>
+  <th>AX4E1</th>
+  <th>SF4</th>
+</tr>
+<tr>
+  <th>squareplanar_mol</th>
+  <th>AX4E2</th>
+  <th>XeF4</th>
+</tr>
+</table>
+
+
+<!-------
+<tr>
+  <th>trigonalbipyramidal_mol</th>
+  <th>AX5E0</th>
+  <th></th>
+</tr>
+<tr>
+  <th>squarepyramidal_mol</th>
+  <th>AX5E1</th>
+  <th></th>
+</tr>
+<tr>
+  <th>pentagonalplanar_mol</th>
+  <th>AX5E2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>octahedral_mol</th>
+  <th>AX6E0</th>
+  <th></th>
+</tr>
+<tr>
+  <th>pentagonalpyramidal_mol</th>
+  <th>AX6E1</th>
+  <th></th>
+</tr>
+<tr>
+  <th>pentagonalbipyramidal_mol</th>
+  <th>AX7E0</th>
+  <th></th>
+</tr>
+<tr>
+  <th>squareantiprismatic_mol</th>
+  <th>AX8E0</th>
+  <th></th>
+</tr>
+</table>
+---------!>
+
+<center><p>...</p></center>
+
+</div>
+
+</body>
+</html>

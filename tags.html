@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html" class="active">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+<div class="main">
+
+<h1>Tags / Variables</h1>
+
+<p>The function <b>setdefaults</b> will set all tags associated with the construction of POSCAR, KPOINTS, and INCAR files to their default values. It will also set PRINTOUTPUT=true and UPDATEVARIABLES=true.</p>
+
+<ul>
+<li><b>PRINTOUTPUT</b> specifies wether the output of 23vaspAS functions shall be written to output.txt or not (true/false).</li>
+<li><b>UPDATEVARIABLES</b> specifies wether variables shall be updated automatically by 23vaspAS functions or not (true/false).</li>
+</ul>
+
+<p>Similarly, the functions <b>setstructuraldefaults</b>, <b>setkpointsdefaults</b>, and <b>setincardefaults</b> will set all tags associated with the construction of POSCAR, KPOINTS, and INCAR files to their default values respectively.</p>
+
+<p>Only three variables have no default and must allways be set explicitly:</p>
+
+<ul>
+<li><b>VASP</b> (string) sets the VASP command.</li>
+<li><b>MAINDIR</b> specifies the location of the directory in which the calculations shall be performed an where the output.txt file shall be written. (Usually MAINDIR=$(pwd)).</li>
+<li><b>POTCAR</b> (string) specifies the name of the POTCAR to be used. If multiple names are indicated (as in POTCAR="Na Cl") the POTCARs will be concatenated in that order to build a new POTCAR. Whenever you reset this tag, you should also run setdefaults.</li>
+</ul>
+
+<p>Only two variables are associated with the construction of KPOINTS files:</p>
+
+<ul>
+<li><b>KPOINTS_$structure</b> (integer) sets the density of the kpoint mesh for the structure by the name of $structure. Let the value stored in KPOINTS_$structure be equal to n. If $structure is a crystal, then an n x n x n kpoint mesh will be used. If $structure is a surface, then an n x n x 1 kpoint mesh will be used. If $sturucture is a molecule, then a 1 x 1 x 1 kpoint mesh will be used regardless of what is stored in KPOINTS_$structure. <br> <b>Default = 6</b> if $structure is a supercell (prefix "sup_") but <b>= 12</b> otherwise.</li>
+<br>
+<li><b>KGAMMA</b> on the other hand is used to specify whether a Gamma centered mesh (KGAMMA=.TRUE.) or a Monkhorst pack mesh (KGAMMA=.FALSE.) shall be used. <br> <b>Default = .TRUE.</b></li>
+</ul>
+
+<p>The defaults for structural variables are as follows (see <a href="crystals.html">crystals</a>, <a href="surfaces.html">surfaces</a>, and <a href="molecules.html">molecules</a> for their descriptions):</p>
+
+<ul>
+<li><b>VOLUME_$structure</b> - Default = 15</li>
+<li><b>C_A_RATIO_$structure</b> - Default = depends on the sutructure</li>
+<li><b>B_A_RATIO_$structure</b> - Default = depends on the sutructure</li>
+<li><b>SHIFT_$n_$structure</b> - Default = depends on the sutructure</li>
+<br>
+<li><b>NUMBER_OF_LAYERS_$structure</b> - Default = 6</li>
+<li><b>VACUUM_SIZE_$structure</b> - Default = 10</li>
+<li><b>LAYER_HIGHTS_$structure</b> - Default = "defaulthights"</li>
+<li><b>SELECTIVE_DYNAMICS_DEPTH_$structure</b> - Default = 2</li>
+<br>
+<li><b>ADSORPTION_DISTANCE_$structure</b> - Default = 2</li>
+<br>
+<li><b>MOLECULE_CELL_SIZE_$structure</b> - Default = 10</li>
+<li><b>MOLECULE_ASYMETRY_$structure</b> - Default = 1</li>
+<li><b>POSITION_ATOM_$n_$structure</b> - Default = depends on the structure</li>
+<br>
+<li><b>SUPERCELL_FACTOR_$structure</b> - Default = 2 (only for when $structure carries the prefix "sup_")</li>
+</ul>
+
+
+<p>Every INCAR file constructed by 23vaspAS will include the following tags:</p>
+
+<ul>
+<li><b>GGA</b> - Default = "PE"</li>
+<br>
+<li><b>ISTART</b> - Default = 0</li>
+<li><b>ICHARG</b> - Default = 2</li>
+<br>
+<li><b>LWAVE</b> - Default = ".FALSE."</li>
+<li><b>LCHARG</b> - Default = ".FALSE."</li>
+<li><b>NWRITE</b> - Default = 2</li>
+<br>
+<li><b>ENCUT</b> - Default = 400</li>
+<li><b>ALGO</b> - Default = "Normal"</li>
+<li><b>NELM</b> - Default = 100</li>
+<li><b>EDIFF</b> - Default = 0.00001</li>
+<br>
+<li><b>NOMEGA</b> - Default = 12 (If ALGO=RPAR)</li>
+<br>
+<li><b>ISMEAR</b> - Default = 1</li>
+<li><b>SIGMA</b> - Default = 0.2</li>
+<li><b>ISYM</b> - Default = 2</li>
+<br>
+<li><b>ISPIN</b> - Default = 1</li>
+<li><b>MAGMOM</b></li>
+<br>
+<li><b>KPAR</b> - Default = 1</li>
+<li><b>NCORE</b> - Default = 1</li>
+<li><b>LREAL</b> - Default = ".FALSE."</li>
+<br>
+<li><b>OTHERINCARTAGS</b> (string) can be used to add aditional INCAR tags besides the ones listed above to your INCAR files if needed. As in OTHERINCARTAGS="LMAXFOCKAE = 4 ; LFOCKAEDFT = T".</li>
+</ul>
+
+<p>Notice how these defaults do not allways reflect the defaults as they are found in the VASP wiki.</p>
+
+<p>Other INCAR tags will only be added when running certain functions. Check the descriptions of functions for more info.</p>
+
+
+
+<center><p>...</p></center>
+
+</div>
+
+</body>
+</html>

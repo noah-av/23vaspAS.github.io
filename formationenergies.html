@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" class="active" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+<div class="main">
+
+<h1>Formation Energies</h1>
+
+<h2>Vacancy Formation Energy:</h2>
+
+<p>Calculate the vacancy formation energy:</p>
+
+<p><b>vacancyformationenergy $structure $modification_1 $modification_2 ...</b></p>
+
+<p><b>$structure</b> refers to the base structure (preferably a supercell) while <b>$modification_n</b> refers to additional moddifications to be added to the base structure (in this case addvacancy ... (see <a href="crystals.html">crystals</a>)).</p>
+
+<p>This function uses the function "relaxation" to relax the crystal with its vacancies. So keep in mind that the following tags will be used in addition to the ones found in <a href="tags.html">Tags / Variables</a>: (So for instance, don't forget to set ISIF=2)</p>
+
+<ul>
+<li><b>IBRION</b> - Default = 2</li>
+<li><b>EDIFFG</b> - Default = -0.001</li>
+<li><b>NSW</b> - Default = 100</li>
+<li><b>POTIM</b> - Default = 0.5</li>
+<li><b>ISIF</b> - Default = 3</li>
+</ul>
+
+<h2>Surface Energy:</h2>
+
+<p>Calculate the surface energy:</p>
+
+<p><b>surfaceenergy $structure</b></p>
+
+<p><b>$structure</b> refers to the structure (surface).</p>
+
+<p>It will first calculate the energy in the bulk crystal by removing the vacuum and adapting the number of layers to the closest acceptable value. Then it will procede by calculating the energy in the surface. Lastly, the results are used to calculate the surface energy.</p>
+
+<p>This function uses the function "relaxation" to relax the surface (not the bulk structure!). So keep in mind that the following tags will be used in addition to the ones found in <a href="tags.html">Tags / Variables</a>: (So for instance, don't forget to set ISIF=2)</p>
+
+<ul>
+<li><b>IBRION</b> - Default = 2</li>
+<li><b>EDIFFG</b> - Default = -0.001</li>
+<li><b>NSW</b> - Default = 100</li>
+<li><b>POTIM</b> - Default = 0.5</li>
+<li><b>ISIF</b> - Default = 3</li>
+</ul>
+
+<h2>Adsorption Energy:</h2>
+
+<p>Calculate the surface energy:</p>
+
+<p><b>adsorptionenergy $structure $modification_1 $modification_2 ...</b></p>
+
+<p><b>$structure</b> refers to the base structure (preferably a surface supercell) while <b>$modification_n</b> refers to additional moddifications to be added to the base structure (in this case addvacancy ... (see <a href="surfaces.html">surfaces</a>)).</p>
+
+<p>It will first calculate the energy of the clean surface. Then it will procede by relaxing the surface + adsorbates. This is done in two steps: first with selective dynamics set to F for all surface atoms (but not for molecule atoms) so that the distance between the surface and the molecules is set to a reasonable initial value. At this point EDIFFG and NELM are also set to -0.05 and 40 respectively. Then it will procede with your specified $SELECTIVE_DYNAMICS_DEPTH_$structure, EDIFFG and NELM to get the final energy. With these results the adsorption energy will be calculated in the last step.</p>
+
+<p>Before running this function you must have calculated the energy of the molecules you are adding. So just do a quick relaxation of the molecules beforehand. A relaxation of the surface with $SUPERCELL_FACTOR_$structure = 1 before running this function is also strongly recomended as this will set LAYER_HIGHTS_$structure to a reasonable initial value.</p>
+
+<p>This function uses the function "relaxation" to relax the surface with its adsorbates. So keep in mind that the following tags will be used in addition to the ones found in <a href="tags.html">Tags / Variables</a>: (So for instance, don't forget to set ISIF=2)</p>
+
+<ul>
+<li><b>IBRION</b> - Default = 2</li>
+<li><b>EDIFFG</b> - Default = -0.001</li>
+<li><b>NSW</b> - Default = 100</li>
+<li><b>POTIM</b> - Default = 0.5</li>
+<li><b>ISIF</b> - Default = 3</li>
+</ul>
+
+<center><p>...</p></center>
+
+</div>
+
+</body>
+</html>

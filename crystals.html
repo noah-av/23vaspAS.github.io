@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" class="active" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+</div>
+
+
+<div class="main">
+
+<h1>Crystals</h1>
+
+<p>A list of all available crystal structures as of v.0.1.0 can be found <b><a href="crystals_list.html">here</a></b>.</p>
+
+<p>A handfull of variables are used to customize prebuilt POSCARs (see <a href="tags.html">tags</a> for more info):</p>
+
+<ul>
+<li><b>VOLUME_$structure</b> sets the crystals volume per atom (in Angstrom^3).</li>
+<li><b>C_A_RATIO_$structure</b> sets the c/a ratio for hexagonal, tetragonal and orthorhombic crystal structures.</li>
+<li><b>B_A_RATIO_$structure</b> sets the b/a ratio for orthorhombic crystal structures.</li>
+<li><b>SHIFT_$n_$structure</b> for $n=1,2,... (in direct coordinates) store one or more shifts that are additionally needed to describe the atomic positions within some structures (like wurtzite or rutile).</li>
+</ul>
+
+<p><b>$structure</b> refers to the name of the structure in question. Typing $structure (after sourcing 23vaspAS) builds its POSCAR so you can easily inspect it.</p> 
+
+
+<p>Keep in mind that when setting your POTCARs (using the setpotcar function), the order of the potentials should follow the same order as in the chemical formula of the prototype of the structure you want to study. So check the <a href="crystals_list.html">list</a> of supported crystals.</p>
+
+<p>Monoclinic, triclinic and trigonal systems are not yet supported. The ability to use custom structures in a more user-friendly way will be added soon.</p>
+
+<p><br></p>
+
+<h2>Vacancies:</h2>
+
+<p>You can add a vacancy to your (supercell) crystal POSCAR by using the following function:</p>
+
+<p><b>addvacancy $potential $integer $integer_array v</b></p>
+
+<p><b>$potential</b> specifies the potential of the removed atom. <b>$integer_array</b> specifies the location of the subcell where the new vacancy shall be located. $integer_array is given as three integers in the form of "i j k" starting from "1 1 1". Lastly, <b>$integer</b> specifies that the n-th atom of the potential $potential in the subcell $array is the one that shall be removed. Note that $integer cannot be larger than the number of atoms (of potential $potential) per subcell! Also add the <b>"v"</b>. Dont ask why.</p>
+
+<p>If multiple vacancies shall be added, add them in decreasing order of $potential (order given by how they were supplied in the setpotcar function), $integer_array, and $integer.</p>
+
+<p><br></p>
+
+<h2>Substitutions:</h2>
+
+<p>You can add a substitution to your (supercell) crystal POSCAR by using the following function:</p>
+
+<p><b>addsubstitution $potential_1 $integer $integer_array $potential_2</b></p>
+
+<p><b>$potential_1</b> specifies the potential of the removed atom. <b>$potential_2</b> specifies the potential of the new atom. <b>$integer_array</b> specifies the location of the subcell where the new vacancy shall be located. $integer_array is given as three integers in the form of "i j k" starting from "1 1 1". Lastly, <b>$integer</b> specifies that the n-th atom of the potential $potential in the subcell $array is the one that shall be removed. Note that $integer cannot be larger than the number of atoms (of potential $potential) per subcell!</p>
+
+<p>This function also updates the potentials automatically. No need to do an extra "setpotcar".</p> 
+
+<p>If multiple substitutions shall be made, add them in decreasing order of $potential (order given by how they were supplied in the setpotcar function), $integer_array, and $integer.</p>
+
+<center><p>...</p></center>
+
+</div>
+
+</body>
+</html>

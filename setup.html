@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html" class="active">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+<div class="main">
+
+<h1>Setup & Introduction</h1>
+
+<p>Download the 23vaspAS file: <a href="23vaspAS" download="23vaspAS">23vaspAS</a></p>
+
+<p>Open the 23vaspAS file, search for "ALLPOTCARS=", and insert the location of your "potcars" directory.</p>
+
+<p>"potcars" should contain directories that contain one POTCAR each. The name of each directory should reflect its POTCAR. So for instance, to find the POTCAR for Rh_sv_GW, you would go to /potcars/Rh_sv_GW/POTCAR.</p>
+
+<p>With that you should be ready to start using 23vaspAS.</p>
+
+<br>
+
+<h2>How to use 23vaspAS:</h2>
+
+<p>Copy 23vaspAS to a new directory and open a new file named "<b>input</b>". That's where you will specify the tasks that shall be automated.</p>
+
+<p>Example for a simple input file:</p>
+
+<code>
+VASP="mpirun -np 8 vasp"&nbsp;   # allways has to be specified!!!<br>
+MAINDIR=$(pwd)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # allways has to be specified!!!<br>
+POTCAR="Si"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# use the Si POTCAR # allways has to be specified!!!<br>
+setdefaults&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# set all tags related to POSCARs, INCARs, and KPOINTSs to their default values<br>
+<br>
+#incar tags:<br>
+<br>
+ISMEAR=0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# change ISMEAR to 0<br>
+ENCUT=260&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# change ENCUT to 260<br>
+<br>
+#other tags:<br>
+<br>
+VOLUME_diamond=20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# change the volume per atom that is used in fcc structures to 20 angstrom^3<br>
+KPOINTS_diamond=25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# change the kpoints mesh that is used for fcc structures to 25x25x25<br>
+<br>
+#functions:<br>
+<br>
+relaxation diamond&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp# this function will make a directory "relaxation_diamond" and perform a relaxation on the primitive diamond structure using the previously specified tags<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# it will also automatically update the value stored in VOLUME_diamond so that the optimal volume is used in further calculations<br>
+<br>
+densityofstates diamond&nbsp;&nbsp;&nbsp;# similarly, this function will make a directoy "densityofstates_diamond" and calculate the DOS of the diamond structure. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# it will automatically prepare a gnuplot file (also in "densityofstates_diamond") with wich the results can be quickly accessed.<br>
+</code>
+
+
+<p>A list of tags, available structures, and available functions you can use can be found in the navigation bar on the left.</p>
+
+<p>Use for-loops, if-statements, and make and change directories according to bash syntax in the input file for more complex projects.
+Examples for more complex input files can be found <a href="tutorials.html">here</a>.<p>
+
+<p>To start the calculations copy 23vaspAS to your directory and type:</p>
+
+<code>
+cat 23vaspAS input > jobscript<br>
+chmod +x jobscript<br>
+./jobscript<br>
+</code>
+
+<p>Alternatively, just source 23vaspAS and use the functions interactively. This mode works best for quick tests - not so much for complex high-throughput projects though: </p>
+
+<code>
+source 23vaspAS
+</code>
+
+<p>The results will be summarised in "<b>output.txt</b>".</p>
+
+
+<!---<p><a href="setup_withresults.html">See results for this particular example</a></p>--->
+
+
+
+<!---<img src="densityofstates_diamond_PE.png">--->
+
+
+<center><p>...</p></center>
+
+
+</div>
+
+</body>
+</html>

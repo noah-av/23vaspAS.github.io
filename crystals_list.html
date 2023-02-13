@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" class="active" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+
+<div class="main">
+
+<h1>Crystals: list</h1>
+
+<p>A list of all crystal structures available as of v.0.1.0 alpha.</p>
+
+<p>Note that you can add the prefix "sup_" to any of the structures below. In that case, its supercell will be used instead. Such supercells are treated as independent structures (i.e. VOLUME_sup_fcc is independent of VOLUME_fcc).</p>
+
+<ul>
+<li><b>SUPERCELL_FACTOR_$structure</b> sets the supercell factor (positive integer). Only works on structures with the "sup_" prefix!</li>
+</ul>
+
+<p>The suffix "_c" on the other hand denotes that the conventional (higher symmetry) cell should be used instead of the primitive (smallest possible) cell. Such cells are also treated as independent structures (i.e. VOLUME_fcc_c is independent of VOLUME_fcc).</p>
+
+<h3>Elements (A-compounds):</h3>
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:150px">Name <br> </th>
+  <th style="width:100px">Struktur- <br>bericht <br>designation </th>
+  <th style="width:100px">Pearson <br>symbol </th>
+  <th style="width:150px">Prototypes <br> </th>
+  <th style="width:100px">Atoms <br>per cell <br> </th>
+</tr>
+<tr>
+  <th>sc</th>
+  <th>A_h</th>
+  <th>cP1</th>
+  <th>alpha-Po</th>
+  <th>1</th>
+</tr>
+<tr>
+  <th>fcc</th>
+  <th>A1</th>
+  <th>cF4</th>
+  <th>Cu</th>
+  <th>1</th>
+</tr>
+<tr>
+  <th>bcc</th>
+  <th>A2</th>
+  <th>cI2</th>
+  <th>W</th>
+  <th>1</th>
+</tr>
+<tr>
+  <th>hcp</th>
+  <th>A3</th>
+  <th>hP2</th>
+  <th>Mg</th>
+  <th>2</th>
+</tr>
+<tr>
+  <th>dhcp</th>
+  <th>A3'</th>
+  <th>hP4</th>
+  <th>alpha-La</th>
+  <th>4</th>
+</tr>
+<tr>
+  <th>diamond</th>
+  <th>A4</th>
+  <th>cF8</th>
+  <th>C</th>
+  <th>2</th>
+</tr>
+<tr>
+  <th>betatin</th>
+  <th>A5</th>
+  <th>tI4</th>
+  <th>beta-Sn</th>
+  <th>2</th>
+</tr>
+<tr>
+  <th>bct</th>
+  <th>A6</th>
+  <th>tI2</th>
+  <th>In</th>
+  <th>1</th>
+</tr>
+<!-----<tr>
+#  <th>alphaas</th>
+#  <th>A7</th>
+#  <th>hR2</th>
+#  <th>alpha-As</th>
+#  <th>2</th>
+#</tr>-----------!>
+<tr>
+  <th>graphite</th>
+  <th>A9</th>
+  <th>hP4</th>
+  <th>C</th>
+  <th>4</th>
+</tr>
+<tr>
+  <th>fcc_c</th>
+  <th>A1</th>
+  <th>cF4</th>
+  <th>Cu</th>
+  <th>4</th>
+</tr>
+<tr>
+  <th>bcc_c</th>
+  <th>A2</th>
+  <th>cI2</th>
+  <th>W</th>
+  <th>2</th>
+</tr>
+<tr>
+  <th>diamond_c</th>
+  <th>A4</th>
+  <th>cF8</th>
+  <th>C</th>
+  <th>8</th>
+</tr>
+</table>
+
+<h3>AB-compounds:</h3>
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:150px">Name <br> </th>
+  <th style="width:100px">Struktur- <br>bericht <br>designation </th>
+  <th style="width:100px">Pearson <br>symbol </th>
+  <th style="width:150px">Prototypes <br> </th>
+  <th style="width:100px">Atoms <br>per cell <br> </th>
+</tr>
+<tr>
+  <th>nacl</th>
+  <th>B1</th>
+  <th>cF8</th>
+  <th>NaCl</th>
+  <th></th>
+</tr>
+<tr>
+  <th>cscl</th>
+  <th>B2</th>
+  <th>cP2</th>
+  <th>CsCl</th>
+  <th></th>
+</tr>
+<tr>
+  <th>zincblende</th>
+  <th>B3</th>
+  <th>cF8</th>
+  <th>ZnS</th>
+  <th></th>
+</tr>
+<tr>
+  <th>wurtzite</th>
+  <th>B4</th>
+  <th>hP4</th>
+  <th>ZnS</th>
+  <th></th>
+</tr>
+<tr>
+  <th>nickeline</th>
+  <th>B8</th>
+  <th>hP4</th>
+  <th>NiAs</th>
+  <th></th>
+</tr>
+<tr>
+  <th>aucu</th>
+  <th>L1_1</th>
+  <th>tP2</th>
+  <th>AuCu</th>
+  <th></th>
+</tr>
+</table>
+
+<h3>AB2-compounds:</h3>
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:150px">Name <br> </th>
+  <th style="width:100px">Struktur- <br>bericht <br>designation </th>
+  <th style="width:100px">Pearson <br>symbol </th>
+  <th style="width:150px">Prototypes <br> </th>
+  <th style="width:100px">Atoms <br>per cell <br> </th>
+</tr>
+<tr>
+  <th>fluorite</th>
+  <th>C1</th>
+  <th>cF12</th>
+  <th>CaF2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>pyrite</th>
+  <th>C2</th>
+  <th>cP12</th>
+  <th>FeS2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>cuprite</th>
+  <th>C3</th>
+  <th>cP6</th>
+  <th>Cu2O</th>
+  <th></th>
+</tr>
+<tr>
+  <th>rutile</th>
+  <th>C4</th>
+  <th>tP6</th>
+  <th>TiO2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>anatase</th>
+  <th>C5</th>
+  <th>tI12</th>
+  <th>TiO2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>cdi2</th>
+  <th>C6</th>
+  <th>hP3</th>
+  <th>CdI1</th>
+  <th></th>
+</tr>
+<tr>
+  <th>molybdenite</th>
+  <th>C7</th>
+  <th>hP6</th>
+  <th>MoS2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>betaquartz</th>
+  <th>C8</th>
+  <th>hP9</th>
+  <th>SiO2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>alphaquartz</th>
+  <th>C8a</th>
+  <th>hP9</th>
+  <th>SiO2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>cristobalite</th>
+  <th>C9</th>
+  <th>cF24</th>
+  <th>SiO2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>tridymite</th>
+  <th>C10</th>
+  <th>hP12</th>
+  <th>SiO2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>hexagonallaves</th>
+  <th>C14</th>
+  <th>hP12</th>
+  <th>MgZn2</th>
+  <th></th>
+</tr>
+<tr>
+  <th>cubiclaves</th>
+  <th>C15</th>
+  <th>cF24</th>
+  <th>Cu2Mg</th>
+  <th></th>
+</tr>
+<tr>
+  <th>marcasite</th>
+  <th>C18</th>
+  <th>oP6</th>
+  <th>FeS2</th>
+  <th></th>
+</tr>
+<!--------<tr>
+#  <th>cdcl2</th>
+#  <th>C19</th>
+#  <th>hR3</th>
+#  <th>CdCl2</th>
+#  <th></th>
+#</tr>------!>
+<tr>
+  <th>brookite</th>
+  <th>C21</th>
+  <th>oP24</th>
+  <th>TiO2</th>
+  <th></th>
+</tr>
+</table>
+
+<center><p>...</p></center>
+
+
+</div>
+
+</body>
+</html>

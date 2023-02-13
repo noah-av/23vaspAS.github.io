@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" class="active" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+<div class="main">
+
+<h1>Convergence Tests</h1>
+
+
+<h2>Kpoints Convergence Test:</h2>
+
+<p>To perform a kpoints convergence test on a structure <b>$structure</b>, use the following function:</p>
+
+<p><b>kpointsconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>It gradually increases kpoints from an initial value <b>$n0</b> in steps of <b>$dx</b> up to a maximal value <b>$n1</b>. At every kpoint it will perform one specific task <b>$task</b> in the form of a function and its entries (for example electronicmin $structure or relaxation $structure). Then it will check how one specific variable <b>$variable</b> changes (for example FREE_ENERGY_$structure). If the change in this value is smaller than <b>$criterion</b>, then the convergence test will break.</p>
+
+<p>If $variable = autovar, then $variable will be chosen automatically based on the specified $task.</p>
+
+<p>At the end, the value stored in KPOINTS_$structure will be updated to its converged value. If the convergence criterion is not reached, it will be updated to $n1</p>
+
+<p>The results will be summarised in the file "output.txt". Additionally, a gnuplot file will be automatically generated for quick visualization.</p>
+
+
+<h2>Other Convergence Tests:</h2>
+
+<p>Analogous to kpointsconvergence, there are other available functions that seek to perform convergence tests on other variables:</p>
+
+<p>Converges ENCUT: <b>encutconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges SIGMA: <b>sigmaconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges NOMEGA: <b>nomegaconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges SUPERCELL_FACTOR_$structure: <b>supercellconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges VACUUM_SIZE_$structure: <b>vacuumsizeconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges NUMBER_OF_LAYERS_$structure: <b>numberoflayersconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+
+
+<h3>Tipp for encutconvergence: readenmax</h3>
+
+<p>Running the function <b>readenmax</b> before encutconvergence enables you to use the variable $ENMAX in $n0, $dn, and $n1. You can even apply operators to it. $ENMAX refers to the highest ENMAX found in the POTCAR file.<p>
+
+<p>Example: readenmax; encutconvergence $structure "$ENMAX 20 $ENMAX+300" $criterion $variable $task</p>
+
+<center><p>...</p></center>
+
+</div>
+
+</body>
+</html>

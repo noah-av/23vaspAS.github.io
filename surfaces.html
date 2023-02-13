@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>23vaspAS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Segoe UI";
+  height:100%;
+  padding:0;
+  margin:0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #666; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+hr.divider { 
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+} 
+
+.side {
+  padding: 10px;
+  width: 20%;
+  background-color: Peru;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  display: inline-block;
+}
+
+.side a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 7px 20px;
+}
+
+.side a:hover {
+  color: white;
+}
+
+.side a.active {
+  color: white;
+}
+
+.main {
+  width: 80%;
+  background-color: white;
+  padding: 20px 30px;
+  float: right;
+  display: inline-block ;
+}
+
+code {
+  display: block;
+  background-color: RosyBrown;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+samp {
+  display: block;
+  background-color: CadetBlue;
+  padding: 15px 20px;
+  overflow-x: scroll;
+  width: 100%;
+  white-space: nowrap;
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 1300px) {
+  .side {
+    width: 25%;
+  }
+  .main {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .side {
+    width: 30%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side {
+    width: 35%;
+  }
+  .main {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .side {
+    width: 100%; 
+    height: auto;
+    overflow-y: auto;
+    position: static;
+  }
+  .main {
+    width: 100%;
+  }
+}
+
+table, th, td {
+  border: 1px solid RosyBrown;
+  border-collapse: collapse;
+  padding: 2px 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="side">
+
+<a href="index.html"><h1>23vaspAS</h1></a>
+
+<a href="setup.html">Setup & Introduction</a>
+
+<a href="tutorials.html">Tutorials</a> 
+
+<a href="tags.html">Tags / Variables</a>
+
+<a href="#">Structures</a>
+<a href="crystals.html" style="padding: 2px 30px;">> crystals</a>
+<a href="surfaces.html" class="active" style="padding: 2px 30px;">> surfaces</a>
+<a href="molecules.html" style="padding: 2px 30px;">> molecules</a>
+
+<a href="#">Functions</a>
+<a href="electronicstr.html" style="padding: 2px 30px;">> electronic structure</a>
+<a href="ionicstructure.html" style="padding: 2px 30px;">> ionic structure</a>
+<a href="formationenergies.html" style="padding: 2px 30px;">> formation energies</a>
+<a href="convergence.html" style="padding: 2px 30px;">> convergence tests</a>
+<a href="otherfunctions.html" style="padding: 2px 30px;">> other functions</a>
+
+<a href="database.html">24vaspAS Database</a>
+
+<center><p>...</p></center>
+
+</div>
+
+<div class="main">
+
+<h1>Surfaces</h1>
+
+<p>A handfull of variables are used to customize prebuilt POSCARs (see <a href="tags.html">tags</a> for more info):</p>
+
+<ul>
+<li><b>VOLUME_$structure</b> sets the volume per atom of the surfaces bulk counterpart (in Angstrom^3).</li>
+<li><b>C_A_RATIO_$structure</b> sets the c/a ratio of the surfaces bulk counterpart (for hexagonal, tetragonal and orthorhombic crystal structures).</li>
+<li><b>B_A_RATIO_$structure</b> sets the b/a ratio of the surfaces bulk counterpart (for orthorhombic crystal structures).</li>
+<li><b>SHIFT_$n_$structure</b> for $n=1,2,... (in direct coordinates) store one or more shifts that are additionally needed to describe the atomic positions within some structures (like wurtzite or rutile).</li>
+<br>
+<li><b>NUMBER_OF_LAYERS_$structure</b> sets the number of atomic layers per surface slab (positive integer).</li>
+<li><b>VACUUM_SIZE_$structure</b> sets the vacuum size between surface slabs (in Angstrom).</li>
+<li><b>LAYER_HIGHTS_$structure</b> sets the hights of the atomic layers (string of numbers in Angstrom). When LAYER_HIGHTS_$structure = "defaulthights", the layer hights are automatically calculated from the above tags.</li>
+<li><b>SELECTIVE_DYNAMICS_DEPTH_$structure</b> sets how many layers on both sides of the surface slab should be allowed to move.</li>
+</ul>
+
+<p><b>$structure</b> refers to the name of the surface structure in question. These names are made up of the <a href="crystals_list.html">name</a> of the crystal and a suffix that contains the Miller indices to denote the direction of the surface. Typing $structure (after sourcing 23vaspAS) builds its POSCAR so you can easily inspect it.</p> 
+
+<p>Currently available surfaces (as of v.0.1.0):</p>
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:150px">Name <br> </th>
+</tr>
+<tr>
+  <th>bcc_100</th>
+</tr>
+<tr>
+  <th>fcc_100</th>
+</tr>
+<tr>
+  <th>fcc_110</th>
+</tr>
+<tr>
+  <th>fcc_111</th>
+</tr>
+<tr>
+  <th>hcp_0001</th>
+</tr>
+</table>
+
+<p>Note that you can add the prefix "sup_" to any of these structures. In that case, its supercell will be used instead. Such supercells are treated as independent structures (i.e. VOLUME_sup_fcc_111 is independent of VOLUME_fcc_111 (which in turn is independent of VOLUME_fcc)).</p>
+
+<ul>
+<li><b>SUPERCELL_FACTOR_$structure</b> sets the supercell factor (positive integer). Only works on structures with the "sup_" prefix!</li>
+</ul>
+
+<p><br></p>
+
+<h2>Adsorption:</h2>
+
+<p>You can add an adsorbate to your (supercell) surface POSCAR by using the following function:</p>
+
+<p><b>addadsorbate $molecule $2_D_array $2_D_integer_array $potentials_array</b></p>
+
+<p><b>$molecule</b> specifies the <a href="molecules.html">name</a> of the molecule that shall be added. <b>$2_D_array</b> specifies the adsorption site in the form of direct coordinates within the primitive surface cell (see table below). <b>$2_D_integer_array</b> specifies the location of the subcell where the molecule shall be placed. $2_D_integer_array is given as two integers in the form of "i j" starting from "1 1". Lastly, <b>$potentials_array</b> sets the potcar of the molecule.</p>
+
+<ul>
+<li><b>ADSORPTION_DISTANCE_$molecule</b> sets the distance between the added molecule $molecule and the surface (Angstrom).</li>
+</ul>
+
+<p>This function also updates the potentials automatically. No need to do an extra "setpotcar".</p> 
+
+<p>You can add multiple molecules to the surface as needed.</p>
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:150px">Name <br> </th>
+  <th style="width:300px">Surface sites <br> </th>
+</tr>
+<tr>
+  <th>bcc_100</th>
+  <th></th>
+</tr>
+<tr>
+  <th>fcc_100</th>
+  <th></th>
+</tr>
+<tr>
+  <th>fcc_110</th>
+  <th></th>
+</tr>
+<tr>
+  <th>fcc_111</th>
+  <th>top="0.666666 0.666666",<br> hollow-hcp="0.333333 0.333333",<br> hollow-fcc="0 0",<br> bridge_1="0.166666 0.166666",<br> bridge_2="0.833333 0.166666",<br> bridge_3="0.166666 0.833333"</th>
+</tr>
+<tr>
+  <th>hcp_0001</th>
+  <th></th>
+</tr>
+</table>
+
+<center><p>...</p></center>
+
+</div>
+
+</body>
+</html>
