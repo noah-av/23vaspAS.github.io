@@ -11,7 +11,7 @@
 }
 
 html, body {
-  font-family: "Segoe UI";
+  font-family: "Segoe UI", Arial;
   height:100%;
   padding:0;
   margin:0;
@@ -174,6 +174,7 @@ table, th, td {
 
 <h1>Convergence Tests</h1>
 
+<hr>
 
 <h2>Kpoints Convergence Test:</h2>
 
@@ -189,6 +190,7 @@ table, th, td {
 
 <p>The results will be summarised in the file "output.txt". Additionally, a gnuplot file will be automatically generated for quick visualization.</p>
 
+<hr>
 
 <h2>Other Convergence Tests:</h2>
 
@@ -206,13 +208,15 @@ table, th, td {
 
 <p>Converges NUMBER_OF_LAYERS_$structure: <b>numberoflayersconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
 
-
+<hr>
 
 <h3>Tipp for encutconvergence: readenmax</h3>
 
 <p>Running the function <b>readenmax</b> before encutconvergence enables you to use the variable $ENMAX in $n0, $dn, and $n1. You can even apply operators to it. $ENMAX refers to the highest ENMAX found in the POTCAR file.<p>
 
 <p>Example: readenmax; encutconvergence $structure "$ENMAX 20 $ENMAX+300" $criterion $variable $task</p>
+
+<hr>
 
 <center><p>...</p></center>
 

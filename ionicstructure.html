@@ -11,7 +11,7 @@
 }
 
 html, body {
-  font-family: "Segoe UI";
+  font-family: "Segoe UI", Arial;
   height:100%;
   padding:0;
   margin:0;
@@ -174,6 +174,8 @@ table, th, td {
 
 <h1>Ionic Structure</h1>
 
+<hr>
+
 <h2>Relaxation:</h2>
 
 <p>Perform a simple structural minimization:<p>
@@ -193,6 +195,8 @@ table, th, td {
 </ul>
 
 <p>At the end, if UPDATEVARIABLES=true, the values stored in structural variables (like VOLUME_$structure, C_A_RATIO_$structure, LAYER_HIGHTS_$structure, etc.) will be updated.</p>
+
+<hr>
 
 <h2>Phonon Dispersion Relation:</h2>
 
@@ -221,6 +225,8 @@ table, th, td {
 
 <p>A gnuplot file will also be prepared automatically: gnup_$structure_$GGA</p>
 
+<hr>
+
 <h2>Elastic Constants:</h2>
 
 <p>Calculate the elastic constants:</p>
@@ -238,9 +244,13 @@ table, th, td {
 <li>ISIF = 3</li>
 </ul>
 
+<hr>
+
 <h2>Molecular Dynamics & MLFF:</h2>
 
 <p>Coming soon ...</p>
+
+<hr>
 
 <h2>Energy-Volume Curves:</h2>
 
@@ -252,6 +262,8 @@ table, th, td {
 
 <p>A gnuplot file will also be prepared automatically: gnup_energyvolumecurves_${GGA}</p>
 
+<hr>
+
 <h2>Murnaghan Equation of State:</h2>
 
 <p>Fit the Murnaghan equation of state (EOS):</p>
@@ -260,7 +272,7 @@ table, th, td {
 
 <p><b>$structure</b> refers to the structure whose energy-volume curves shall be fitted with the Murnaghan EOS. The fit is done using gnuplot. No modifications (addvacancy, addsubstitution, addadsorbate, etc.) to these structures possible yet. At 11 points around the value stored in $VOLUME_$structure_n (in the interval +-7.5%), the free energy is calculated using <b>$function</b>, where $function refers to either "electronicmin" or "relaxation". In the latter case don't forget to set ISIF=2!</p>
 
-
+<hr>
 
 <center><p>...</p></center>
 
