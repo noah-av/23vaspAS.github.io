@@ -176,7 +176,7 @@ table, th, td {
 
 <hr>
 
-<p>Download the 23vaspAS file: <a href="23vaspAS" download="23vaspAS">23vaspAS</a></p>
+<p>Download the current version of 23vaspAS: <a href="23vaspAS" download="23vaspAS">23vaspAS</a></p>
 
 <p>Open the 23vaspAS file, search for "ALLPOTCARS=", and insert the location of your "potcars" directory.</p>
 
@@ -194,6 +194,7 @@ table, th, td {
 
 <code>
 VASP="mpirun -np 8 vasp"&nbsp;   # allways has to be specified!!!<br>
+GNUPLOT="gnuplot"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     # useful if specified - automatically excecutes gnuplot input files and stores plots (here the DOS) in .png format<br>
 MAINDIR=$(pwd)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # allways has to be specified!!!<br>
 POTCAR="Si"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# use the Si POTCAR # allways has to be specified!!!<br>
 setdefaults&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# set all tags related to POSCARs, INCARs, and KPOINTSs to their default values<br>
@@ -213,8 +214,8 @@ KPOINTS_diamond=25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# change the k
 relaxation diamond&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp# this function will make a directory "relaxation_diamond" and perform a relaxation on the primitive diamond structure using the previously specified tags<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# it will also automatically update the value stored in VOLUME_diamond so that the optimal volume is used in further calculations<br>
 <br>
-densityofstates diamond&nbsp;&nbsp;&nbsp;# similarly, this function will make a directoy "densityofstates_diamond" and calculate the DOS of the diamond structure. <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# it will automatically prepare a gnuplot file (also in "densityofstates_diamond") with wich the results can be quickly accessed.<br>
+densityofstates diamond&nbsp;&nbsp;&nbsp;# similarly, this function will make a directoy "densityofstates_diamond" and calculate the DOS of the diamond structure <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# it will automatically prepare a gnuplot input file densityofstates_gnup_diamond_PE (also in "densityofstates_diamond") with wich the results can be quickly accessed<br>
 </code>
 
 

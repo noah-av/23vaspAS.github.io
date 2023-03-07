@@ -15,7 +15,7 @@ allmolecules_supercells=""
  
 TOTALTIME=0 
  
-ALLPOTCARS=/home/noah/potcars
+ALLPOTCARS=/home/ws2006/potcars
  
  
 ########################################################################################### 
@@ -8088,6 +8088,33 @@ fi
 
 plotxydata data.dat
 
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+cat > encutconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 ENCUT convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Cutoff energy (eV)"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "encutconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT encutconvergence_gnup_${1}_${GGA}
+fi
+
 let secs=$SECONDS-$secsencutconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
@@ -8218,6 +8245,33 @@ fi
 
 plotxydata data.dat
 
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+cat > kpointsconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 kpoints convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of kpoints along x-, y-, z- direction"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "kpointsconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT kpointsconvergence_gnup_${1}_${GGA}
+fi
+
 let secs=$SECONDS-$secskpointsconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
@@ -8345,6 +8399,35 @@ NOMEGA=$backupnomega
 fi
 
 plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+cat > nomegaconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 NOMEGA convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of imaginary frequency and time points"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "nomegaconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT nomegaconvergence_gnup_${1}_${GGA}
+fi
+
+
 
 let secs=$SECONDS-$secsnomegaconvergence
 let TOTALTIME=$TOTALTIME+$secs
@@ -8475,6 +8558,34 @@ eval $name=$backupnum
 fi
 
 plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+cat > numberoflayersconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 number of layers convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of surface layers"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "numberoflayersconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT numberoflayersconvergence_gnup_${1}_${GGA}
+fi
+
 
 let secs=$SECONDS-$secsnumberoflayersconvergence
 let TOTALTIME=$TOTALTIME+$secs
@@ -8609,6 +8720,34 @@ fi
 
 plotxydata data.dat
 
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+cat > sigmaconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 SIGMA convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Smearing width (eV)"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "sigmaconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT sigmaconvergence_gnup_${1}_${GGA}
+fi
+
+
 let secs=$SECONDS-$secssigmaconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
@@ -8740,6 +8879,34 @@ fi
 
 plotxydata data.dat
 
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+cat > supercellconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 supercell size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Supercell factor"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "supercellconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT supercellconvergence_gnup_${1}_${GGA}
+fi
+
+
 let secs=$SECONDS-$secssupercellconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
@@ -8869,6 +9036,34 @@ eval $name=$backupvac
 fi
 
 plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+cat > vacuumsizeconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 vacuum size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Vacuum size ({\305})"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "vacuumsizeconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT vacuumsizeconvergence_gnup_${1}_${GGA}
+fi
+
 
 let secs=$SECONDS-$secsvacuumsizeconvergence
 let TOTALTIME=$TOTALTIME+$secs
@@ -9000,7 +9195,7 @@ awk 'BEGIN{i=1} /dos>/,\
 ef=`awk '/efermi/ {print $3}' vasprun.xml`
 
 
-cat > gnup_${1}_${GGA} << EOF
+cat > densityofstates_gnup_${1}_${GGA} << EOF
 set title "$1 density of states ;  GGA = $GGA, POTCAR = $POTCAR"
 set xlabel "Energy (eV)"
 set ylabel "Density of States (states/eV)"
@@ -9010,6 +9205,9 @@ set term png
 set output "densityofstates_${1}_${GGA}.png"
 p "dos.dat" using (\$1-$ef):(\$2) w l
 EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT densityofstates_gnup_${1}_${GGA}
+fi
 
 echo " "
 echo " " >> $MAINDIR/output.txt
@@ -9773,6 +9971,7 @@ latticeconst=`echo $latticeconstt / $SUPERCELL_FACTOR | bc -l`
 
 if [ "$LATTICE_SYSTEM" = cubic ]; then
 volume_defect=`echo $latticeconst \* $latticeconst \* $latticeconst / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+volume_defect_gfcytc=$volume_defect
 volume_defect=`echo $volume_defect \* $ATOMS_PER_SUBCELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR / $N | bc -l`
 fi
 
@@ -9780,6 +9979,7 @@ if [ "$LATTICE_SYSTEM" = hexagonal ]; then
 arraycaratio=($(grep 'C/A-ratio' OUTCAR))
 valuecaratio=${arraycaratio[2]}
 volume_defect=`echo $latticeconst \* $latticeconst \* $latticeconst \* $valuecaratio \* 0.86602540378443864676372317075294 / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+volume_defect_gfcytc=$volume_defect
 volume_defect=`echo $volume_defect \* $ATOMS_PER_SUBCELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR / $N | bc -l`
 fi
 
@@ -9787,6 +9987,7 @@ if [ "$LATTICE_SYSTEM" = tetragonal ]; then
 arraycaratio=($(grep 'C/A-ratio' OUTCAR))
 valuecaratio=${arraycaratio[2]}
 volume_defect=`echo $latticeconst \* $latticeconst \* $latticeconst \* $valuecaratio / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+volume_defect_gfcytc=$volume_defect
 volume_defect=`echo $volume_defect \* $ATOMS_PER_SUBCELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR / $N | bc -l`
 fi
 
@@ -9822,12 +10023,14 @@ if [ "$PRINTOUTPUT" = true ]; then
   echo " resulting vacancy formation volume: $volume_formation Angstrom^3 "
   echo " vacancy formation energy / bulk energy per atom: $ratio_energy "
   echo " vacancy formation volume / bulk volume per atom: $ratio_volume "
+  echo " VOLUME_$1 for structure with defect: $volume_defect_gfcytc "
   echo " " >> $MAINDIR/output.txt
   echo " free energy per atom of structure with defect: $energy_defect eV" >> $MAINDIR/output.txt
   echo " resulting vacancy formation energy: $energy_formation eV " >> $MAINDIR/output.txt
   echo " resulting vacancy formation volume: $volume_formation Angstrom^3 " >> $MAINDIR/output.txt
   echo " vacancy formation energy / bulk energy per atom: $ratio_energy " >> $MAINDIR/output.txt
   echo " vacancy formation volume / bulk volume per atom: $ratio_volume " >> $MAINDIR/output.txt
+  echo " VOLUME_$1 for structure with defect: $volume_defect_gfcytc " >> $MAINDIR/output.txt
 fi
 
 
@@ -10130,6 +10333,9 @@ set term png
 set output "energyvolumecurves_${GGA}.png"
 p 'fcc/energies.dat' u 1:5 w l title 'fcc', 'bcc/energies.dat' u 1:5 w l title 'bcc', 'sc/energies.dat' u 1:5 w l title 'sc', 'diamond/energies.dat' u 1:5 w l title 'diamond', 'hcp/energies.dat' u 1:5 w l title 'hcp', 'fcc_c/energies.dat' u 1:5 w l title 'fcc_c', 'bcc_c/energies.dat' u 1:5 w l title 'bcc_c', 'diamond_c/energies.dat' u 1:5 w l title 'diamond_c', 'nacl/energies.dat' u 1:5 w l title 'nacl', 'cscl/energies.dat' u 1:5 w l title 'cscl', 'zincblende/energies.dat' u 1:5 w l title 'zincblende', 'wurtzite/energies.dat' u 1:5 w l title 'wurtzite', 'nacl_c/energies.dat' u 1:5 w l title 'nacl_c'
 EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gnup_energyvolumecurves_${GGA}
+fi
 
 
 cd pldirs
@@ -10186,25 +10392,42 @@ cd $j
 vvol=`echo $backupvol + $j \* 0.0075 \* $backupvol - 6 \* 0.0075 \* $backupvol | bc -l`
 name="VOLUME_$1"
 eval $name=$vvol
+isifbackup=$ISIF
+ISIF=4
 PRINTOUTPUT=false
-$2 $1
+###$2 $1
+relaxation $1 $2 "$3" "$4" "$5" "$6" $7 "$8" "$9" "${10}" "${11}" ${12} "${13}" "${14}" "${15}" "${16}" ${17} "${18}" "${19}" "${20}" "${21}" ${22} "${23}" "${24}" "${25}" "${26}" ${27} "${28}" "${29}" "${30}" "${31}" ${32} "${33}" "${34}" "${35}" "${36}" ${37} "${38}" "${39}" "${40}" "${41}" ${42} "${43}" "${44}" "${45}" "${46}" ${47} "${48}" "${49}" "${50}" "${51}" ${52} "${53}" "${54}" "${55}" "${56}" ${57} "${58}" "${59}" "${60}" "${61}" ${62} "${63}" "${64}" "${65}" "${66}" ${67} "${68}" "${69}" "${70}" "${71}" ${72} "${73}" "${74}" "${75}" "${76}" ${77} "${78}" "${79}" "${80}" "${81}"
 PRINTOUTPUT=true
 cd ..
-echo $vvol " Angstrom^3 per atom      " $VARIABLEFORCONVERGENCE " eV "  >> energies.dat
+name="FREE_ENERGY_$1"
+viuyiuyguy=`echo ${!name}`
+echo $vvol " Angstrom^3 per atom      " $viuyiuyguy " eV "  >> energies.dat
 done
 #name="VOLUME_$1"
 #eval $name=$backupvol
 #name="FREE_ENERGY_$1"
 #iusiunbb=`echo ${!name}`
-cat > fitmurnaghan_gnup_${GGA} << EOF
+
+cat > fitmurnaghan_gnup_${1}_${GGA} << EOF
 h = $backupen
 b = 1.25
 v = $backupvol
 d = 3.5
 e(x) = h + (b*x/d)*(((v/x)**d)/(d-1)+1) - b*v/(d-1)
 fit e(x) 'energies.dat' u 1:5 via h, b, v, d
+
+set title "$1 Murnaghan EOS fit ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Volume per atom ({\305}^3)"
+set ylabel "Total free energy per atom (eV)"
+set term png
+set output "fitmurnaghan_${1}_${GGA}.png"
+p 'energies.dat' u 1:5 w p title 'data points', e(x) title 'fitted EOS'
 EOF
-gnuplot fitmurnaghan_gnup_${GGA}
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT fitmurnaghan_gnup_${1}_${GGA}
+fi
+
 name="FREE_ENERGY_$i"
 eval $name=$backupen
 name="VOLUME_$i"
@@ -10230,6 +10453,8 @@ eval $name=$value24
 fi
 array2=($(grep 'd         ' fit.log | tail -2 | head -1))
 bulkmodulusderrivative=${array2[2]}
+
+ISIF=$isifbackup
 
 if [ "$PRINTOUTPUT" = true ]; then
   echo " "
@@ -10470,16 +10695,18 @@ echo $q ${f[*]} >> phonons.dat
 done
 
 cp phonons.dat phonons_${1}_${GGA}.dat
-cat > gnup_${1}_${GGA} << EOF
+cat > phonondispersion_gnup_${1}_${GGA} << EOF
 set title "$1 phonon dispersion relation ;  GGA = $GGA, POTCAR = $POTCAR"
 set xlabel "$path"
 set ylabel "Frequency (THz)"
 unset key
-p 'phonons_${1}_${GGA}.dat' u 1:2 w l, 'phonons_${1}_${GGA}.dat' u 1:3 w l, 'phonons_${1}_${GGA}.dat' u 1:4 w l, 'phonons_${1}_${GGA}.dat' u 1:5 w l, 'phonons_${1}_${GGA}.dat' u 1:6 w l, 'phonons_${1}_${GGA}.dat' u 1:7 w l
 set term png
 set output "phonondispersion_${1}_${GGA}.png"
 p 'phonons_${1}_${GGA}.dat' u 1:2 w l, 'phonons_${1}_${GGA}.dat' u 1:3 w l, 'phonons_${1}_${GGA}.dat' u 1:4 w l, 'phonons_${1}_${GGA}.dat' u 1:5 w l, 'phonons_${1}_${GGA}.dat' u 1:6 w l, 'phonons_${1}_${GGA}.dat' u 1:7 w l
 EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT phonondispersion_gnup_${1}_${GGA}
+fi
 
 echo " "
 echo " path: $path"

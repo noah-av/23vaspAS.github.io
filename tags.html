@@ -187,12 +187,16 @@ table, th, td {
 
 <hr>
 
-<p>Only three variables have no default and must allways be set explicitly:</p>
+<p>Only four variables have no default and must allways be set explicitly:</p>
 
 <ul>
 <li><b>VASP</b> (string) sets the VASP command.</li>
 <li><b>MAINDIR</b> specifies the location of the directory in which the calculations shall be performed an where the output.txt file shall be written. (Usually MAINDIR=$(pwd)).</li>
 <li><b>POTCAR</b> (string) specifies the name of the POTCAR to be used. If multiple names are indicated (as in POTCAR="Na Cl") the POTCARs will be concatenated in that order to build a new POTCAR. Whenever you reset this tag, you should also run setdefaults.</li>
+</ul>
+
+<ul>
+<li><b>GNUPLOT</b> (sring) sets the gnuplot command. Unlike the previous three tags, this tag is only strictly necessary when the fitmurnaghan function is used - otherwise optional but very useful. If this tag is set, 23vaspAS automatically makes plots using gnuplot and stores them in .png format. Otherwise, only a gnuplot input file will be constructed for a later, manual excecution of gnuplot.</li>
 </ul>
 
 <hr>

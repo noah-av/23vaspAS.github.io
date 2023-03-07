@@ -268,9 +268,9 @@ table, th, td {
 
 <p>Fit the Murnaghan equation of state (EOS):</p>
 
-<p><b>fitmurnaghan $structure $function</b></p>
+<p><b>fitmurnaghan $structure $modification_1 $modification_2 ...</b></p>
 
-<p><b>$structure</b> refers to the structure whose energy-volume curves shall be fitted with the Murnaghan EOS. The fit is done using gnuplot. No modifications (addvacancy, addsubstitution, addadsorbate, etc.) to these structures possible yet. At 11 points around the value stored in $VOLUME_$structure_n (in the interval +-7.5%), the free energy is calculated using <b>$function</b>, where $function refers to either "electronicmin" or "relaxation". In the latter case don't forget to set ISIF=2!</p>
+<p><b>$structure</b> refers to the structure whose energy-volume curves shall be fitted with the Murnaghan EOS. The fit is done using gnuplot. At 11 points around the value stored in $VOLUME_$structure_n (in the interval +-7.5%), the free energy is calculated using the function <b>relaxation</b> (for this particular relaxation, ISIF is automatically set to 4).</p>
 
 <hr>
 
