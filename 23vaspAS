@@ -14,6 +14,7 @@ allmolecules="bent_mol diatomic_mol linear_mol monatomic_mol"
 allmolecules_supercells=""
  
 TOTALTIME=0 
+ANERROROCCURED=false 
  
 ALLPOTCARS=/home/ws2006/potcars
  
@@ -8125,6 +8126,16 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
 
 cd ..
 
@@ -8282,6 +8293,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 cd ..
 
@@ -8439,6 +8459,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 cd ..
 
@@ -8597,6 +8626,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 cd ..
 
@@ -8758,6 +8796,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 cd ..
 
@@ -8917,6 +8964,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 cd ..
 
@@ -9075,6 +9131,16 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
 
 cd ..
 
@@ -9186,6 +9252,11 @@ echo "EMIN = $EMIN" >> INCAR
 echo " " >> INCAR
 buildpotcar
 $VASP
+
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
 
 awk 'BEGIN{i=1} /dos>/,\
                 /\/dos>/ \
@@ -9377,6 +9448,16 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
 cd ..
 
 }
@@ -9482,6 +9563,11 @@ buildincar
 buildpotcar
 $VASP
 
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
+
 array1=($(grep 'number of ions' OUTCAR))
 value1=${array1[11]}
 
@@ -9551,6 +9637,7 @@ fi
 
 fi
 
+
 let secs=$SECONDS-$secs
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
@@ -9559,6 +9646,17 @@ echo " "
 echo " ellapsed time: $hrs h $mins min $secs s"
 echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
 fi
 
 }
@@ -9691,6 +9789,11 @@ rm temp_file2
 
 $VASP
 
+sInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
+
 PRINTOUTPUT=true
 UPDATEVARIABLES=true
 
@@ -9755,6 +9858,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 VARIABLEFORCONVERGENCE=$adsorption_energy
 
@@ -9917,6 +10029,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 VARIABLEFORCONVERGENCE=$surface_energy_per_surface_atom
 
@@ -10044,6 +10165,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 VARIABLEFORCONVERGENCE=$energy_formation
 
@@ -10090,6 +10220,11 @@ echo "ISIF = 3" >> INCAR
 echo " " >> INCAR
 buildpotcar
 $VASP
+
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
 
 if [ "$PRINTOUTPUT" = true ]; then
   echo " "
@@ -10143,6 +10278,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 cd ..
 
@@ -10233,19 +10377,54 @@ mkdir pldir_${i}
 cd ..
 mkdir $i
 cd $i
+
+#if [ -n "$KSPACING" ]; then
+#mkdir tempforkpts
+#cd tempforkpts
+#
+#buildposcar $i
+#nelmbackup=$NELM
+#NELM=1
+#buildincar
+#buildpotcar
+#$VASP
+#NELM=$nelmbackup
+#
+#generate k-points for:    8    8    8
+#
+#
+#kspacingbackup=$KSPACING
+#KSPACING=
+#
+#cd ..
+#fi
+
 name="VOLUME_$i"
 backupvvvol=`echo ${!name}`
 name="FREE_ENERGY_$i"
 backupeeen=`echo ${!name}`
+if [ -n "$KSPACING" ]; then
+backupkspacing=$KSPACING
+fi
+
 for j in $(seq 1 1 $2); do
 mkdir $j
 cd $j
+
 jnlkfvjk=`echo $j - 0.5 - $2 / 2 | bc -l`
 afragrgw=`echo -0.5 + $2 / 2 | bc -l`
-fnjfvkfn=`echo $jnlkfvjk \* $3 / $afragrgw | bc -l`
+jvwoejvnwojvnwe=`echo $3 \* $backupvvvol / 100 | bc -l`
+fnjfvkfn=`echo $jnlkfvjk \* $jvwoejvnwojvnwe / $afragrgw | bc -l`
 vvol=`echo $backupvvvol + $fnjfvkfn | bc -l`
 name="VOLUME_$i"
 eval $name=$vvol
+
+if [ -n "$KSPACING" ]; then
+backuplatccoonsst=`echo " e( l($backupvvvol)/3 ) " | bc -l`
+latccoonsst=`echo " e( l($vvol)/3 ) " | bc -l`
+KSPACING=`echo $backupkspacing \* $backuplatccoonsst / $latccoonsst | bc -l`
+fi
+
 PRINTOUTPUT=false
 $4 $i
 PRINTOUTPUT=true
@@ -10267,6 +10446,9 @@ name="VOLUME_$i"
 eval $name=$backupvvvol
 name="FREE_ENERGY_$i"
 eval $name=$backupeeen
+if [ -n "$KSPACING" ]; then
+KSPACING=$backupkspacing
+fi
 cd ..
 done
 
@@ -10323,7 +10505,7 @@ cd ..
 
 
 
-cat > gnup_energyvolumecurves_${GGA} << EOF
+cat > energyvolumecurves_gnup_${GGA} << EOF
 set title "enenergy-volume curves ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
 set xlabel "Volume per atom ({\305}^3)"
@@ -10334,7 +10516,7 @@ set output "energyvolumecurves_${GGA}.png"
 p 'fcc/energies.dat' u 1:5 w l title 'fcc', 'bcc/energies.dat' u 1:5 w l title 'bcc', 'sc/energies.dat' u 1:5 w l title 'sc', 'diamond/energies.dat' u 1:5 w l title 'diamond', 'hcp/energies.dat' u 1:5 w l title 'hcp', 'fcc_c/energies.dat' u 1:5 w l title 'fcc_c', 'bcc_c/energies.dat' u 1:5 w l title 'bcc_c', 'diamond_c/energies.dat' u 1:5 w l title 'diamond_c', 'nacl/energies.dat' u 1:5 w l title 'nacl', 'cscl/energies.dat' u 1:5 w l title 'cscl', 'zincblende/energies.dat' u 1:5 w l title 'zincblende', 'wurtzite/energies.dat' u 1:5 w l title 'wurtzite', 'nacl_c/energies.dat' u 1:5 w l title 'nacl_c'
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT gnup_energyvolumecurves_${GGA}
+$GNUPLOT energyvolumecurves_gnup_${GGA}
 fi
 
 
@@ -10353,9 +10535,285 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
 cd ..
 
 }
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+fitbirchmurnaghan () {
+
+secsfitbirchmurnaghan=$SECONDS
+
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: fitbirchmurnaghan $1 \"$2\"  ;   $GGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: fitbirchmurnaghan $1 \"$2\"  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+
+mkdir fitbirchmurnaghan_${1}
+cd fitbirchmurnaghan_${1}
+name="FREE_ENERGY_$1"
+backupen=`echo ${!name}`
+name="VOLUME_$1"
+backupvol=`echo ${!name}`
+if [ -n "$KSPACING" ]; then
+backupkspacing=$KSPACING
+fi
+
+for j in $(seq 1 1 11); do
+mkdir $j
+cd $j
+vvol=`echo $backupvol + $j \* 0.0075 \* $backupvol - 6 \* 0.0075 \* $backupvol | bc -l`
+name="VOLUME_$1"
+eval $name=$vvol
+
+if [ -n "$KSPACING" ]; then
+backuplatccoonsst=`echo " e( l($backupvol)/3 ) " | bc -l`
+latccoonsst=`echo " e( l($vvol)/3 ) " | bc -l`
+KSPACING=`echo $backupkspacing \* $backuplatccoonsst / $latccoonsst | bc -l`
+fi
+
+isifbackup=$ISIF
+ISIF=4
+PRINTOUTPUT=false
+###$2 $1
+relaxation $1 $2 "$3" "$4" "$5" "$6" $7 "$8" "$9" "${10}" "${11}" ${12} "${13}" "${14}" "${15}" "${16}" ${17} "${18}" "${19}" "${20}" "${21}" ${22} "${23}" "${24}" "${25}" "${26}" ${27} "${28}" "${29}" "${30}" "${31}" ${32} "${33}" "${34}" "${35}" "${36}" ${37} "${38}" "${39}" "${40}" "${41}" ${42} "${43}" "${44}" "${45}" "${46}" ${47} "${48}" "${49}" "${50}" "${51}" ${52} "${53}" "${54}" "${55}" "${56}" ${57} "${58}" "${59}" "${60}" "${61}" ${62} "${63}" "${64}" "${65}" "${66}" ${67} "${68}" "${69}" "${70}" "${71}" ${72} "${73}" "${74}" "${75}" "${76}" ${77} "${78}" "${79}" "${80}" "${81}"
+PRINTOUTPUT=true
+ISIF=$isifbackup
+cd ..
+name="FREE_ENERGY_$1"
+viuyiuyguy=`echo ${!name}`
+echo $vvol " Angstrom^3 per atom      " $viuyiuyguy " eV "  >> energies.dat
+echo $vvol  $viuyiuyguy  >> data.dat
+done
+
+if [ -n "$KSPACING" ]; then
+KSPACING=$backupkspacing
+fi
+#name="VOLUME_$1"
+#eval $name=$backupvol
+#name="FREE_ENERGY_$1"
+#iusiunbb=`echo ${!name}`
+
+cat > eosfit_31_adapted.py << EOF
+# eosfit.py fits E(V) data to a Birch-Murnaghan equation of state.
+# Current version: 3.1
+#
+# Copyright (C) 2012 Kurt Lejaeghere <Kurt.Lejaeghere@UGent.be>, Center for
+# Molecular Modeling (CMM), Ghent University, Ghent, Belgium
+#
+# eosfit.py is free software; you can redistribute it and/or modify it under
+# the terms of the GNU Lesser General Public License as published by the Free
+# Software Foundation; either version 2.1 of the License, or (at your option)
+# any later version.
+#
+# eosfit.py is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+# more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with eosfit.py; if not, see <http://www.gnu.org/licenses/>.
+
+# The following code is based on the source code of eos.py from the Atomic
+# Simulation Environment (ASE) <https://wiki.fysik.dtu.dk/ase/>.
+
+# Python and numpy are required to use this script.
+
+import numpy as np
+
+echarge = 1.60217733e-19
+
+def BM(energies):
+
+    fitdata = np.polyfit(energies[:,0]**(-2./3.), energies[:,1], 3, full=True)
+    ssr = fitdata[1]
+    sst = np.sum((energies[:,1] - np.average(energies[:,1]))**2.)
+    residuals0 = ssr/sst
+    deriv0 = np.poly1d(fitdata[0])
+    deriv1 = np.polyder(deriv0, 1)
+    deriv2 = np.polyder(deriv1, 1)
+    deriv3 = np.polyder(deriv2, 1)
+
+    volume0 = 0
+    x = 0
+    for x in np.roots(deriv1):
+        # Last check: it's real, no imaginary part
+        if x > 0 and deriv2(x) > 0 and abs(x.imag) < 1.e-8:
+            volume0 = x**(-3./2.)
+            break
+
+    if volume0 == 0:
+        raise ValueError('Error: No minimum could be found')
+
+    # Get also the E0 and return it
+    E0 = deriv0(x)
+
+    derivV2 = 4./9. * x**5. * deriv2(x)
+    derivV3 = (-20./9. * x**(13./2.) * deriv2(x) -
+        8./27. * x**(15./2.) * deriv3(x))
+    bulk_modulus0 = derivV2 / x**(3./2.)
+    bulk_deriv0 = -1 - x**(-3./2.) * derivV3 / derivV2
+
+    return volume0, E0, bulk_modulus0, bulk_deriv0, residuals0
+
+if __name__ == "__main__":
+    from sys import argv
+
+    usage = '''\
+    Use: python eosfit.py filename
+        calculates the Birch-Murnaghan equation of state from a given file,
+        containing in its columns the volumes in A^3/atom and energies in eV/atom,
+        respectively
+        output is printed in filename.eosout
+    --help gives an overview of all options
+    '''
+
+    if len(argv) != 2:
+        print('Error: Wrong number of arguments')
+        exit()
+    else:
+        if argv[1] == '--help':
+            print(usage)
+            exit()
+    infile = argv[1]
+
+    data = np.loadtxt(infile)
+    volume, E, bulk_modulus, bulk_deriv, residuals = BM(data)
+
+    outstr = '''\
+    Equation Of State parameters - least squares fit of a Birch Murnaghan curve
+
+    %.8f \t %.8f \t %.8f \t %.8f
+
+    V0 \t \t  E0 \t \t  B0 \t \t  BP
+    [A^3/at] \t [eV/at] \t [GPa] \t \t [--]
+
+    1-R^2: %.8f
+
+    ''' % (volume, E, (bulk_modulus * echarge * 1.0e21), bulk_deriv, residuals[0])
+
+    outfile = open(infile+'.eosout', 'w')
+    outfile.write(outstr)
+
+    outfile.close()
+EOF
+
+python eosfit_31_adapted.py data.dat
+array2=($(sed -n '3p' < data.dat.eosout))
+
+name="FREE_ENERGY_$i"
+eval $name=$backupen
+name="VOLUME_$i"
+eval $name=$backupvol
+value22=${array2[1]}
+if [ "$UPDATEVARIABLES" = true ]; then
+name="FREE_ENERGY_$1"
+eval $name=$value22
+fi
+value23=${array2[2]}
+value23=`echo $value23 / 160.2 | bc -l`
+if [ "$UPDATEVARIABLES" = true ]; then
+name="BULK_MODULUS_$1"
+eval $name=$value23
+fi
+jveignjveijvn=`echo $value23 \* 160.2 | bc -l`
+value24=${array2[0]}
+if [ "$UPDATEVARIABLES" = true ]; then
+name="VOLUME_$1"
+eval $name=$value24
+fi
+bulkmodulusderrivative=${array2[3]}
+
+
+
+cat > fitbirchmurnaghan_gnup_${1}_${GGA} << EOF
+h = $value22
+b = $value23
+v = $value24
+d = $bulkmodulusderrivative
+e(x) = h + (9.0/16.0)*b*v*(   d*((v/x)**(2.0/3.0) - 1)**3  +  (((v/x)**(2.0/3.0) - 1)**2)*(6 - 4*(v/x)**(2.0/3.0))   )
+
+set title "$1 Birch-Murnaghan EOS fit ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Volume per atom ({\305}^3)"
+set ylabel "Total free energy per atom (eV)"
+set term png
+set output "fitbirchmurnaghan_${1}_${GGA}.png"
+p 'energies.dat' u 1:5 w p title 'data points', e(x) title 'fitted EOS'
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT fitbirchmurnaghan_gnup_${1}_${GGA}
+fi
+
+
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " Murnaghan equation of state has been fitted. Resulting parameters:"
+  echo " volume per atom = " $value24 " Anstrom^3 per atom "
+  echo " energy per atom = " $value22 " eV "
+  echo " bulk modulus = " $value23 " eV/Angstrom^3 = " $jveignjveijvn " GPa "
+  echo " derrivative of bulk modulus wrt pressure = " $bulkmodulusderrivative " eV/Angstrom^3 "
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VOLUME_$1, FREE_ENERGY_$1, and BULK_MODULUS_$1 have been updated accordingly "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " Murnaghan equation of state has been fitted. Resulting parameters:" >> $MAINDIR/output.txt
+  echo " volume per atom = " $value24 " Anstrom^3 per atom " >> $MAINDIR/output.txt
+  echo " energy per atom = " $value22 " eV " >> $MAINDIR/output.txt
+  echo " bulk modulus = " $value23 " eV/Angstrom^3 = " $jveignjveijvn " GPa " >> $MAINDIR/output.txt
+  echo " derrivative of bulk modulus wrt pressure = " $bulkmodulusderrivative " eV/Angstrom^3 " >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VOLUME_$1, FREE_ENERGY_$1, and BULK_MODULUS_$1 have been updated accordingly " >> $MAINDIR/output.txt
+fi
+fi
+
+let secs=$SECONDS-$secsfitbirchmurnaghan
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+cd ..
+
+}
+
  
  
  
@@ -10386,23 +10844,39 @@ name="FREE_ENERGY_$1"
 backupen=`echo ${!name}`
 name="VOLUME_$1"
 backupvol=`echo ${!name}`
+if [ -n "$KSPACING" ]; then
+backupkspacing=$KSPACING
+fi
+
 for j in $(seq 1 1 11); do
 mkdir $j
 cd $j
 vvol=`echo $backupvol + $j \* 0.0075 \* $backupvol - 6 \* 0.0075 \* $backupvol | bc -l`
 name="VOLUME_$1"
 eval $name=$vvol
+
+if [ -n "$KSPACING" ]; then
+backuplatccoonsst=`echo " e( l($backupvol)/3 ) " | bc -l`
+latccoonsst=`echo " e( l($vvol)/3 ) " | bc -l`
+KSPACING=`echo $backupkspacing \* $backuplatccoonsst / $latccoonsst | bc -l`
+fi
+
 isifbackup=$ISIF
 ISIF=4
 PRINTOUTPUT=false
 ###$2 $1
 relaxation $1 $2 "$3" "$4" "$5" "$6" $7 "$8" "$9" "${10}" "${11}" ${12} "${13}" "${14}" "${15}" "${16}" ${17} "${18}" "${19}" "${20}" "${21}" ${22} "${23}" "${24}" "${25}" "${26}" ${27} "${28}" "${29}" "${30}" "${31}" ${32} "${33}" "${34}" "${35}" "${36}" ${37} "${38}" "${39}" "${40}" "${41}" ${42} "${43}" "${44}" "${45}" "${46}" ${47} "${48}" "${49}" "${50}" "${51}" ${52} "${53}" "${54}" "${55}" "${56}" ${57} "${58}" "${59}" "${60}" "${61}" ${62} "${63}" "${64}" "${65}" "${66}" ${67} "${68}" "${69}" "${70}" "${71}" ${72} "${73}" "${74}" "${75}" "${76}" ${77} "${78}" "${79}" "${80}" "${81}"
 PRINTOUTPUT=true
+ISIF=$isifbackup
 cd ..
 name="FREE_ENERGY_$1"
 viuyiuyguy=`echo ${!name}`
 echo $vvol " Angstrom^3 per atom      " $viuyiuyguy " eV "  >> energies.dat
 done
+
+if [ -n "$KSPACING" ]; then
+KSPACING=$backupkspacing
+fi
 #name="VOLUME_$1"
 #eval $name=$backupvol
 #name="FREE_ENERGY_$1"
@@ -10454,8 +10928,6 @@ fi
 array2=($(grep 'd         ' fit.log | tail -2 | head -1))
 bulkmodulusderrivative=${array2[2]}
 
-ISIF=$isifbackup
-
 if [ "$PRINTOUTPUT" = true ]; then
   echo " "
   echo " Murnaghan equation of state has been fitted. Resulting parameters:"
@@ -10485,6 +10957,16 @@ echo " "
 echo " ellapsed time: $hrs h $mins min $secs s"
 echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
 fi
 
 cd ..
@@ -10614,6 +11096,14 @@ echo " " >> INCAR
 buildpotcar
 $VASP
 
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
+
+
+
+
 
 
 let secs=$SECONDS-$secs
@@ -10624,6 +11114,16 @@ echo " "
 echo " ellapsed time: $hrs h $mins min $secs s"
 echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
 fi
 
 cd ..
@@ -10726,6 +11226,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 cd ..
 
@@ -10836,6 +11345,11 @@ echo "ISIF = $ISIF" >> INCAR
 echo " " >> INCAR
 buildpotcar
 $VASP
+
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
 
 arraynumberofions=($(grep 'number of ions' OUTCAR))
 valuenumberofions=${arraynumberofions[11]}
@@ -11135,6 +11649,15 @@ echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
 fi
 
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
 
 VARIABLEFORCONVERGENCE=$volume
 
@@ -11193,6 +11716,16 @@ ISMEAR = $ISMEAR
 SIGMA = $SIGMA
 ISYM = $ISYM
 KGAMMA = $KGAMMA
+EOF
+
+if [ -n "$KSPACING" ]; then
+cat >> INCAR << EOF
+
+KSPACING = $KSPACING
+EOF
+fi
+
+cat >> INCAR << EOF
 
 #magnetism:
 ISPIN = $ISPIN
@@ -11204,7 +11737,6 @@ NCORE = $NCORE
 LREAL = $LREAL
 
 #other incar tags:
-
 EOF
 
 echo " " >> INCAR
@@ -11227,6 +11759,11 @@ buildkpoints () {
 if [ -e KPOINTS ] ; then
 rm KPOINTS
 fi
+
+if [ -n "$KSPACING" ]; then
+x=x
+else
+
 
 if [ -n "$1" ] && [ "$1" -eq "$1" ] 2>/dev/null; then
 cat >> KPOINTS << EOF
@@ -11309,6 +11846,9 @@ cat >> KPOINTS << EOF
 EOF
 fi
 fi
+
+fi
+
 
 fi
 

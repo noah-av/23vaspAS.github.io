@@ -204,10 +204,19 @@ table, th, td {
 <p>Only two variables are associated with the construction of KPOINTS files:</p>
 
 <ul>
-<li><b>KPOINTS_$structure</b> (integer) sets the density of the kpoint mesh for the structure by the name of $structure. Let the value stored in KPOINTS_$structure be equal to n. If $structure is a crystal, then an n x n x n kpoint mesh will be used. If $structure is a surface, then an n x n x 1 kpoint mesh will be used. If $sturucture is a molecule, then a 1 x 1 x 1 kpoint mesh will be used regardless of what is stored in KPOINTS_$structure. <br> <b>Default = 6</b> if $structure is a supercell (prefix "sup_") but <b>= 12</b> otherwise.</li>
+<li><b>KPOINTS_$structure</b> (integer) sets the number of kpoints for the structure by the name of $structure. Let the value stored in KPOINTS_$structure be equal to n. If $structure is a crystal, then an n x n x n kpoint mesh will be used. If $structure is a surface, then an n x n x 1 kpoint mesh will be used. If $sturucture is a molecule, then a 1 x 1 x 1 kpoint mesh will be used regardless of what is stored in KPOINTS_$structure. <br> <b>Default = 6</b> if $structure is a supercell (prefix "sup_") but <b>= 12</b> otherwise.</li>
 <br>
 <li><b>KGAMMA</b> on the other hand is used to specify whether a Gamma centered mesh (KGAMMA=.TRUE.) or a Monkhorst pack mesh (KGAMMA=.FALSE.) shall be used. <br> <b>Default = .TRUE.</b></li>
 </ul>
+
+<p>Instead of constructing KPOINTS files, kpoint densities can also be specified in INCAR files - to do so you must set the following (INCAR) tag: 
+
+<ul>
+<li><b>KSPACING</b> - Default = [empty] (*)</li>
+</ul>
+
+<p>23vaspAS will only add this tag to INCAR files if it is set to a numerical value - and if thats the case, KPOINTS files will not be constructed.</p>
+
 
 <hr>
 
@@ -238,19 +247,19 @@ table, th, td {
 <p>Every INCAR file constructed by 23vaspAS will include the following tags:</p>
 
 <ul>
-<li><b>GGA</b> - Default = "PE"</li>
+<li><b>GGA</b> - Default = "PE" (*)</li>
 <br>
-<li><b>ISTART</b> - Default = 0</li>
-<li><b>ICHARG</b> - Default = 2</li>
+<li><b>ISTART</b> - Default = 0 (*)</li>
+<li><b>ICHARG</b> - Default = 2 (*)</li>
 <br>
-<li><b>LWAVE</b> - Default = ".FALSE."</li>
-<li><b>LCHARG</b> - Default = ".FALSE."</li>
+<li><b>LWAVE</b> - Default = ".FALSE." (*)</li>
+<li><b>LCHARG</b> - Default = ".FALSE." (*)</li>
 <li><b>NWRITE</b> - Default = 2</li>
 <br>
-<li><b>ENCUT</b> - Default = 400</li>
+<li><b>ENCUT</b> - Default = 400 (*)</li>
 <li><b>ALGO</b> - Default = "Normal"</li>
-<li><b>NELM</b> - Default = 100</li>
-<li><b>EDIFF</b> - Default = 0.00001</li>
+<li><b>NELM</b> - Default = 100 (*)</li>
+<li><b>EDIFF</b> - Default = 0.00001 (*)</li>
 <br>
 <li><b>NOMEGA</b> - Default = 12 (If ALGO=RPAR)</li>
 <br>
@@ -268,9 +277,9 @@ table, th, td {
 <li><b>OTHERINCARTAGS</b> (string) can be used to add aditional INCAR tags besides the ones listed above to your INCAR files if needed. As in OTHERINCARTAGS="LMAXFOCKAE = 4 ; LFOCKAEDFT = T".</li>
 </ul>
 
-<p>Notice how these defaults do not allways reflect the defaults as they are found in the VASP wiki.</p>
+<p>(*) Notice how these defaults do not allways reflect the defaults as they are found in the VASP wiki.</p>
 
-<p>Other INCAR tags will only be added when running certain functions. Check the descriptions of functions for more info.</p>
+<p>Other INCAR tags will be added when running certain functions. Check the descriptions of functions for more info.</p>
 
 <hr>
 

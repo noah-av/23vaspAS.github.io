@@ -186,9 +186,9 @@ table, th, td {
 
 <p>If $variable = autovar, then $variable will be chosen automatically based on the specified $task.</p>
 
-<p>At the end, the value stored in KPOINTS_$structure will be updated to its converged value. If the convergence criterion is not reached, it will be updated to $n1</p>
+<p>At the end, if UPDATEVARIABLES=true, the value stored in KPOINTS_$structure will be updated to its converged value. If the convergence criterion is not reached, it will be updated to $n1</p>
 
-<p>The results will be summarised in the file "output.txt". Additionally, a gnuplot file will be automatically generated for quick visualization.</p>
+<p>A gnuplot input file will also be prepared automatically: kpointsconvergence_gnup_$structure_$GGA</p>
 
 <hr>
 
