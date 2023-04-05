@@ -187,7 +187,7 @@ table, th, td {
 
 <hr>
 
-<p>Only four variables have no default and must allways be set explicitly:</p>
+<p>Only three variables have no default and must allways be set explicitly:</p>
 
 <ul>
 <li><b>VASP</b> (string) sets the VASP command.</li>
@@ -197,6 +197,7 @@ table, th, td {
 
 <ul>
 <li><b>GNUPLOT</b> (sring) sets the gnuplot command. Unlike the previous three tags, this tag is only strictly necessary when the fitmurnaghan function is used - otherwise optional but very useful. If this tag is set, 23vaspAS automatically makes plots using gnuplot and stores them in .png format. Otherwise, only a gnuplot input file will be constructed for a later, manual excecution of gnuplot.</li>
+<li><b>PYTHON</b> (sring) sets the python command. This tag only has to be set when the fitbirchmurnaghan function is used.</li>
 </ul>
 
 <hr>
@@ -242,7 +243,9 @@ table, th, td {
 <li><b>SUPERCELL_FACTOR_$structure</b> - Default = 2 (only for when $structure carries the prefix "sup_")</li>
 </ul>
 
+
 <hr>
+
 
 <p>Every INCAR file constructed by 23vaspAS will include the following tags:</p>
 
@@ -280,6 +283,14 @@ table, th, td {
 <p>(*) Notice how these defaults do not allways reflect the defaults as they are found in the VASP wiki.</p>
 
 <p>Other INCAR tags will be added when running certain functions. Check the descriptions of functions for more info.</p>
+
+<hr>
+
+<p>Besides the input-realted variables listed above, there are also output-related variables that are mainly used to store calculated results:</p>
+
+<ul>
+<li><b>MAINENE</b> (integer) specifies which energy is to be stored in the variable ENERGY_$structure. MAINENE=1 means "free  energy" is used, MAINENE=2 means "energy without entropy" is used, and MAINENE=3 means "energy(sigma->0)" is used. - <b>Default = 1</b> </li>
+</ul>
 
 <hr>
 

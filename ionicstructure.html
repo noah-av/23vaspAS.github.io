@@ -256,13 +256,13 @@ table, th, td {
 
 <h2>Energy-Volume Curves:</h2>
 
-<p>Build energy volume curves:</p>
+<p>Build energy-volume, pressure-volume, and enthalpy-pressure curves:</p>
 
-<p><b>energyvolumecurves "$structure_1 $structure_2 $structure_3 ..." $number $interval $function</b></p>
+<p><b>energyvolumecurves "$structure_1 $structure_2 $structure_3 ..." $number $interval</b></p>
 
-<p><b>$structure_n</b> refers to the names of the structures whose energy-volume curves shall be computed. No modifications (addvacancy, addsubstitution, etc.) to these structures possible yet. At <b>$number</b> points around the value stored in $VOLUME_$structure_n (in the interval +-<b>$interval</b> %), the free energy is calculated using <b>$function</b>, where $function refers to either "electronicmin" or "relaxation". In the latter case don't forget to set ISIF=2!</p>
+<p><b>$structure_n</b> refers to the names of the structures whose energy-volume curves shall be computed. No modifications (addvacancy, addsubstitution, etc.) to these structures possible yet. At <b>$number</b> points around the value stored in $VOLUME_$structure_n (in the interval +-<b>$interval</b> %), the free energy is calculated using the function <b>relaxation</b> (for this particular relaxation, ISIF is automatically set to 4). If you prefer not to relax, just set NSW=0.</p>
 
-<p>A gnuplot input file will also be prepared automatically: energyvolumecurves_gnup_${GGA}</p>
+<p>Three gnuplot input files will also be prepared automatically: energyvolumecurves_gnup_${GGA}, pressurevolumecurves_gnup_${GGA}, enthapypressurecurves_gnup_${GGA}</p>
 
 <hr>
 
@@ -270,9 +270,9 @@ table, th, td {
 
 <p>Fit the Murnaghan equation of state (EOS):</p>
 
-<p><b>fitmurnaghan $structure $modification_1 $modification_2 ...</b></p>
+<p><b>fitmurnaghan $number $interval $structure $modification_1 $modification_2 ...</b></p>
 
-<p><b>$structure</b> refers to the structure whose energy-volume curves shall be fitted with the Murnaghan EOS. At 11 points around the value stored in $VOLUME_$structure_n (in the interval +-7.5%), the free energy is calculated using the function <b>relaxation</b> (for this particular relaxation, ISIF is automatically set to 4).</p>
+<p><b>$structure</b> refers to the structure whose energy-volume curves shall be fitted with the Murnaghan EOS. At <b>$number</b> points around the value stored in $VOLUME_$structure_n (in the interval +-<b>$interval</b>%), the free energy is calculated using the function <b>relaxation</b> (for this particular relaxation, ISIF is automatically set to 4). If you prefer not to relax, just set NSW=0.</p>
 
 <p>The fit is done using gnuplot. It is thus mandatory to set the variable GNUPLOT to excecute this function.</p>
 
@@ -286,9 +286,9 @@ table, th, td {
 
 <p>Fit the Birch-Murnaghan equation of state (EOS):</p>
 
-<p><b>fitbirchmurnaghan $structure $modification_1 $modification_2 ...</b></p>
+<p><b>fitbirchmurnaghan $number $interval $structure $modification_1 $modification_2 ...</b></p>
 
-<p><b>$structure</b> refers to the structure whose energy-volume curves shall be fitted with the Birch-Murnaghan EOS. At 11 points around the value stored in $VOLUME_$structure_n (in the interval +-7.5%), the free energy is calculated using the function <b>relaxation</b> (for this particular relaxation, ISIF is automatically set to 4).</p>
+<p><b>$structure</b> refers to the structure whose energy-volume curves shall be fitted with the Birch-Murnaghan EOS. At <b>$number</b> points around the value stored in $VOLUME_$structure_n (in the interval +-<b>$interval</b>%), the free energy is calculated using the function <b>relaxation</b> (for this particular relaxation, ISIF is automatically set to 4). If you prefer not to relax, just set NSW=0.</p>
 
 <p>The fit is done using python and numpy rather than gnuplot. So setting GNUPLOT is not strictly necessary. However python and numpy must be installed.</p>
 
