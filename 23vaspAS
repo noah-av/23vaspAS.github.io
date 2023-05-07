@@ -8,8 +8,8 @@
  
 allcrystals="alphaquartz anatase aucu bcc bcc_c bct betaquartz betatin cdi2 cristobalite cscl cuprite dhcp diamond diamond_c fcc fcc_c fluorite graphite hcp molybdenite nacl nickeline pyrite rutile sc tridymite wurtzite x2o3 x2o5 xo3 zincblende"
 allcrystals_supercells="sup_alphaquartz sup_anatase sup_aucu sup_bcc sup_bcc_c sup_bct sup_betaquartz sup_betatin sup_cdi2 sup_cristobalite sup_cscl sup_cubiclaves sup_cuprite sup_dhcp sup_diamond sup_diamond_c sup_fcc sup_fcc_c sup_fluorite sup_graphite sup_hcp sup_hexagonallaves sup_molybdenite sup_nacl sup_nickeline sup_pyrite sup_rutile sup_sc sup_tridymite sup_wurtzite sup_x2o3 sup_x2o5 sup_xo3 sup_zincblende"
-allsurfaces="bcc_100 bcc_110 bcc_111 fcc_100 fcc_110 fcc_111 hcp_001 hcp_100"
-allsurfaces_supercells="sup_bcc_100 sup_bcc_110 sup_bcc_111 sup_fcc_100 sup_fcc_110 sup_fcc_111 sup_hcp_001 sup_hcp_100"
+allsurfaces="bcc_100 bcc_110 bcc_111 diamond_100 fcc_100 fcc_110 fcc_111 hcp_001 hcp_100"
+allsurfaces_supercells="sup_bcc_100 sup_bcc_110 sup_bcc_111 sup_diamond_100 sup_fcc_100 sup_fcc_110 sup_fcc_111 sup_hcp_001 sup_hcp_100"
 allmolecules="bent_mol diatomic_mol linear_mol monatomic_mol"
 allmolecules_supercells=""
  
@@ -61,6 +61,11 @@ SHIFT_alphaquartz_4=0.78540
 
 }
 EOF
+
+if [ -z $C_A_RATIO_alphaquartz ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_alphaquartz \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -239,6 +244,11 @@ SHIFT_anatase_1=0.08310
 }
 EOF
 
+if [ -z $C_A_RATIO_anatase ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_anatase \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -370,6 +380,11 @@ C_A_RATIO_aucu=0.92632
 
 }
 EOF
+
+if [ -z $C_A_RATIO_aucu ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_aucu \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -651,6 +666,11 @@ C_A_RATIO_bct=1.41421
 }
 EOF
 
+if [ -z $C_A_RATIO_bct ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_bct \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -741,6 +761,11 @@ SHIFT_betaquartz_1=0.42020
 
 }
 EOF
+
+if [ -z $C_A_RATIO_betaquartz ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_betaquartz \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -881,6 +906,11 @@ C_A_RATIO_betatin=0.54547
 }
 EOF
 
+if [ -z $C_A_RATIO_betatin ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_betatin \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -975,6 +1005,11 @@ SHIFT_cdi2_1=0.16667
 
 }
 EOF
+
+if [ -z $C_A_RATIO_cdi2 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_cdi2 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -1420,6 +1455,11 @@ C_A_RATIO_dhcp=3.26598
 
 }
 EOF
+
+if [ -z $C_A_RATIO_dhcp ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_dhcp \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -2021,6 +2061,11 @@ C_A_RATIO_graphite=2.00000
 }
 EOF
 
+if [ -z $C_A_RATIO_graphite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_graphite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -2121,6 +2166,11 @@ C_A_RATIO_hcp=1.63299
 }
 EOF
 
+if [ -z $C_A_RATIO_hcp ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_hcp \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -2213,6 +2263,11 @@ SHIFT_molybdenite_1=0.62000
 
 }
 EOF
+
+if [ -z $C_A_RATIO_molybdenite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_molybdenite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -2441,6 +2496,11 @@ C_A_RATIO_nickeline=1.63299
 }
 EOF
 
+if [ -z $C_A_RATIO_nickeline ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_nickeline \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -2548,6 +2608,11 @@ SHIFT_pyrite_1=0.38600
 
 }
 EOF
+
+if [ -z $SHIFT_pyrite_1 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_pyrite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -2699,6 +2764,11 @@ SHIFT_rutile_1=0.30530
 
 }
 EOF
+
+if [ -z $C_A_RATIO_rutile ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_rutile \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -2915,6 +2985,11 @@ SHIFT_tridymite_1=0.06200
 }
 EOF
 
+if [ -z $C_A_RATIO_tridymite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_tridymite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -3067,6 +3142,11 @@ SHIFT_wurtzite_1=0.37480
 
 }
 EOF
+
+if [ -z $C_A_RATIO_wurtzite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_wurtzite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -3677,6 +3757,11 @@ SHIFT_sup_alphaquartz_4=0.78540
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_alphaquartz ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_alphaquartz \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -3854,6 +3939,11 @@ SHIFT_sup_anatase_1=0.08310
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_anatase ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_anatase \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -3985,6 +4075,11 @@ C_A_RATIO_sup_aucu=0.92632
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_aucu ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_aucu \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -4266,6 +4361,11 @@ C_A_RATIO_sup_bct=1.41421
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_bct ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_bct \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -4356,6 +4456,11 @@ SHIFT_sup_betaquartz_1=0.42020
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_betaquartz ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_betaquartz \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -4496,6 +4601,11 @@ C_A_RATIO_sup_betatin=0.54547
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_betatin ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_betatin \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -4590,6 +4700,11 @@ SHIFT_sup_cdi2_1=0.16667
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_cdi2 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_cdi2 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -5151,6 +5266,11 @@ C_A_RATIO_sup_dhcp=3.26598
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_dhcp ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_dhcp \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -5752,6 +5872,11 @@ C_A_RATIO_sup_graphite=2.00000
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_graphite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_graphite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -5852,6 +5977,11 @@ C_A_RATIO_sup_hcp=1.63299
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_hcp ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_hcp \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -5945,6 +6075,11 @@ SHIFT_sup_hexagonallaves_2=0.06681
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_hexagonallaves ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_hexagonallaves \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -6107,6 +6242,11 @@ SHIFT_sup_molybdenite_1=0.62000
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_molybdenite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_molybdenite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -6335,6 +6475,11 @@ C_A_RATIO_sup_nickeline=1.63299
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_nickeline ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_nickeline \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -6442,6 +6587,11 @@ SHIFT_sup_pyrite_1=0.38600
 
 }
 EOF
+
+if [ -z $SHIFT_sup_pyrite_1 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_pyrite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -6593,6 +6743,11 @@ SHIFT_sup_rutile_1=0.30530
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_rutile ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_rutile \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -6809,6 +6964,11 @@ SHIFT_sup_tridymite_1=0.06200
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_tridymite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_tridymite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
@@ -6961,6 +7121,11 @@ SHIFT_sup_wurtzite_1=0.37480
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_wurtzite ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_sup_wurtzite \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 
@@ -7802,6 +7967,11 @@ POSITION_ATOM_3_bent_mol="0 -1 0.5"
 }
 EOF
 
+if [ -z $POSITION_ATOM_1_bent_mol ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 xx=`echo $MOLECULE_CELL_SIZE_bent_mol \* $SUPERCELL_FACTOR - $MOLECULE_ASYMETRY_bent_mol | bc -l`
 yy=`echo $MOLECULE_CELL_SIZE_bent_mol \* $SUPERCELL_FACTOR | bc -l`
 zz=`echo $MOLECULE_CELL_SIZE_bent_mol \* $SUPERCELL_FACTOR + $MOLECULE_ASYMETRY_bent_mol | bc -l`
@@ -7858,6 +8028,11 @@ POSITION_ATOM_2_diatomic_mol="0 0 1"
 }
 EOF
 
+if [ -z $POSITION_ATOM_1_diatomic_mol ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 xx=`echo $MOLECULE_CELL_SIZE_diatomic_mol \* $SUPERCELL_FACTOR - $MOLECULE_ASYMETRY_diatomic_mol | bc -l`
 yy=`echo $MOLECULE_CELL_SIZE_diatomic_mol \* $SUPERCELL_FACTOR | bc -l`
 zz=`echo $MOLECULE_CELL_SIZE_diatomic_mol \* $SUPERCELL_FACTOR + $MOLECULE_ASYMETRY_diatomic_mol | bc -l`
@@ -7913,6 +8088,11 @@ POSITION_ATOM_3_linear_mol="0 0 2"
 }
 EOF
 
+if [ -z $POSITION_ATOM_1_linear_mol ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 xx=`echo $MOLECULE_CELL_SIZE_linear_mol \* $SUPERCELL_FACTOR - $MOLECULE_ASYMETRY_linear_mol | bc -l`
 yy=`echo $MOLECULE_CELL_SIZE_linear_mol \* $SUPERCELL_FACTOR | bc -l`
 zz=`echo $MOLECULE_CELL_SIZE_linear_mol \* $SUPERCELL_FACTOR + $MOLECULE_ASYMETRY_linear_mol | bc -l`
@@ -7967,6 +8147,11 @@ POSITION_ATOM_1_monatomic_mol="0 0 0"
 
 }
 EOF
+
+if [ -z $POSITION_ATOM_1_monatomic_mol ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 xx=`echo $MOLECULE_CELL_SIZE_monatomic_mol \* $SUPERCELL_FACTOR - $MOLECULE_ASYMETRY_monatomic_mol | bc -l`
 yy=`echo $MOLECULE_CELL_SIZE_monatomic_mol \* $SUPERCELL_FACTOR | bc -l`
@@ -8432,6 +8617,182 @@ echo "$x2  $y2 " $hight " F F F "  >> POSCAR
 fi
 if [ $(echo "$res == 2" | bc) -eq 1 ]; then
 echo "$x3  $y3 " $hight " F F F "  >> POSCAR
+fi
+
+fi
+
+
+done
+done
+
+done
+
+numberofatomsthatwereaddedbefore=0
+
+}
+
+
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+diamond_100 () {
+
+cat > poscardescription << EOF
+poscardescription () {
+
+THISISSUPERCELL=false
+SUPERCELL_FACTOR=1
+NUMBER_OF_LAYERS=$NUMBER_OF_LAYERS_diamond_100
+
+STRUCTURE_TYPE=surface
+LATTICE_SYSTEM=cubic
+BRAVAIS_LATTICE=F
+
+ATOMS_PER_CONVENTIONAL_CELL=8
+ATOMS_PER_SUBCELL=4
+
+NUMBER_OF_ATOMS_PER_LAYER_PER_CELL=1
+
+NUMBER_OF_SHIFTS=0
+
+NUMBER_OF_ELEMENTS=1
+NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT="1"
+
+}
+EOF
+
+source poscardescription
+poscardescription
+
+cat > defaultshiftsandratios << EOF
+defaultshiftsandratios () {
+
+x=x
+
+}
+EOF
+
+array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
+natoms1=${array[0]}
+
+natoms1=`echo $natoms1 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $NUMBER_OF_LAYERS | bc -l`
+
+v=`echo $ATOMS_PER_CONVENTIONAL_CELL \* $VOLUME_diamond_100 | bc -l`
+c=`echo " e( l($v)/3 ) " | bc -l`
+c=`echo $c \* $SUPERCELL_FACTOR / 1.4142135623730950488016887242097 | bc -l`
+h=`echo 0.35355339664904762812604531564108 \* $NUMBER_OF_LAYERS / $SUPERCELL_FACTOR + $VACUUM_SIZE_diamond_100 / $c | bc -l`
+
+xx=`echo 1 \* $c | bc -l`
+xy=`echo 0 \* $c | bc -l`
+xz=`echo 0 \* $c | bc -l`
+yx=`echo 0 \* $c | bc -l`
+yy=`echo 1 \* $c | bc -l`
+yz=`echo 0 \* $c | bc -l`
+zx=`echo 0 \* $c | bc -l`
+zy=`echo 0 \* $c | bc -l`
+zz=`echo $h \* $c | bc -l`
+
+cat > POSCAR << EOF
+diamond_100 surface ; layers: $NUMBER_OF_LAYERS ; vacuum: $VACUUM_SIZE_diamond_100
+1.0
+$xx $xy $xz
+$yx $yy $yz
+$zx $zy $zz
+$POTCAR
+$natoms1
+Selective dynamics
+Cartesian
+EOF
+
+for ig in $(seq 1 1 $NUMBER_OF_LAYERS); do
+
+for nx in $(seq 1 1 $SUPERCELL_FACTOR); do
+for ny in $(seq 1 1 $SUPERCELL_FACTOR); do
+
+x1=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.50000000000000000000000000000000 | bc -l`
+y1=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.00000000000000000000000000000000 | bc -l`
+x2=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.00000000000000000000000000000000 | bc -l`
+y2=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.00000000000000000000000000000000 | bc -l`
+x3=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.00000000000000000000000000000000 | bc -l`
+y3=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.50000000000000000000000000000000 | bc -l`
+x4=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.50000000000000000000000000000000 | bc -l`
+y4=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.50000000000000000000000000000000 | bc -l`
+
+x1=`echo $c \* $x1 / $SUPERCELL_FACTOR | bc -l`
+y1=`echo $c \* $y1 / $SUPERCELL_FACTOR | bc -l`
+x2=`echo $c \* $x2 / $SUPERCELL_FACTOR | bc -l`
+y2=`echo $c \* $y2 / $SUPERCELL_FACTOR | bc -l`
+x3=`echo $c \* $x3 / $SUPERCELL_FACTOR | bc -l`
+y3=`echo $c \* $y3 / $SUPERCELL_FACTOR | bc -l`
+x4=`echo $c \* $x4 / $SUPERCELL_FACTOR | bc -l`
+y4=`echo $c \* $y4 / $SUPERCELL_FACTOR | bc -l`
+
+
+if [ "$LAYER_HIGHTS_diamond_100" = "defaulthights" ]; then
+hight=`echo  0.35355339664904762812604531564108 \* $ig - 0.35355339664904762812604531564108 | bc -l`
+hight=`echo  $c \* $hight / $SUPERCELL_FACTOR | bc -l`
+else
+let iii=$ig-1
+hightsarray=($LAYER_HIGHTS_diamond_100)
+hight=${hightsarray[$iii]}
+fi
+
+res=$(($ig % $ATOMS_PER_SUBCELL))
+
+
+seldynup=`echo $NUMBER_OF_LAYERS - $ig | bc -l`
+seldyndown=`echo $SELECTIVE_DYNAMICS_DEPTH_diamond_100 + 1 | bc -l`
+
+if [ $(echo "$seldynup < $SELECTIVE_DYNAMICS_DEPTH_diamond_100" | bc) -eq 1 ]; then
+
+if [ $(echo "$res == 0" | bc) -eq 1 ]; then
+echo "$x1  $y1 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 1" | bc) -eq 1 ]; then
+echo "$x2  $y2 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 2" | bc) -eq 1 ]; then
+echo "$x3  $y3 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 3" | bc) -eq 1 ]; then
+echo "$x4  $y4 " $hight " T T T "  >> POSCAR
+fi
+
+elif [ $(echo "$ig < $seldyndown" | bc) -eq 1 ]; then
+
+if [ $(echo "$res == 0" | bc) -eq 1 ]; then
+echo "$x1  $y1 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 1" | bc) -eq 1 ]; then
+echo "$x2  $y2 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 2" | bc) -eq 1 ]; then
+echo "$x3  $y3 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 3" | bc) -eq 1 ]; then
+echo "$x4  $y4 " $hight " T T T "  >> POSCAR
+fi
+
+else
+
+if [ $(echo "$res == 0" | bc) -eq 1 ]; then
+echo "$x1  $y1 " $hight " F F F "  >> POSCAR
+fi
+if [ $(echo "$res == 1" | bc) -eq 1 ]; then
+echo "$x2  $y2 " $hight " F F F "  >> POSCAR
+fi
+if [ $(echo "$res == 2" | bc) -eq 1 ]; then
+echo "$x3  $y3 " $hight " F F F "  >> POSCAR
+fi
+if [ $(echo "$res == 3" | bc) -eq 1 ]; then
+echo "$x4  $y4 " $hight " F F F "  >> POSCAR
 fi
 
 fi
@@ -8956,6 +9317,11 @@ C_A_RATIO_hcp_001=1.63299
 }
 EOF
 
+if [ -z $C_A_RATIO_hcp_001 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
 natoms1=${array[0]}
 
@@ -9106,6 +9472,11 @@ C_A_RATIO_hcp_100=1.63299
 
 }
 EOF
+
+if [ -z $C_A_RATIO_hcp_100 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
 natoms1=${array[0]}
@@ -9721,6 +10092,182 @@ numberofatomsthatwereaddedbefore=0
 ########################################################################################### 
  
  
+sup_diamond_100 () {
+
+cat > poscardescription << EOF
+poscardescription () {
+
+THISISSUPERCELL=true
+SUPERCELL_FACTOR=$SUPERCELL_FACTOR_sup_diamond_100
+NUMBER_OF_LAYERS=$NUMBER_OF_LAYERS_sup_diamond_100
+
+STRUCTURE_TYPE=surface
+LATTICE_SYSTEM=cubic
+BRAVAIS_LATTICE=F
+
+ATOMS_PER_CONVENTIONAL_CELL=8
+ATOMS_PER_SUBCELL=4
+
+NUMBER_OF_ATOMS_PER_LAYER_PER_CELL=1
+
+NUMBER_OF_SHIFTS=0
+
+NUMBER_OF_ELEMENTS=1
+NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT="1"
+
+}
+EOF
+
+source poscardescription
+poscardescription
+
+cat > defaultshiftsandratios << EOF
+defaultshiftsandratios () {
+
+x=x
+
+}
+EOF
+
+array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
+natoms1=${array[0]}
+
+natoms1=`echo $natoms1 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $NUMBER_OF_LAYERS | bc -l`
+
+v=`echo $ATOMS_PER_CONVENTIONAL_CELL \* $VOLUME_sup_diamond_100 | bc -l`
+c=`echo " e( l($v)/3 ) " | bc -l`
+c=`echo $c \* $SUPERCELL_FACTOR / 1.4142135623730950488016887242097 | bc -l`
+h=`echo 0.35355339664904762812604531564108 \* $NUMBER_OF_LAYERS / $SUPERCELL_FACTOR + $VACUUM_SIZE_sup_diamond_100 / $c | bc -l`
+
+xx=`echo 1 \* $c | bc -l`
+xy=`echo 0 \* $c | bc -l`
+xz=`echo 0 \* $c | bc -l`
+yx=`echo 0 \* $c | bc -l`
+yy=`echo 1 \* $c | bc -l`
+yz=`echo 0 \* $c | bc -l`
+zx=`echo 0 \* $c | bc -l`
+zy=`echo 0 \* $c | bc -l`
+zz=`echo $h \* $c | bc -l`
+
+cat > POSCAR << EOF
+sup_diamond_100 surface ; layers: $NUMBER_OF_LAYERS ; vacuum: $VACUUM_SIZE_sup_diamond_100
+1.0
+$xx $xy $xz
+$yx $yy $yz
+$zx $zy $zz
+$POTCAR
+$natoms1
+Selective dynamics
+Cartesian
+EOF
+
+for ig in $(seq 1 1 $NUMBER_OF_LAYERS); do
+
+for nx in $(seq 1 1 $SUPERCELL_FACTOR); do
+for ny in $(seq 1 1 $SUPERCELL_FACTOR); do
+
+x1=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.50000000000000000000000000000000 | bc -l`
+y1=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.00000000000000000000000000000000 | bc -l`
+x2=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.00000000000000000000000000000000 | bc -l`
+y2=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.00000000000000000000000000000000 | bc -l`
+x3=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.00000000000000000000000000000000 | bc -l`
+y3=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.50000000000000000000000000000000 | bc -l`
+x4=`echo 1 \* $nx - 1 + 0 \* $ny - 0 + 0.50000000000000000000000000000000 | bc -l`
+y4=`echo 0 \* $nx - 0 + 1 \* $ny - 1 + 0.50000000000000000000000000000000 | bc -l`
+
+x1=`echo $c \* $x1 / $SUPERCELL_FACTOR | bc -l`
+y1=`echo $c \* $y1 / $SUPERCELL_FACTOR | bc -l`
+x2=`echo $c \* $x2 / $SUPERCELL_FACTOR | bc -l`
+y2=`echo $c \* $y2 / $SUPERCELL_FACTOR | bc -l`
+x3=`echo $c \* $x3 / $SUPERCELL_FACTOR | bc -l`
+y3=`echo $c \* $y3 / $SUPERCELL_FACTOR | bc -l`
+x4=`echo $c \* $x4 / $SUPERCELL_FACTOR | bc -l`
+y4=`echo $c \* $y4 / $SUPERCELL_FACTOR | bc -l`
+
+
+if [ "$LAYER_HIGHTS_sup_diamond_100" = "defaulthights" ]; then
+hight=`echo  0.35355339664904762812604531564108 \* $ig - 0.35355339664904762812604531564108 | bc -l`
+hight=`echo  $c \* $hight / $SUPERCELL_FACTOR | bc -l`
+else
+let iii=$ig-1
+hightsarray=($LAYER_HIGHTS_sup_diamond_100)
+hight=${hightsarray[$iii]}
+fi
+
+res=$(($ig % $ATOMS_PER_SUBCELL))
+
+
+seldynup=`echo $NUMBER_OF_LAYERS - $ig | bc -l`
+seldyndown=`echo $SELECTIVE_DYNAMICS_DEPTH_sup_diamond_100 + 1 | bc -l`
+
+if [ $(echo "$seldynup < $SELECTIVE_DYNAMICS_DEPTH_sup_diamond_100" | bc) -eq 1 ]; then
+
+if [ $(echo "$res == 0" | bc) -eq 1 ]; then
+echo "$x1  $y1 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 1" | bc) -eq 1 ]; then
+echo "$x2  $y2 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 2" | bc) -eq 1 ]; then
+echo "$x3  $y3 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 3" | bc) -eq 1 ]; then
+echo "$x4  $y4 " $hight " T T T "  >> POSCAR
+fi
+
+elif [ $(echo "$ig < $seldyndown" | bc) -eq 1 ]; then
+
+if [ $(echo "$res == 0" | bc) -eq 1 ]; then
+echo "$x1  $y1 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 1" | bc) -eq 1 ]; then
+echo "$x2  $y2 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 2" | bc) -eq 1 ]; then
+echo "$x3  $y3 " $hight " T T T "  >> POSCAR
+fi
+if [ $(echo "$res == 3" | bc) -eq 1 ]; then
+echo "$x4  $y4 " $hight " T T T "  >> POSCAR
+fi
+
+else
+
+if [ $(echo "$res == 0" | bc) -eq 1 ]; then
+echo "$x1  $y1 " $hight " F F F "  >> POSCAR
+fi
+if [ $(echo "$res == 1" | bc) -eq 1 ]; then
+echo "$x2  $y2 " $hight " F F F "  >> POSCAR
+fi
+if [ $(echo "$res == 2" | bc) -eq 1 ]; then
+echo "$x3  $y3 " $hight " F F F "  >> POSCAR
+fi
+if [ $(echo "$res == 3" | bc) -eq 1 ]; then
+echo "$x4  $y4 " $hight " F F F "  >> POSCAR
+fi
+
+fi
+
+
+done
+done
+
+done
+
+numberofatomsthatwereaddedbefore=0
+
+}
+
+
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
 sup_fcc_100 () {
 
 cat > poscardescription << EOF
@@ -10220,6 +10767,11 @@ C_A_RATIO_sup_hcp_001=1.63299
 }
 EOF
 
+if [ -z $C_A_RATIO_sup_hcp_001 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
 natoms1=${array[0]}
 
@@ -10370,6 +10922,11 @@ C_A_RATIO_sup_hcp_100=1.63299
 
 }
 EOF
+
+if [ -z $C_A_RATIO_sup_hcp_100 ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
 
 array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
 natoms1=${array[0]}
@@ -10642,6 +11199,16 @@ encutconvergence () {
 secsencutconvergence=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "       #encutconvergence fcc "15 1 25" 0.001 autovar electronicmin fcc addvacancy $potcar 1 "1 1 1" v
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -10650,6 +11217,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 backupencut=$ENCUT
@@ -10758,6 +11326,21 @@ if [ "$4" != "autovar" ]; then
 ylabel="$4"
 fi
 
+if [ -n "$METAGGA" ]; then
+cat > encutconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 ENCUT convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Cutoff energy (eV)"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "encutconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT encutconvergence_gnup_${1}_${METAGGA}
+fi
+else
 cat > encutconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 ENCUT convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -10770,6 +11353,7 @@ p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT encutconvergence_gnup_${1}_${GGA}
+fi
 fi
 
 let secs=$SECONDS-$secsencutconvergence
@@ -10811,6 +11395,20 @@ kpointsconvergence () {
 secskpointsconvergence=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " "
+echo " Number of kpoints      Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Number of kpoints      Result                      Difference" >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -10823,6 +11421,7 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of kpoints      Result                      Difference" >> $MAINDIR/output.txt
+fi
 fi
 
 mkdir kpointsconvergence_${1}
@@ -10925,6 +11524,21 @@ if [ "$4" != "autovar" ]; then
 ylabel="$4"
 fi
 
+if [ -n "$METAGGA" ]; then
+cat > kpointsconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 kpoints convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of kpoints along x-, y-, z- direction"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "kpointsconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT kpointsconvergence_gnup_${1}_${METAGGA}
+fi
+else
 cat > kpointsconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 kpoints convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -10937,6 +11551,7 @@ p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT kpointsconvergence_gnup_${1}_${GGA}
+fi
 fi
 
 let secs=$SECONDS-$secskpointsconvergence
@@ -10977,6 +11592,16 @@ nomegaconvergence () {
 secsnomegaconvergence=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -10985,6 +11610,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 backupnomega=$NOMEGA
@@ -11089,6 +11715,21 @@ if [ "$4" != "autovar" ]; then
 ylabel="$4"
 fi
 
+if [ -n "$METAGGA" ]; then
+cat > nomegaconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 NOMEGA convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of imaginary frequency and time points"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "nomegaconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT nomegaconvergence_gnup_${1}_${METAGGA}
+fi
+else
 cat > nomegaconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 NOMEGA convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -11101,6 +11742,7 @@ p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT nomegaconvergence_gnup_${1}_${GGA}
+fi
 fi
 
 
@@ -11143,6 +11785,20 @@ numberoflayersconvergence () {
 secsnumberoflayersconvergence=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " "
+echo " Number of layers       Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Number of layers       Result                      Difference" >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -11155,6 +11811,7 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of layers       Result                      Difference" >> $MAINDIR/output.txt
+fi
 fi
 
 mkdir numberoflayersconvergence_${1}
@@ -11257,6 +11914,21 @@ if [ "$4" != "autovar" ]; then
 ylabel="$4"
 fi
 
+if [ -n "$METAGGA" ]; then
+cat > numberoflayersconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 number of layers convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of surface layers"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "numberoflayersconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT numberoflayersconvergence_gnup_${1}_${METAGGA}
+fi
+else
 cat > numberoflayersconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 number of layers convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -11269,6 +11941,7 @@ p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT numberoflayersconvergence_gnup_${1}_${GGA}
+fi
 fi
 
 
@@ -11310,6 +11983,16 @@ sigmaconvergence () {
 secssigmaconvergence=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: sigmaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: sigmaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -11318,6 +12001,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: sigmaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 backupsigma=$SIGMA
@@ -11427,6 +12111,21 @@ if [ "$4" != "autovar" ]; then
 ylabel="$4"
 fi
 
+if [ -n "$METAGGA" ]; then
+cat > sigmaconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 SIGMA convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Smearing width (eV)"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "sigmaconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT sigmaconvergence_gnup_${1}_${METAGGA}
+fi
+else
 cat > sigmaconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 SIGMA convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -11439,6 +12138,7 @@ p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT sigmaconvergence_gnup_${1}_${GGA}
+fi
 fi
 
 
@@ -11480,6 +12180,16 @@ supercellconvergence () {
 secssupercellconvergence=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -11488,6 +12198,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 name="SUPERCELL_FACTOR_$1"
@@ -11595,6 +12306,21 @@ if [ "$4" != "autovar" ]; then
 ylabel="$4"
 fi
 
+if [ -n "$METAGGA" ]; then
+cat > supercellconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 supercell size convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Supercell factor"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "supercellconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT supercellconvergence_gnup_${1}_${METAGGA}
+fi
+else
 cat > supercellconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 supercell size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -11607,6 +12333,7 @@ p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT supercellconvergence_gnup_${1}_${GGA}
+fi
 fi
 
 
@@ -11648,6 +12375,20 @@ vacuumsizeconvergence () {
 secsvacuumsizeconvergence=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " "
+echo " Vacuum size            Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -11660,6 +12401,7 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
+fi
 fi
 
 mkdir vacuumsizeconvergence_${1}
@@ -11762,6 +12504,21 @@ if [ "$4" != "autovar" ]; then
 ylabel="$4"
 fi
 
+if [ -n "$METAGGA" ]; then
+cat > vacuumsizeconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 vacuum size convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Vacuum size ({\305})"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "vacuumsizeconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT vacuumsizeconvergence_gnup_${1}_${METAGGA}
+fi
+else
 cat > vacuumsizeconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 vacuum size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -11774,6 +12531,7 @@ p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT vacuumsizeconvergence_gnup_${1}_${GGA}
+fi
 fi
 
 
@@ -11817,7 +12575,18 @@ secs=$SECONDS
 
 mkdir densityofstates_${1}
 cd densityofstates_${1}
+
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: densityofstates $1 $2  ;   $ALGO $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: densityofstates $1 $2  ;   $ALGO $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -11826,6 +12595,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: densityofstates $1 $2  ;   $ALGO $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 
@@ -11909,6 +12679,10 @@ echo " " >> INCAR
 buildpotcar
 $VASP
 
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST INCAR REPORT defaultshiftsandratios PROCAR XDATCAR KPOINTS CHGCAR poscardescription POSCAR CONTCAR WAVECAR minipotcar POTCAR EIGENVAL PCDAT CHG IBZKPT
+fi
+
 isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
 if [ $isInFile -eq 0 ]; then
 ANERROROCCURED=true
@@ -11922,6 +12696,21 @@ awk 'BEGIN{i=1} /dos>/,\
 ef=`awk '/efermi/ {print $3}' vasprun.xml`
 
 
+if [ -n "$METAGGA" ]; then
+cat > densityofstates_gnup_${1}_${METAGGA} << EOF
+set title "$1 density of states ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set xlabel "Energy - Fermi energy (eV)"
+set ylabel "Density of States (states/eV)"
+unset key
+p "dos.dat" using (\$1-$ef):(\$2) w l
+set term png
+set output "densityofstates_${1}_${METAGGA}.png"
+p "dos.dat" using (\$1-$ef):(\$2) w l
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT densityofstates_gnup_${1}_${METAGGA}
+fi
+else
 cat > densityofstates_gnup_${1}_${GGA} << EOF
 set title "$1 density of states ;  GGA = $GGA, POTCAR = $POTCAR"
 set xlabel "Energy - Fermi energy (eV)"
@@ -11934,6 +12723,7 @@ p "dos.dat" using (\$1-$ef):(\$2) w l
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT densityofstates_gnup_${1}_${GGA}
+fi
 fi
 
 echo " "
@@ -12136,7 +12926,18 @@ secs=$SECONDS
 
 mkdir electronicmin_${1}
 cd electronicmin_${1}
+
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: electronicmin $1 $2  ;   $ALGO $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: electronicmin $1 $2  ;   $ALGO $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -12145,6 +12946,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: electronicmin $1 $2  ;   $ALGO $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 
@@ -12218,6 +13020,10 @@ buildkpoints $1
 buildincar
 buildpotcar
 $VASP
+
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST INCAR REPORT defaultshiftsandratios XDATCAR KPOINTS CHGCAR poscardescription POSCAR CONTCAR DOSCAR vasprun.xml WAVECAR minipotcar POTCAR EIGENVAL PCDAT CHG IBZKPT
+fi
 
 isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
 if [ $isInFile -eq 0 ]; then
@@ -12373,15 +13179,27 @@ secsadsorptionenergy=$SECONDS
 
 mkdir adsorptionenergy_${1}
 cd adsorptionenergy_${1}
+
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: adsorptionenergy $1 \"$2\"  ;   $GGA $POTCAR "
+echo " Running now: adsorptionenergy $1 $2  ;   $METAGGA $POTCAR "
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: adsorptionenergy $1 \"$2\"  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: adsorptionenergy $1 $2  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: adsorptionenergy $1 $2  ;   $GGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: adsorptionenergy $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 printoutputbackup=$PRINTOUTPUT
@@ -12389,11 +13207,13 @@ printoutputbackup=$PRINTOUTPUT
 mkdir clean_surface
 cd clean_surface
 
+updatevariablesbackup=$UPDATEVARIABLES
+printoutputbackup=$PRINTOUTPUT
 UPDATEVARIABLES=false
 PRINTOUTPUT=false
 relaxation $1
-PRINTOUTPUT=true
-UPDATEVARIABLES=true
+PRINTOUTPUT=$printoutputbackup
+UPDATEVARIABLES=$updatevariablesbackup
 
 cd relaxation_${1}
 
@@ -12434,13 +13254,15 @@ NSW=16
 backupnelm=$NELM
 NELM=60
 
+updatevariablesbackup=$UPDATEVARIABLES
+printoutputbackup=$PRINTOUTPUT
 UPDATEVARIABLES=false
 PRINTOUTPUT=false
 
 relaxation $1 $2 "$3" "$4" "$5" "$6" $7 "$8" "$9" "${10}" "${11}" ${12} "${13}" "${14}" "${15}" "${16}" ${17} "${18}" "${19}" "${20}" "${21}" ${22} "${23}" "${24}" "${25}" "${26}" ${27} "${28}" "${29}" "${30}" "${31}" ${32} "${33}" "${34}" "${35}" "${36}" ${37} "${38}" "${39}" "${40}" "${41}" ${42} "${43}" "${44}" "${45}" "${46}" ${47} "${48}" "${49}" "${50}" "${51}" ${52} "${53}" "${54}" "${55}" "${56}" ${57} "${58}" "${59}" "${60}" "${61}" ${62} "${63}" "${64}" "${65}" "${66}" ${67} "${68}" "${69}" "${70}" "${71}" ${72} "${73}" "${74}" "${75}" "${76}" ${77} "${78}" "${79}" "${80}" "${81}"
 
-PRINTOUTPUT=true
-UPDATEVARIABLES=true
+PRINTOUTPUT=$printoutputbackup
+UPDATEVARIABLES=$updatevariablesbackup
 
 name="SELECTIVE_DYNAMICS_DEPTH_$1"
 eval $name=$backupseldyn
@@ -12454,6 +13276,8 @@ cd ..
 mkdir part2
 cd part2
 
+updatevariablesbackup=$UPDATEVARIABLES
+printoutputbackup=$PRINTOUTPUT
 UPDATEVARIABLES=false
 PRINTOUTPUT=false
 
@@ -12496,13 +13320,17 @@ rm temp_file2
 
 $VASP
 
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR  XDATCAR
+fi
+
 sInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
 if [ $isInFile -eq 0 ]; then
 ANERROROCCURED=true
 fi
 
-PRINTOUTPUT=true
-UPDATEVARIABLES=true
+PRINTOUTPUT=$printoutputbackup
+UPDATEVARIABLES=$updatevariablesbackup
 
 if [ "$MAINENE" = 1 ]; then
 array2=($(grep 'free  en' OUTCAR | tail -1))
@@ -12608,27 +13436,44 @@ secssurfaceenergy=$SECONDS
 
 mkdir surfaceenergy_${1}
 cd surfaceenergy_${1}
+
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: surfaceenergy $1 \"$2\"  ;   $GGA $POTCAR "
+echo " Running now: surfaceenergy $1  ;   $METAGGA $POTCAR "
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: surfaceenergy $1 \"$2\"  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: surfaceenergy $1  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: surfaceenergy $1  ;   $GGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: surfaceenergy $1  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 printoutputbackup=$PRINTOUTPUT
 
+
+if [ "$RECALCSURFACE" = "true" ]; then
+
 mkdir surface
 cd surface
 
+updatevariablesbackup=$UPDATEVARIABLES
+printoutputbackup=$PRINTOUTPUT
 UPDATEVARIABLES=false
 PRINTOUTPUT=false
 relaxation $1
-PRINTOUTPUT=true
-UPDATEVARIABLES=true
+PRINTOUTPUT=$printoutputbackup
+UPDATEVARIABLES=$updatevariablesbackup
 
 cd relaxation_${1}
 
@@ -12655,6 +13500,24 @@ cd ..
 cd ..
 
 
+else
+
+mkdir temppppp
+cd temppppp
+$1
+cd ..
+rm -r temppppp
+
+name="ENERGY_$1"
+energy_slab=`echo ${!name}`
+
+fi
+
+
+
+if [ "$RECALCBULK" = "true" ]; then
+
+
 mkdir bulk
 cd bulk
 
@@ -12679,11 +13542,13 @@ backuplayerhights=`echo ${!name}`
 name="LAYER_HIGHTS_$1"
 eval $name="defaulthights"
 
+updatevariablesbackup=$UPDATEVARIABLES
+printoutputbackup=$PRINTOUTPUT
 UPDATEVARIABLES=false
 PRINTOUTPUT=false
 electronicmin $1
-PRINTOUTPUT=true
-UPDATEVARIABLES=true
+PRINTOUTPUT=$printoutputbackup
+UPDATEVARIABLES=$updatevariablesbackup
 
 name="LAYER_HIGHTS_$1"
 eval $name="$backuplayerhights"
@@ -12719,9 +13584,25 @@ eval $name=$backuplayers
 cd ..
 
 
+else
+
+name="NUMBER_OF_LAYERS_$1"
+backuplayers=`echo ${!name}`
+
+akjfvlakjb=`echo "$1" | sed 's/....$//'`
+name="ENERGY_$akjfvlakjb"
+energy_bulk=`echo ${!name}`
+
+fi
+
+
+
 surface_energy_per_surface_atom=`echo $energy_slab \* $backuplayers \* $NUMBER_OF_ATOMS_PER_LAYER_PER_CELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR - $energy_bulk \* $backuplayers \* $NUMBER_OF_ATOMS_PER_LAYER_PER_CELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 denom=`echo 2 \* $NUMBER_OF_ATOMS_PER_LAYER_PER_CELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
 surface_energy_per_surface_atom=`echo $surface_energy_per_surface_atom / $denom | bc -l`
+
+
+if [ "$RECALCSURFACE" = "true" ]; then
 
 
 cd surface
@@ -12738,6 +13619,29 @@ done < CONTCAR
 
 cd ..
 cd ..
+
+
+else
+
+mkdir temmmp
+cd temmmp
+
+$1
+
+lattice_vectors=()
+count=0
+while read line; do
+if [ $count -ge 2 ] && [ $count -le 4 ]; then
+lattice_vectors+=("$line")
+fi
+count=$((count + 1))
+done < POSCAR
+
+cd ..
+rm -r temmmp
+
+fi
+
 
 lattice_vectors=( $(echo ${lattice_vectors[@]}) )
 
@@ -12759,13 +13663,21 @@ if [ "$PRINTOUTPUT" = true ]; then
   echo " "
   echo " resulting surface energy per surface atom: $surface_energy_per_surface_atom eV "
   echo " resulting surface energy per surface area: $surface_energy_per_surface_area eV / Angstrom^2 "
+if [ "$RECALCSURFACE" = "true" ]; then
   echo " energy of relaxed surface slab: $energy_slab eV "
+fi
+if [ "$RECALCBULK" = "true" ]; then
   echo " energy of surface slab without vacuum (# of layers addapted): $energy_bulk eV "
+fi
   echo " " >> $MAINDIR/output.txt
   echo " resulting surface energy per surface atom: $surface_energy_per_surface_atom eV " >> $MAINDIR/output.txt
   echo " resulting surface energy per surface area: $surface_energy_per_surface_area eV / Angstrom^2 " >> $MAINDIR/output.txt
+if [ "$RECALCSURFACE" = "true" ]; then
   echo " energy of relaxed surface slab: $energy_slab eV " >> $MAINDIR/output.txt
+fi
+if [ "$RECALCBULK" = "true" ]; then
   echo " energy of surface slab without vacuum (# of layers addapted): $energy_bulk eV " >> $MAINDIR/output.txt
+fi
 fi
 
 
@@ -12809,22 +13721,40 @@ secsvacancyformationenergy=$SECONDS
 
 mkdir vacancyformationenergy_${1}
 cd vacancyformationenergy_${1}
+
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: vacancyformationenergy $1 \"$2\"  ;   $GGA $POTCAR "
+echo " Running now: vacancyformationenergy $1 $2  ;   $METAGGA $POTCAR "
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: vacancyformationenergy $1 \"$2\"  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: vacancyformationenergy $1 $2  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: vacancyformationenergy $1 $2  ;   $GGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: vacancyformationenergy $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
+
+mkdir vacancy
+cd vacancy
+
+updatevariablesbackup=$UPDATEVARIABLES
+printoutputbackup=$PRINTOUTPUT
 UPDATEVARIABLES=false
 PRINTOUTPUT=false
 relaxation $1 $2 "$3" "$4" "$5" "$6" $7 "$8" "$9" "${10}" "${11}" ${12} "${13}" "${14}" "${15}" "${16}" ${17} "${18}" "${19}" "${20}" "${21}" ${22} "${23}" "${24}" "${25}" "${26}" ${27} "${28}" "${29}" "${30}" "${31}" ${32} "${33}" "${34}" "${35}" "${36}" ${37} "${38}" "${39}" "${40}" "${41}" ${42} "${43}" "${44}" "${45}" "${46}" ${47} "${48}" "${49}" "${50}" "${51}" ${52} "${53}" "${54}" "${55}" "${56}" ${57} "${58}" "${59}" "${60}" "${61}" ${62} "${63}" "${64}" "${65}" "${66}" ${67} "${68}" "${69}" "${70}" "${71}" ${72} "${73}" "${74}" "${75}" "${76}" ${77} "${78}" "${79}" "${80}" "${81}" 
-PRINTOUTPUT=true
-UPDATEVARIABLES=true
+PRINTOUTPUT=$printoutputbackup
+UPDATEVARIABLES=$updatevariablesbackup
 
 cd relaxation_${1}
 
@@ -12874,13 +13804,91 @@ volume_defect_gfcytc=$volume_defect
 volume_defect=`echo $volume_defect \* $ATOMS_PER_SUBCELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR / $N | bc -l`
 fi
 
+cd ..
 
 cd ..
+
+cd ..
+
+
+
+if [ "$RECALCBULK" = "true" ]; then
+
+mkdir bulk
+cd bulk
+
+updatevariablesbackup=$UPDATEVARIABLES
+printoutputbackup=$PRINTOUTPUT
+UPDATEVARIABLES=false
+PRINTOUTPUT=false
+relaxation $1
+PRINTOUTPUT=$printoutputbackup
+UPDATEVARIABLES=$updatevariablesbackup
+
+cd relaxation_${1}
+
+
+if [ "$MAINENE" = 1 ]; then
+array2=($(grep 'free  en' OUTCAR | tail -1))
+value2=${array2[4]}
+fi
+if [ "$MAINENE" = 2 ]; then
+array2=($(grep 'energy without entropy' OUTCAR | tail -1))
+value2=${array2[4]}
+fi
+if [ "$MAINENE" = 3 ]; then
+array2=($(grep 'energy without entropy' OUTCAR | tail -1))
+value2=${array2[7]}
+fi
+
+array1=($(grep 'number of ions' OUTCAR))
+M=${array1[11]}
+
+energy_perfect=`echo $value2 / $M | bc -l`
+
+cd temp
+
+arraylatticeconst=($(grep 'ALAT' OUTCAR))
+latticeconstt=${arraylatticeconst[2]}
+latticeconst=`echo $latticeconstt / $SUPERCELL_FACTOR | bc -l`
+
+if [ "$LATTICE_SYSTEM" = cubic ]; then
+volume_perfect=`echo $latticeconst \* $latticeconst \* $latticeconst / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+volume_perfect_gfcytc=$volume_perfect
+volume_perfect=`echo $volume_perfect \* $ATOMS_PER_SUBCELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR / $M | bc -l`
+fi
+
+if [ "$LATTICE_SYSTEM" = hexagonal ]; then
+arraycaratio=($(grep 'C/A-ratio' OUTCAR))
+valuecaratio=${arraycaratio[2]}
+volume_perfect=`echo $latticeconst \* $latticeconst \* $latticeconst \* $valuecaratio \* 0.86602540378443864676372317075294 / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+volume_perfect_gfcytc=$volume_perfect
+volume_perfect=`echo $volume_perfect \* $ATOMS_PER_SUBCELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR / $M | bc -l`
+fi
+
+if [ "$LATTICE_SYSTEM" = tetragonal ]; then
+arraycaratio=($(grep 'C/A-ratio' OUTCAR))
+valuecaratio=${arraycaratio[2]}
+volume_perfect=`echo $latticeconst \* $latticeconst \* $latticeconst \* $valuecaratio / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+volume_perfect_gfcytc=$volume_perfect
+volume_perfect=`echo $volume_perfect \* $ATOMS_PER_SUBCELL \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR / $M | bc -l`
+fi
+
+cd ..
+
+cd ..
+
+cd ..
+
+else
 
 name="ENERGY_$1"
 energy_perfect=`echo ${!name}`
 name="VOLUME_$1"
 volume_perfect=`echo ${!name}`
+
+fi
+
 
 #if [ "$1" = contcar ]; then
 #array=($(awk '{ if (NR==1) print $0 }' POSCAR))
@@ -12891,7 +13899,6 @@ volume_perfect=`echo ${!name}`
 #volume_perfect=`echo ${!name}`
 #fi
 
-cd ..
 
 energy_formation=`echo $energy_defect \* $N - $energy_perfect \* $N | bc -l`
 volume_formation=`echo $volume_defect \* $N - $volume_perfect \* $N | bc -l`
@@ -12902,6 +13909,9 @@ ratio_volume=`echo $volume_formation / $volume_perfect | bc -l`
 if [ "$PRINTOUTPUT" = true ]; then
   echo " "
   echo " Energy per atom of structure with defect: $energy_defect eV"
+if [ "$RECALCBULK" = "true" ]; then
+  echo " Energy per atom of structure without defect: $energy_perfect eV"
+fi
   echo " resulting vacancy formation energy: $energy_formation eV "
   echo " resulting vacancy formation volume: $volume_formation Angstrom^3 "
   echo " vacancy formation energy / bulk energy per atom: $ratio_energy "
@@ -12909,6 +13919,9 @@ if [ "$PRINTOUTPUT" = true ]; then
   echo " VOLUME_$1 for structure with defect: $volume_defect_gfcytc "
   echo " " >> $MAINDIR/output.txt
   echo " Energy per atom of structure with defect: $energy_defect eV" >> $MAINDIR/output.txt
+if [ "$RECALCBULK" = "true" ]; then
+  echo " Energy per atom of structure without defect: $energy_perfect eV" >> $MAINDIR/output.txt
+fi
   echo " resulting vacancy formation energy: $energy_formation eV " >> $MAINDIR/output.txt
   echo " resulting vacancy formation volume: $volume_formation Angstrom^3 " >> $MAINDIR/output.txt
   echo " vacancy formation energy / bulk energy per atom: $ratio_energy " >> $MAINDIR/output.txt
@@ -12958,6 +13971,16 @@ elasticmoduli () {
 secs=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: elasticmoduli $1  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: elasticmoduli $1  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -12966,6 +13989,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: elasticmoduli $1  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 mkdir elasticmoduli_${1}
@@ -12982,6 +14006,11 @@ echo "ISIF = 3" >> INCAR
 echo " " >> INCAR
 buildpotcar
 $VASP
+
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST DYNMAT INCAR REPORT defaultshiftsandratios XDATCAR KPOINTS CHGCAR poscardescription POSCAR CONTCAR DOSCAR vasprun.xml WAVECAR minipotcar POTCAR EIGENVAL PCDAT CHG IBZKPT
+fi
+
 
 isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
 if [ $isInFile -eq 0 ]; then
@@ -13132,6 +14161,16 @@ energyvolumecurves () {
 secsenergyvolumecurves=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: energyvolumecurves \"$1\" $2 $3  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: energyvolumecurves \"$1\" $2 $3  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -13140,6 +14179,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: energyvolumecurves \"$1\" $2 $3  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 structure=()
@@ -13350,6 +14390,49 @@ njeorjtgnejben=$njeorjtgnejben"'"$i"/pressures.dat' u 1:5 w l title '"$i"', "
 jnjnvwnjijwvtj=$jnjnvwnjijwvtj"'"$i"/enthalpies.dat' u 1:3 w l title '"$i"', "
 done
 
+if [ -n "$METAGGA" ]; then
+
+cat > energyvolumecurves_gnup_${METAGGA} << EOF
+set title "Energy-volume curves ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Volume per atom ({\305}^3)"
+set ylabel "Energy per atom (eV)"
+set term png
+set output "energyvolumecurves_${METAGGA}.png"
+$svfnjgvgergtbe
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT energyvolumecurves_gnup_${METAGGA}
+fi
+
+cat > pressurevolumecurves_gnup_${METAGGA} << EOF
+set title "Pressure-volume curves ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Volume per atom ({\305}^3)"
+set ylabel "Pressure (eV/{\305}^3)"
+set term png
+set output "pressurevolumecurves_${METAGGA}.png"
+$njeorjtgnejben
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT pressurevolumecurves_gnup_${METAGGA}
+fi
+
+cat > enthalpypressurecurves_gnup_${METAGGA} << EOF
+set title "Enthalpy-pressure curves ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Pressure (eV/{\305}^3)"
+set ylabel "Enthalpy (eV)"
+set term png
+set output "enthalpypressurecurves_${METAGGA}.png"
+$jnjnvwnjijwvtj
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT enthalpypressurecurves_gnup_${METAGGA}
+fi
+
+else
+
 cat > energyvolumecurves_gnup_${GGA} << EOF
 set title "Energy-volume curves ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
@@ -13387,6 +14470,8 @@ $jnjnvwnjijwvtj
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT enthalpypressurecurves_gnup_${GGA}
+fi
+
 fi
 
 cd pldirs
@@ -13431,6 +14516,16 @@ fitbirchmurnaghan () {
 secsfitbirchmurnaghan=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: fitbirchmurnaghan $1 $2 $3 $4  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: fitbirchmurnaghan $1 $2 $3 $4  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -13439,6 +14534,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: fitbirchmurnaghan $1 $2 $3 $4  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 mkdir fitbirchmurnaghan_${3}
@@ -13623,6 +14719,29 @@ bulkmodulusderrivative=${array2[3]}
 
 
 
+if [ -n "$METAGGA" ]; then
+
+cat > fitbirchmurnaghan_gnup_${3}_${METAGGA} << EOF
+h = $value22
+b = $value23
+v = $value24
+d = $bulkmodulusderrivative
+e(x) = h + (9.0/16.0)*b*v*(   d*((v/x)**(2.0/3.0) - 1)**3  +  (((v/x)**(2.0/3.0) - 1)**2)*(6 - 4*(v/x)**(2.0/3.0))   )
+
+set title "$3 Birch-Murnaghan EOS fit ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Volume per atom ({\305}^3)"
+set ylabel "Energy per atom (eV)"
+set term png
+set output "fitbirchmurnaghan_${3}_${METAGGA}.png"
+p 'energies.dat' u 1:5 w p title 'data points', e(x) title 'fitted EOS'
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT fitbirchmurnaghan_gnup_${3}_${METAGGA}
+fi
+
+else
+
 cat > fitbirchmurnaghan_gnup_${3}_${GGA} << EOF
 h = $value22
 b = $value23
@@ -13640,6 +14759,8 @@ p 'energies.dat' u 1:5 w p title 'data points', e(x) title 'fitted EOS'
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT fitbirchmurnaghan_gnup_${3}_${GGA}
+fi
+
 fi
 
 
@@ -13704,6 +14825,16 @@ fitmurnaghan () {
 secsfitmurnaghan=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: fitmurnaghan $1 $2 $3 $4  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: fitmurnaghan $1 $2 $3 $4  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -13712,6 +14843,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: fitmurnaghan $1 $2 $3 $4  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 mkdir fitmurnaghan_${3}
@@ -13763,6 +14895,30 @@ fi
 #name="FREE_ENERGY_$1"
 #iusiunbb=`echo ${!name}`
 
+if [ -n "$METAGGA" ]; then
+
+cat > fitmurnaghan_gnup_${3}_${METAGGA} << EOF
+h = $backupen
+b = 1.25
+v = $backupvol
+d = 3.5
+e(x) = h + (b*x/d)*(((v/x)**d)/(d-1)+1) - b*v/(d-1)
+fit e(x) 'energies.dat' u 1:5 via h, b, v, d
+
+set title "$3 Murnaghan EOS fit ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Volume per atom ({\305}^3)"
+set ylabel "Energy per atom (eV)"
+set term png
+set output "fitmurnaghan_${3}_${METAGGA}.png"
+p 'energies.dat' u 1:5 w p title 'data points', e(x) title 'fitted EOS'
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT fitmurnaghan_gnup_${3}_${METAGGA}
+fi
+
+else
+
 cat > fitmurnaghan_gnup_${3}_${GGA} << EOF
 h = $backupen
 b = 1.25
@@ -13781,6 +14937,8 @@ p 'energies.dat' u 1:5 w p title 'data points', e(x) title 'fitted EOS'
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT fitmurnaghan_gnup_${3}_${GGA}
+fi
+
 fi
 
 name="ENERGY_$i"
@@ -13873,6 +15031,16 @@ mkdir moleculardynamics_${1}
 cd moleculardynamics_${1}
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: moleculardynamics $1 $2  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: moleculardynamics $1 $2  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -13881,6 +15049,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: moleculardynamics $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 $1 ;
@@ -13979,6 +15148,10 @@ echo " " >> INCAR
 buildpotcar
 $VASP
 
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR
+fi
+
 isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
 if [ $isInFile -eq 0 ]; then
 ANERROROCCURED=true
@@ -14026,6 +15199,16 @@ phonondispersion () {
 secs=$SECONDS
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: phonondispersion $1 \"$2\"  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: phonondispersion $1 \"$2\"  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -14034,6 +15217,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: phonondispersion $1 \"$2\"  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 mkdir phonondispersion_${1}
@@ -14051,6 +15235,11 @@ echo "ISIF = 2" >> INCAR
 echo " " >> INCAR
 buildpotcar
 $VASP
+
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST DYNMAT QPOINTS INCAR REPORT defaultshiftsandratios XDATCAR KPOINTS CHGCAR poscardescription POSCAR CONTCAR DOSCAR vasprun.xml WAVECAR minipotcar POTCAR EIGENVAL PCDAT CHG IBZKPT
+fi
+
 
 NATOMS=`awk '/ions per / {print $5}' OUTCAR`
 NCELL=`grep -m1 "primitive cells build up your supercell" OUTCAR | awk '{print $1}'`
@@ -14077,7 +15266,22 @@ done
 echo $q ${f[*]} >> phonons.dat
 done
 
-cp phonons.dat phonons_${1}_${GGA}.dat
+rm temp.dat
+
+if [ -n "$METAGGA" ]; then
+cat > phonondispersion_gnup_${1}_${METAGGA} << EOF
+set title "$1 phonon dispersion relation ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set xlabel "$path"
+set ylabel "Frequency (THz)"
+unset key
+set term png
+set output "phonondispersion_${1}_${METAGGA}.png"
+p 'phonons.dat' u 1:2 w l, 'phonons.dat' u 1:3 w l, 'phonons.dat' u 1:4 w l, 'phonons.dat' u 1:5 w l, 'phonons.dat' u 1:6 w l, 'phonons.dat' u 1:7 w l
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT phonondispersion_gnup_${1}_${METAGGA}
+fi
+else
 cat > phonondispersion_gnup_${1}_${GGA} << EOF
 set title "$1 phonon dispersion relation ;  GGA = $GGA, POTCAR = $POTCAR"
 set xlabel "$path"
@@ -14085,10 +15289,11 @@ set ylabel "Frequency (THz)"
 unset key
 set term png
 set output "phonondispersion_${1}_${GGA}.png"
-p 'phonons_${1}_${GGA}.dat' u 1:2 w l, 'phonons_${1}_${GGA}.dat' u 1:3 w l, 'phonons_${1}_${GGA}.dat' u 1:4 w l, 'phonons_${1}_${GGA}.dat' u 1:5 w l, 'phonons_${1}_${GGA}.dat' u 1:6 w l, 'phonons_${1}_${GGA}.dat' u 1:7 w l
+p 'phonons.dat' u 1:2 w l, 'phonons.dat' u 1:3 w l, 'phonons.dat' u 1:4 w l, 'phonons.dat' u 1:5 w l, 'phonons.dat' u 1:6 w l, 'phonons.dat' u 1:7 w l
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT phonondispersion_gnup_${1}_${GGA}
+fi
 fi
 
 
@@ -14177,6 +15382,16 @@ mkdir relaxation_${1}
 cd relaxation_${1}
 
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: relaxation $1 $2  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: relaxation $1 $2  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
 echo " "
 echo " ###########################################################################################"
 echo " "
@@ -14185,6 +15400,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: relaxation $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 
 $1 ;
@@ -14264,6 +15480,36 @@ echo "POTIM = $POTIM" >> INCAR
 echo "ISIF = $ISIF" >> INCAR
 echo " " >> INCAR
 buildpotcar
+
+if [ "$RELREPETITIONS" = 0 ]; then
+$VASP
+
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR  XDATCAR
+fi
+
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
+
+cp CONTCAR CONTCAR_
+cp OUTCAR OUTCAR_
+else
+lwavebackup=$LWAVE
+lchargbackup=$LCHARG
+istartbackup=$ISTART
+ichargbackup=$ICHARG
+LWAVE=.TRUE.
+LCHARG=.TRUE.
+buildincar
+echo "#ionic relaxation:" >> INCAR
+echo "IBRION = $IBRION" >> INCAR
+echo "EDIFFG = $EDIFFG" >> INCAR
+echo "NSW = $NSW" >> INCAR
+echo "POTIM = $POTIM" >> INCAR
+echo "ISIF = $ISIF" >> INCAR
+echo " " >> INCAR
 $VASP
 
 isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
@@ -14271,11 +15517,65 @@ if [ $isInFile -eq 0 ]; then
 ANERROROCCURED=true
 fi
 
-arraynumberofions=($(grep 'number of ions' OUTCAR))
+ISTART=1
+ICHARG=0
+kjbnwkjtbnwkjtb=$(pwd)
+for qrgqek in $(seq 1 1 $RELREPETITIONS) ; do
+mkdir continuation_${qrgqek}
+cp KPOINTS continuation_${qrgqek}
+cp POTCAR continuation_${qrgqek}
+cp CONTCAR continuation_${qrgqek}/POSCAR
+cp WAVECAR continuation_${qrgqek}
+cp CHGCAR continuation_${qrgqek}
+cp CHG continuation_${qrgqek}
+cd continuation_${qrgqek}
+buildincar
+echo "#ionic relaxation:" >> INCAR
+echo "IBRION = $IBRION" >> INCAR
+echo "EDIFFG = $EDIFFG" >> INCAR
+echo "NSW = $NSW" >> INCAR
+echo "POTIM = $POTIM" >> INCAR
+echo "ISIF = $ISIF" >> INCAR
+echo " " >> INCAR
+$VASP
+
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
+
+cp CONTCAR $kjbnwkjtbnwkjtb/CONTCAR_
+cp OUTCAR $kjbnwkjtbnwkjtb/OUTCAR_
+done
+cd $kjbnwkjtbnwkjtb
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR  XDATCAR
+fi
+for qrgqek in $(seq 1 1 $RELREPETITIONS) ; do
+cd continuation_${qrgqek}
+if [ "$lwavebackup" = ".FALSE." ]; then
+rm WAVECAR
+fi
+if [ "$lchargbackup" = ".FALSE." ]; then
+rm CHGCAR CHG
+fi
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR  XDATCAR
+fi
+done
+cd $kjbnwkjtbnwkjtb
+LWAVE=$lwavebackup
+LCHARG=$lchargbackup
+ISTART=$istartbackup
+ICHARG=$ichargbackup
+fi
+
+
+arraynumberofions=($(grep 'number of ions' OUTCAR_))
 valuenumberofions=${arraynumberofions[11]}
 
-array2=($(grep 'free  en' OUTCAR | tail -1))
-array3=($(grep 'energy without entropy' OUTCAR | tail -1))
+array2=($(grep 'free  en' OUTCAR_ | tail -1))
+array3=($(grep 'energy without entropy' OUTCAR_ | tail -1))
 
 value2=${array2[4]}
 value3=${array3[4]}
@@ -14339,7 +15639,7 @@ relen=`echo $enbefrel - $mainene | bc -l`
 if [ "$STRUCTURE_TYPE" = crystal ]; then
 
 mkdir temp
-cat CONTCAR > temp/POSCAR
+cat CONTCAR_ > temp/POSCAR
 cd temp
 buildkpoints 1
 nelmbackup=$NELM
@@ -14383,6 +15683,7 @@ eval $name=$volume
 fi
 
 cd ..
+rm -rf temp
 
 if [ "$PRINTOUTPUT" = true ]; then
 if [ "$LATTICE_SYSTEM" = cubic ]; then
@@ -14460,26 +15761,163 @@ fi
 if [ "$STRUCTURE_TYPE" = surface ]; then
 
 
-cellhightt=($(sed -n '5p' < CONTCAR))
+name="VACUUM_SIZE_$1"
+vacuumsize=`echo ${!name}`
+
+if [ "$vacuumsize" = 0 ]; then
+
+mkdir temp
+cat CONTCAR_ > temp/POSCAR
+cd temp
+buildkpoints 1
+nelmbackup=$NELM
+NELM=1
+buildincar
+buildpotcar
+$VASP
+NELM=$nelmbackup
+
+arraylatticeconst=($(grep 'ALAT' OUTCAR | tail -1))
+latticeconstt=${arraylatticeconst[2]}
+latticeconst=`echo $latticeconstt / $SUPERCELL_FACTOR | bc -l`
+
+if [ "$LATTICE_SYSTEM" = cubic ]; then
+volume=`echo $latticeconst \* $latticeconst \* $latticeconst / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+fi
+
+if [ "$LATTICE_SYSTEM" = hexagonal ]; then
+arraycaratio=($(grep 'C/A-ratio' OUTCAR))
+valuecaratio=${arraycaratio[2]}
+if [ "$UPDATEVARIABLES" = true ]; then
+name="C_A_RATIO_$1"
+eval $name=$valuecaratio
+fi
+volume=`echo $latticeconst \* $latticeconst \* $latticeconst \* $valuecaratio \* 0.86602540378443864676372317075294 / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+fi
+
+if [ "$LATTICE_SYSTEM" = tetragonal ]; then
+arraycaratio=($(grep 'C/A-ratio' OUTCAR))
+valuecaratio=${arraycaratio[2]}
+if [ "$UPDATEVARIABLES" = true ]; then
+name="C_A_RATIO_$1"
+eval $name=$valuecaratio
+fi
+volume=`echo $latticeconst \* $latticeconst \* $latticeconst \* $valuecaratio / $ATOMS_PER_CONVENTIONAL_CELL | bc -l`
+fi
+
+if [ "$UPDATEVARIABLES" = true ]; then
+name="VOLUME_$1"
+eval $name=$volume
+fi
+
+cd ..
+rm -rf temp
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$LATTICE_SYSTEM" = cubic ]; then
+  echo " "
+  echo " energy minimum of $mainene eV per atom was reached at: "
+  echo " relaxation energy: $relen eV "
+  echo " volume per atom = " $volume " Anstrom^3 per atom "
+  echo " lattice constant a = " $latticeconst " Angstrom "
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENERGY_$1 and VOLUME_$1 have been updated accordingly "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " energy minimum of $mainene eV per atom was reached at: " >> $MAINDIR/output.txt
+  echo " relaxation energy: $relen eV " >> $MAINDIR/output.txt
+  echo " volume per atom = " $volume " Anstrom^3 per atom " >> $MAINDIR/output.txt
+  echo " lattice constant a = " $latticeconst " Angstrom " >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENERGY_$1 and VOLUME_$1 have been updated accordingly " >> $MAINDIR/output.txt
+fi
+fi
+if [ "$LATTICE_SYSTEM" = hexagonal ]; then
+  echo " "
+  echo " energy minimum of $mainene eV per atom was reached at: "
+  echo " relaxation energy: $relen eV "
+  echo " volume per atom = " $volume " Anstrom^3 per atom "
+  echo " lattice constant a = " $latticeconst " Angstrom "
+  hjbsugbr=`echo $valuecaratio \* $latticeconst | bc -l`
+  echo " lattice constant c = " $hjbsugbr " Angstrom "
+  echo " c/a-ratio = " $valuecaratio
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENERGY_$1 , VOLUME_$1 and C_A_RATIO_$1 have been updated accordingly "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " energy minimum of $mainene eV per atom was reached at: " >> $MAINDIR/output.txt
+  echo " relaxation energy: $relen eV " >> $MAINDIR/output.txt
+  echo " volume per atom = " $volume " Anstrom^3 per atom " >> $MAINDIR/output.txt
+  echo " lattice constant a = " $latticeconst " Angstrom " >> $MAINDIR/output.txt
+  hjbsugbr=`echo $valuecaratio \* $latticeconst | bc -l` >> $MAINDIR/output.txt
+  echo " lattice constant c = " $hjbsugbr " Angstrom " >> $MAINDIR/output.txt
+  echo " c/a-ratio = " $valuecaratio >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENERGY_$1 , VOLUME_$1 and C_A_RATIO_$1 have been updated accordingly " >> $MAINDIR/output.txt
+fi
+fi
+if [ "$LATTICE_SYSTEM" = tetragonal ]; then
+  echo " "
+  echo " energy minimum of $mainene eV per atom was reached at: "
+  echo " relaxation energy: $relen eV "
+  echo " volume per atom = " $volume " Anstrom^3 per atom "
+  echo " lattice constant a = " $latticeconst " Angstrom "
+  hjbsugbr=`echo $valuecaratio \* $latticeconst | bc -l`
+  echo " lattice constant c = " $hjbsugbr " Angstrom "
+  echo " c/a-ratio = " $valuecaratio
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENERGY_$1 , VOLUME_$1 and C_A_RATIO_$1 have been updated accordingly "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " energy minimum of $mainene eV per atom was reached at: " >> $MAINDIR/output.txt
+  echo " relaxation energy: $relen eV " >> $MAINDIR/output.txt
+  echo " volume per atom = " $volume " Anstrom^3 per atom " >> $MAINDIR/output.txt
+  echo " lattice constant a = " $latticeconst " Angstrom " >> $MAINDIR/output.txt
+  hjbsugbr=`echo $valuecaratio \* $latticeconst | bc -l` >> $MAINDIR/output.txt
+  echo " lattice constant c = " $hjbsugbr " Angstrom " >> $MAINDIR/output.txt
+  echo " c/a-ratio = " $valuecaratio >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENERGY_$1 , VOLUME_$1 and C_A_RATIO_$1 have been updated accordingly " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+else
+
+
+cellhightt=($(sed -n '5p' < CONTCAR_))
 cellhight=${cellhightt[2]}
 
 let num=1\*$SUPERCELL_FACTOR\*$SUPERCELL_FACTOR+9
-firstlayerr=($(sed -n "$num"'p' < CONTCAR))
+firstlayerr=($(sed -n "$num"'p' < CONTCAR_))
 firstlayer=${firstlayerr[2]}
+
+if [ $(echo "$firstlayer > 0.8" | bc) -eq 1 ]; then  # for when atom moves out of cell and vasp outputs it as on the other side of cell instead of outputing negative coordinates
+firstlayer=`echo $firstlayer - 1 | bc -l`
+fi
+
 firstlayer=`echo $firstlayer \* $cellhight | bc -l`
 
+
+
 let num=2\*$SUPERCELL_FACTOR\*$SUPERCELL_FACTOR+9
-secondlayerr=($(sed -n "$num"'p' < CONTCAR))
+secondlayerr=($(sed -n "$num"'p' < CONTCAR_))
 secondlayer=${secondlayerr[2]}
 secondlayer=`echo $secondlayer \* $cellhight | bc -l`
 
 let num=3\*$SUPERCELL_FACTOR\*$SUPERCELL_FACTOR+9
-thirdlayerr=($(sed -n "$num"'p' < CONTCAR))
+thirdlayerr=($(sed -n "$num"'p' < CONTCAR_))
 thirdlayer=${thirdlayerr[2]}
 thirdlayer=`echo $thirdlayer \* $cellhight | bc -l`
 
+let num=4\*$SUPERCELL_FACTOR\*$SUPERCELL_FACTOR+9
+fourthlayerr=($(sed -n "$num"'p' < CONTCAR_))
+fourthlayer=${fourthlayerr[2]}
+fourthlayer=`echo $fourthlayer \* $cellhight | bc -l`
+
 difffirstsecondlayer=`echo $secondlayer - $firstlayer | bc -l`
 diffsecondthirdlayer=`echo $thirdlayer - $secondlayer | bc -l`
+diffthirdfourthlayer=`echo $fourthlayer - $thirdlayer | bc -l`
 
 name="VACUUM_SIZE_$1"
 vacuumsize=`echo ${!name}`
@@ -14490,10 +15928,16 @@ numberoflayers=`echo ${!name}`
 bulklayerdistance=`echo $cellhight - $vacuumsize | bc -l`
 bulklayerdistance=`echo $bulklayerdistance / $numberoflayers | bc -l`
 
+
+relchangefirstsecondlayer=`echo 100 \* $difffirstsecondlayer / $bulklayerdistance - 100 | bc -l`
+relchangesecondthirdlayer=`echo 100 \* $diffsecondthirdlayer / $bulklayerdistance - 100 | bc -l`
+relchangethirdfourthlayer=`echo 100 \* $diffthirdfourthlayer / $bulklayerdistance - 100 | bc -l`
+
+
 layerhights=" "
 for ifv in $(seq 1 1 $NUMBER_OF_LAYERS) ; do
 let num=$ifv\*$SUPERCELL_FACTOR\*$SUPERCELL_FACTOR+9
-hightt=($(sed -n "$num"'p' < CONTCAR))
+hightt=($(sed -n "$num"'p' < CONTCAR_))
 hight=${hightt[2]}
 hight=`echo $hight \* $cellhight | bc -l`
 layerhights=$layerhights" "$hight
@@ -14510,7 +15954,11 @@ if [ "$PRINTOUTPUT" = true ]; then
   echo " relaxation energy: $relen eV "
   echo " difference between first & second layer: " $difffirstsecondlayer " Angstrom"
   echo " difference between second & third layer: " $diffsecondthirdlayer " Angstrom"
+  echo " difference between third & fourth layer: " $diffthirdfourthlayer " Angstrom"
   echo " for reference, layer distance in bulk structure: " $bulklayerdistance " Angstrom"
+  echo " relative change in first & second layer distance: " $relchangefirstsecondlayer " %"
+  echo " relative change in second & third layer distance: " $relchangesecondthirdlayer " %"
+  echo " relative change in third & fourth layer distance: " $relchangethirdfourthlayer " %"
 if [ "$UPDATEVARIABLES" = true ]; then
   echo " ENERGY_$1 and LAYER_HIGHTS_$1 has been updated accordingly. "
 fi
@@ -14519,7 +15967,11 @@ fi
   echo " relaxation energy: $relen eV " >> $MAINDIR/output.txt
   echo " difference between first & second layer: " $difffirstsecondlayer " Angstrom" >> $MAINDIR/output.txt
   echo " difference between second & third layer: " $diffsecondthirdlayer " Angstrom" >> $MAINDIR/output.txt
+  echo " difference between third & fourth layer: " $diffthirdfourthlayer " Angstrom" >> $MAINDIR/output.txt
   echo " for reference, layer distance in bulk structure: " $bulklayerdistance " Angstrom" >> $MAINDIR/output.txt
+  echo " relative change in first & second layer distance: " $relchangefirstsecondlayer " %" >> $MAINDIR/output.txt
+  echo " relative change in second & third layer distance: " $relchangesecondthirdlayer " %" >> $MAINDIR/output.txt
+  echo " relative change in third & fourth layer distance: " $relchangethirdfourthlayer " %" >> $MAINDIR/output.txt
 if [ "$UPDATEVARIABLES" = true ]; then
   echo " ENERGY_$1 and LAYER_HIGHTS_$1 has been updated accordingly. " >> $MAINDIR/output.txt
 fi
@@ -14528,12 +15980,12 @@ fi
 if [ "$2" = addadsorbate ]; then
 
 let num=$NUMBER_OF_LAYERS\*$SUPERCELL_FACTOR\*$SUPERCELL_FACTOR+9
-hightlastt=($(sed -n "$num"'p' < CONTCAR))
+hightlastt=($(sed -n "$num"'p' < CONTCAR_))
 hightlast=${hightlastt[2]}
 hightlast=`echo $hightlast \* $cellhight | bc -l`
 
 let num=$NUMBER_OF_LAYERS\*$SUPERCELL_FACTOR\*$SUPERCELL_FACTOR+9+1
-hightmoll=($(sed -n "$num"'p' < CONTCAR))
+hightmoll=($(sed -n "$num"'p' < CONTCAR_))
 hightmol=${hightmoll[2]}
 hightmol=`echo $hightmol \* $cellhight | bc -l`
 
@@ -14557,6 +16009,11 @@ fi
 fi
 
 
+
+fi
+
+
+
 if [ "$STRUCTURE_TYPE" = molecule ]; then
 
 
@@ -14570,7 +16027,7 @@ fi
 for ifv in $(seq 1 1 $ATOMS_PER_SUBCELL) ; do
 
 let num=$ifv+8
-positionss=($(sed -n "$num"'p' < CONTCAR))
+positionss=($(sed -n "$num"'p' < CONTCAR_))
 position1=${positionss[0]}
 position2=${positionss[1]}
 position3=${positionss[2]}
@@ -14629,6 +16086,9 @@ ANERROROCCURED=false
 fi
 fi
 
+rm CONTCAR_
+rm OUTCAR_
+
 VARIABLEFORCONVERGENCE=$volume
 
 cd ..
@@ -14668,9 +16128,20 @@ NELM = $NELM
 EDIFF = $EDIFF
 #NBANDS = $NBANDS
 
-GGA = $GGA
 LASPH = $LASPH
 EOF
+
+if [ -n "$METAGGA" ]; then
+cat >> INCAR << EOF
+
+METAGGA = $METAGGA
+EOF
+else
+cat >> INCAR << EOF
+
+GGA = $GGA
+EOF
+fi
 
 if [ "$ALGO" = RPAR ]; then
 cat >> INCAR << EOF
@@ -14815,7 +16286,11 @@ vacusizzze=`echo ${!name}`
 if [ "$vacusizzze" = 0 ]; then
 name="NUMBER_OF_LAYERS_$1"
 nulayyyers=`echo ${!name}`
+if [ "$nulayyyers" = $ATOMS_PER_SUBCELL ]; then
+let zkpts=$kpts
+else
 let zkpts=1+$kpts*$SUPERCELL_FACTOR/$nulayyyers
+fi
 cat >> KPOINTS << EOF
 $kpts $kpts $zkpts
 0 0 0
@@ -15350,6 +16825,7 @@ cat graph.dat
 cat graph.dat >> $MAINDIR/output.txt
 fi
 
+rm graph.dat
 rm graph.datt
 
 }
@@ -15529,6 +17005,7 @@ cat graph.dat
 cat graph.dat >> $MAINDIR/output.txt
 fi
 
+rm graph.dat
 rm graph.datt
 
 }
@@ -15676,6 +17153,7 @@ cat graph.dat
 cat graph.dat >> $MAINDIR/output.txt
 fi
 
+rm graph.dat
 rm graph.datt
 
 
@@ -15774,8 +17252,15 @@ setdefaults () {
 
 UPDATEVARIABLES=true
 PRINTOUTPUT=true
+RMFILES=false
+
 
 MAINENE=1
+
+RELREPETITIONS=1
+
+RECALCBULK=true
+RECALCSURFACE=true
 
 setincardefaults  2>&-
 setkpointsdefaults  2>&-
@@ -15862,10 +17347,11 @@ NWRITE=2
 ENCUT=400
 ALGO="Normal"
 NELM=100
-EDIFF="1E-05"
+EDIFF="1E-06"
 NBANDS=48
 
 GGA="PE"
+METAGGA=""
 LASPH=".TRUE."
 
 NOMEGA=12
@@ -15899,7 +17385,7 @@ EMIN=
 
 #defaults for MD:
 TEBEG=100
-TEEND=1000
+TEEND=700
 
 #defaults for thermostat & ensembles:
 MDALGO=3
@@ -15909,7 +17395,7 @@ LANGEVIN_GAMMA_L="1*5.0"
 #defaults for machine learned force fields:
 ML_LMLFF=".TRUE."
 ML_ISTART=0
-ML_RCUT1=5.0
+ML_RCUT1=8.0
 ML_RCUT2=5.0
 
 
@@ -15968,13 +17454,13 @@ str="${str##*/}"
 name="VOLUME_$str"
 eval $name=15
 
-mkdir temppp
-cd temppp
-$str
-source defaultshiftsandratios
-defaultshiftsandratios
-cd ..
-rm -r temppp
+#mkdir temppp
+#cd temppp
+#$str
+#source defaultshiftsandratios
+#defaultshiftsandratios
+#cd ..
+#rm -r temppp
 
 done
 
@@ -15988,13 +17474,13 @@ eval $name=15
 name="SUPERCELL_FACTOR_$str"
 eval $name=2
 
-mkdir temppp
-cd temppp
-$str
-source defaultshiftsandratios
-defaultshiftsandratios
-cd ..
-rm -r temppp
+#mkdir temppp
+#cd temppp
+#$str
+#source defaultshiftsandratios
+#defaultshiftsandratios
+#cd ..
+#rm -r temppp
 
 done
 
@@ -16017,13 +17503,13 @@ eval $name=2
 name="LAYER_HIGHTS_$str"
 eval $name=defaulthights
 
-mkdir temppp
-cd temppp
-$str
-source defaultshiftsandratios
-defaultshiftsandratios
-cd ..
-rm -r temppp
+#mkdir temppp
+#cd temppp
+#$str
+#source defaultshiftsandratios
+#defaultshiftsandratios
+#cd ..
+#rm -r temppp
 
 done
 
@@ -16049,27 +17535,27 @@ eval $name=2
 name="LAYER_HIGHTS_$str"
 eval $name=defaulthights
 
-mkdir temppp
-cd temppp
-$str
-source defaultshiftsandratios
-defaultshiftsandratios
-cd ..
-rm -r temppp
+#mkdir temppp
+#cd temppp
+#$str
+#source defaultshiftsandratios
+#defaultshiftsandratios
+#cd ..
+#rm -r temppp
 
 done
 
 
 for str in $allmolecules ; do
 
-str="${str##*/}"
-mkdir temppp
-cd temppp
-$str
-source defaultatomicpositions
-defaultatomicpositions
-cd ..
-rm -r temppp
+#str="${str##*/}"
+#mkdir temppp
+#cd temppp
+#$str
+#source defaultatomicpositions
+#defaultatomicpositions
+#cd ..
+#rm -r temppp
 
 name="MOLECULE_CELL_SIZE_$str"
 eval $name=10
@@ -16263,6 +17749,7 @@ ALGO=$ALGO
 NELM=$NELM
 EDIFF=$EDIFF
 GGA=$GGA
+METAGGA=$METAGGA
 LASPH=$LASPH
 NOMEGA=$NOMEGA
 ISMEAR=$ISMEAR

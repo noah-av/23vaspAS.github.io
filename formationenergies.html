@@ -184,7 +184,18 @@ table, th, td {
 
 <p><b>$structure</b> refers to the base structure (preferably a supercell) while <b>$modification_n</b> refers to additional moddifications to be added to the base structure (in this case addvacancy ... (see <a href="crystals.html">crystals</a>)).</p>
 
-<p>This function uses the function "relaxation" to relax the crystal with its vacancies. So keep in mind that the following tags will be used in addition to the ones found in <a href="tags.html">Tags / Variables</a>: (So for instance, don't forget to set ISIF=2)</p>
+<p>This function uses the function "relaxation" to relax the crystal with its vacancies.</p> 
+
+<p>Then, depending on how the variable <b>$RECALCBULK</b> (- Default = true) is set, it will procede by either:</p>
+
+<ul>
+<li>Calculate the energy per atom and volume per atom in the perfect crystal through the function "relaxation" (RECALCBULK = true).</li>
+<li>Or: read the energy per atom and volume per atom in the perfect crystal from the variable <b>$ENERGY_$bulkstructure</b> where $bulkstructure refers to the corresponding primitive bulk crystal. (RECALCBULK = false)</li>
+</ul>
+
+<p>Lastly, the results are used to calculate the vacancy formation energy.</p>
+
+<p>Keep in mind that the following tags will be used in addition to the ones found in <a href="tags.html">Tags / Variables</a>:</p>
 
 <ul>
 <li><b>IBRION</b> - Default = 2</li>
@@ -204,9 +215,25 @@ table, th, td {
 
 <p><b>$structure</b> refers to the structure (surface).</p>
 
-<p>It will first calculate the energy in the bulk crystal by removing the vacuum and adapting the number of layers to the closest acceptable value. Then it will procede by calculating the energy in the surface. Lastly, the results are used to calculate the surface energy.</p>
+<p>Depending on how the variable <b>$RECALCSURFACE</b> (- Default = true) is set, this function will either:
 
-<p>This function uses the function "relaxation" to relax the surface (not the bulk structure!). So keep in mind that the following tags will be used in addition to the ones found in <a href="tags.html">Tags / Variables</a>: (So for instance, don't forget to set ISIF=2)</p>
+<ul>
+<li>Calculating the energy per atom in the surface through the function "relaxation". (RECALCSURFACE = true </li>
+<li>Or: read the energy per atom in the surface from the variable <b>$ENERGY_$structure</b>. (RECALCSURFACE = false)</li>
+</ul>
+
+<p>Then, depending on how the variable <b>$RECALCBULK</b> (- Default = true) is set, it will procede by either:</p>
+
+<ul>
+<li>Calculate the energy per atom in the bulk crystal through the function "electronicmin" by removing the vacuum and adapting the number of layers and kpoints in z-direction to the closest acceptable value (RECALCBULK = true).</li>
+<li>Or: read the energy per atom in the bulk crystal from the variable <b>$ENERGY_$bulkstructure</b> where $bulkstructure refers to the corresponding primitive bulk crystal. (RECALCBULK = false)</li>
+</ul>
+
+<p>Lastly, the results are used to calculate the surface energy.</p>
+
+<p>We recomend using RECALCBULK=false. To calculate the reference bulk energy we recomend to run relaxation $structure while setting VACUUM_SIZE_$structure = 0 and NUMBER_OF_LAYERS_$structure = number of atoms per building cell. Then copy the value of the resulting bulk energy into the correct variable: ENERGY_$bulkstructure=$ENERGY_$structure. This procedure implements the optimal KPOINTS setting to calculate the surface energy (see <a href="tags.html">KPOINTS_$structure</a>). Another pro-tip: also set the volume per atom for the surface through a relaxation or EOS-fit on the same surface structure with VACUUM_SIZE_$structure = 0 and NUMBER_OF_LAYERS_$structure = number of atoms per building cell. These functions treat such surface cells as regular bulk crystals (see <a href="surfaces.html">surfaces</a>).</p>
+
+<p>If RECALCSURF=true, the function "relaxation" is used to relax the surface (not the bulk structure!). So keep in mind that the following tags will be used in addition to the ones found in <a href="tags.html">Tags / Variables</a>: (So for instance, don't forget to set ISIF=2)</p>
 
 <ul>
 <li><b>IBRION</b> - Default = 2</li>
@@ -215,6 +242,9 @@ table, th, td {
 <li><b>POTIM</b> - Default = 0.5</li>
 <li><b>ISIF</b> - Default = 3</li>
 </ul>
+
+<p>It is recomended to set RECALCBULK=false whenever doing kpoints- or number-of-layers- convergence tests where the surface energy is used as the convergence parameter. The automatically chosen number of kpoints in z-direction for the bulk calculations can be rather discontinuous when the number of layers is large enough.</p>
+<p>Be sure to only use RECALCSURF=false when you know that the values stored in the variables $NUMBER_OF_LAYERS_$structure, $VACUUM_SIZE_$structure, etc. are same ones as when you calculated the energy of the surface previously.</p>
 
 <hr>
 

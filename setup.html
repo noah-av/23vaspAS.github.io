@@ -193,9 +193,10 @@ table, th, td {
 <p>Example for a simple input file:</p>
 
 <code>
+MAINDIR=$(pwd)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # allways has to be specified!!!<br>
 VASP="mpirun -np 8 vasp"&nbsp;   # allways has to be specified!!!<br>
 GNUPLOT="gnuplot"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     # useful if specified - automatically excecutes gnuplot input files and stores plots (here the DOS) in .png format<br>
-MAINDIR=$(pwd)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # allways has to be specified!!!<br>
+<br>
 POTCAR="Si"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# use the Si POTCAR # allways has to be specified!!!<br>
 setdefaults&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# set all tags related to POSCARs, INCARs, and KPOINTSs to their default values<br>
 <br>

@@ -191,35 +191,50 @@ table, th, td {
 
 <p><b>$structure</b> refers to the name of the surface structure in question. These names are made up of the <a href="crystals_list.html">name</a> of the crystal and a suffix that contains the Miller indices to denote the direction of the surface. Typing $structure (after sourcing 23vaspAS) builds its POSCAR so you can easily inspect it.</p> 
 
+<p>Note that if you set VACUUM_SIZE_$structure = 0 and NUMBER_OF_LAYERS_$structure = number of atoms per building cell, most 23vaspAS functions will treat those surface cells as regular bulk crystals (most 23vaspAS functions adapt their proceses and output on the type of structure in question).</p>
+
 <p>Currently available surfaces (as of v.0.1.0):</p>
 
 <table>
 <tr style="background-color: RosyBrown;">
   <th style="width:150px">Name <br> </th>
+  <th style="width:150px">Atoms per <br> building cell </th>
 </tr>
 <tr>
   <th>bcc_100</th>
+  <th>2</th>
 </tr>
 <tr>
   <th>bcc_110</th>
+  <th>2</th>
 </tr>
 <tr>
   <th>bcc_111</th>
+  <th>3</th>
 </tr>
 <tr>
   <th>fcc_100</th>
+  <th>2</th>
 </tr>
 <tr>
   <th>fcc_110</th>
+  <th>2</th>
 </tr>
 <tr>
   <th>fcc_111</th>
+  <th>3</th>
 </tr>
 <tr>
   <th>hcp_001</th>
+  <th>2</th>
 </tr>
 <tr>
   <th>hcp_100</th>
+  <th>4</th>
+</tr>
+<tr>
+  <th>diamond_100</th>
+  <th>4</th>
 </tr>
 </table>
 

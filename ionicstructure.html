@@ -196,6 +196,8 @@ table, th, td {
 
 <p>(*) Notice how these defaults do not allways reflect the defaults as they are found in the VASP wiki.</p>
 
+<p>You can also set the variable <b>RELREPETITIONS</b> (integer). It specifies how often relaxation should be repeated on sequential CONTCARs. - Default = 1 (one repetition)</p>
+
 <p>At the end, if UPDATEVARIABLES=true, the values stored in structural variables (like VOLUME_$structure, C_A_RATIO_$structure, LAYER_HIGHTS_$structure, etc.) will be updated.</p>
 
 <hr>
@@ -206,7 +208,7 @@ table, th, td {
 
 <p><b>phonondispersion $structure $highsymmetrypath</b></p>
 
-<p><b>$structure</b> refers to the structure while <b>$highsymmetrypath</b> refers to a string containing the high symmetry points (gamma is refered to as G, a comma "," refers to a jump). If $highsymmetrypaths = "defaultpath" a default path that depends on the Bravais lattice is chosen. The default paths are as follows:</p>
+<p><b>$structure</b> refers to the structure while <b>$highsymmetrypath</b> refers to a string containing the high symmetry points (gamma is refered to as G, a comma "," indicates a jump). If $highsymmetrypaths = "defaultpath" a default path that depends on the Bravais lattice is chosen. The default paths are as follows:</p>
 
 <ul>
 <li>FCC -> "G X U , K G L W X"</li>
@@ -224,6 +226,8 @@ table, th, td {
 <li>POTIM = 0.015</li>
 <li>ISIF = 2</li>
 </ul>
+
+<p>Dont forget to also set EDIFF to a reasonably low value: EDIFF=1E-08</p>
 
 <p>A gnuplot input file will also be prepared automatically: phonondispersion_gnup_$structure_$GGA</p>
 

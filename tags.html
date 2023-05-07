@@ -176,11 +176,12 @@ table, th, td {
 
 <hr>
 
-<p>The function <b>setdefaults</b> will set all tags associated with the construction of POSCAR, KPOINTS, and INCAR files to their default values. It will also set PRINTOUTPUT=true and UPDATEVARIABLES=true.</p>
+<p>The function <b>setdefaults</b> will set all tags associated with the construction of POSCAR, KPOINTS, and INCAR files as well as all 23vaspAS function-specific tags to their default values. It will also set PRINTOUTPUT=true, UPDATEVARIABLES=true and RMFILES=false.</p>
 
 <ul>
 <li><b>PRINTOUTPUT</b> specifies wether the output of 23vaspAS functions shall be written to output.txt or not (true/false).</li>
 <li><b>UPDATEVARIABLES</b> specifies wether variables shall be updated automatically by 23vaspAS functions or not (true/false).</li>
+<li><b>RMFILES</b> specifies wether irrelevant files (i.e. everything except OUTCAR, OSZICAR, and other calculation specific output files - CONTCAR for relaxation, XDATCAR for moleculardynamics, etc.) shall be automatically deleted after running $VASP or not (true/false).</li>
 </ul>
 
 <p>Similarly, the functions <b>setstructuraldefaults</b>, <b>setkpointsdefaults</b>, and <b>setincardefaults</b> will set all tags associated with the construction of POSCAR, KPOINTS, and INCAR files to their default values respectively.</p>
@@ -205,7 +206,7 @@ table, th, td {
 <p>Only two variables are associated with the construction of KPOINTS files:</p>
 
 <ul>
-<li><b>KPOINTS_$structure</b> (integer) sets the number of kpoints for the structure by the name of $structure. Let the value stored in KPOINTS_$structure be equal to n. If $structure is a crystal, then an n x n x n kpoint mesh will be used. If $structure is a surface, then an n x n x 1 kpoint mesh will be used. If $sturucture is a molecule, then a 1 x 1 x 1 kpoint mesh will be used regardless of what is stored in KPOINTS_$structure. <br> <b>Default = 6</b> if $structure is a supercell (prefix "sup_") but <b>= 12</b> otherwise.</li>
+<li><b>KPOINTS_$structure</b> (integer) sets the number of kpoints for the structure by the name of $structure. Let the value stored in KPOINTS_$structure be equal to n. If $structure is a crystal, then an n x n x n kpoint mesh will be used. If $structure is a surface, then an n x n x 1 kpoint mesh will be used. If $sturucture is a molecule, then a 1 x 1 x 1 kpoint mesh will be used regardless of what is stored in KPOINTS_$structure. <br> <b>Default = 6</b> if $structure is a supercell (prefix "sup_") but <b>= 12</b> otherwise.<br><br>Note that for convenience an exception is made on surfaces if VACUUM_SIZE_$structure = 0 and NUMBER_OF_LAYERS_$structure = number of atoms per building cell. If these conditions are met, a n x n x n kpoint mesh will be constructed just like in a bulk crystal structure. This is intended to simplify reference bulk energy calculations for surface energies (see <a href="formationenergies.html">surfaceenergy</a>).</li>
 <br>
 <li><b>KGAMMA</b> on the other hand is used to specify whether a Gamma centered mesh (KGAMMA=.TRUE.) or a Monkhorst pack mesh (KGAMMA=.FALSE.) shall be used. <br> <b>Default = .TRUE.</b></li>
 </ul>
@@ -262,7 +263,7 @@ table, th, td {
 <li><b>ENCUT</b> - Default = 400 (*)</li>
 <li><b>ALGO</b> - Default = "Normal"</li>
 <li><b>NELM</b> - Default = 100 (*)</li>
-<li><b>EDIFF</b> - Default = 0.00001 (*)</li>
+<li><b>EDIFF</b> - Default = 1E-06 (*)</li>
 <br>
 <li><b>NOMEGA</b> - Default = 12 (If ALGO=RPAR)</li>
 <br>
@@ -291,6 +292,19 @@ table, th, td {
 <ul>
 <li><b>MAINENE</b> (integer) specifies which energy is to be stored in the variable ENERGY_$structure. MAINENE=1 means "free  energy" is used, MAINENE=2 means "energy without entropy" is used, and MAINENE=3 means "energy(sigma->0)" is used. - <b>Default = 1</b> </li>
 </ul>
+
+<hr>
+
+<p>Function-specific tags:</p>
+
+<ul>
+<li><b>RELREPETITIONS</b> (integer) - Default = 1.  See <a href="ionicstructure.html">relaxation</a> for more info.</li>
+<li><b>RECALCBULK</b> (true/false) - Default = true. See <a href="formationenergies.html">formation energies</a> for more info.</li>
+<li><b>RECALCSURFACE</b> (true/false) - Default = true. See <a href="formationenergies.html">formation energies</a> for more info.</li>
+</ul>
+
+
+
 
 <hr>
 
