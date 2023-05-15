@@ -227,7 +227,7 @@ table, th, td {
 <li>ISIF = 2</li>
 </ul>
 
-<p>Dont forget to also set EDIFF to a reasonably low value: EDIFF=1E-08</p>
+<p>Dont forget to use supercells. Also set EDIFF to a reasonably low value: EDIFF=1E-08. Also PREC=Accurate is recomended.</p>
 
 <p>A gnuplot input file will also be prepared automatically: phonondispersion_gnup_$structure_$GGA</p>
 
@@ -252,11 +252,77 @@ table, th, td {
 
 <hr>
 
-<h2>Molecular Dynamics & MLFF:</h2>
+<h2>Training Machine Learned Force Fields (MLFFs):</h2>
 
-<p>Coming soon ...</p>
+<p>Train a force field on-the-fly in an MD simulation:</p>
+
+<p><b>trainmlff $name1 $name2 $structure $modification_1 $modification_2</b></p>
+
+<p><b>$name2</b> (string, no spaces) is an arbitrary name you assign to the output training data (ML_ABN, ML_FFN). <b>$name1</b> (string, no spaces) on the other hand has to be set to "new" if training is started from scratch. Otherwise it refers to the assigned name of the input training data (ML_ABN file) on which training should be continued. <b>$structure</b> refers to the structure on which the MD simulation should be performed on. <b>$modification_n</b> refers to optional modifications that should be added to the base structure. (like addvacancy, addsubstitution, addadsorbate, etc. (see <a href="crystals.html">crystals</a>, <a href="surfaces.html">surfaces</a>)).</p>
+
+<p>Note that the output training data (ML_ABN, ML_FFN) will be stored in $MAINDIR/mlffs/$name2.</p>
+
+<p>Besides the ones found in <a href="tags.html">Tags / Variables</a>, the following INCAR tags will also be added to the INCAR file. You can also modify these as any other variable:</p>
+
+<ul>
+<li><b>TEBEG</b> - Default = 100 (*)</li>
+<li><b>TEEND</b> - Default = 500 (*)</li>
+<li><b>NSW</b> - Default = 100 (*) # Be sure to allways reset this one - 100 way too low for MLFF training!!!</li>
+<li><b>POTIM</b> - Default = 0.5 (*) # Try to increase this one (2.0 is often a good choice).</li>
+</ul>
+
+<ul>
+<li><b>ISIF</b> - Default = 3 (*) # isobaric-isothermal NpT, Langevin thermostat</li>
+<li><b>MDALGO</b> - Default = 3 (*)</li>
+<li><b>LANGEVIN_GAMMA</b> - Default = "1*5.0" (*)</li>
+<li><b>LANGEVIN_GAMMA_L</b> - Default = "1*5.0" (*)</li>
+</ul>
+
+<ul>
+<li><b>ML_CTIFOR</b> - Default = 0.002</li>
+<li><b>ML_ICRITERIA</b> - Default = 1</li>
+<li><b>ML_MB</b> - Default = 5000 (*)</li>
+<li><b>ML_MCONF</b> - Default = 5000 (*)</li>
+<li><b>ML_RCUT1</b> - Default = 8.0 (*)</li>
+<li><b>ML_RCUT2</b> - Default = 5.0 (*)</li>
+</ul>
+
+<p>These tags on the other hand will also be added but cannot be modified:
+
+<ul>
+<li>IBRION = 0</li>
+<li>ML_LMLFF = .TRUE.</li>
+<li>ML_ISTART = 0 if $name1="new", 1 otherwise</li>
+</ul>
+
+<p>ISYM will also be turned off automatically.</p>
+
+<p>(*) Notice how these defaults do not allways reflect the defaults as they are found in the VASP wiki.</p>
+
+<p>If the variable ADDASYMMETRY (true/false) is set to true (Default = true), a tiny asymetry will be added to the last atom in the POSCAR. This often facilitates sarting new training runs.</p>
+
+<p>Three gnuplot input files will also be prepared automatically: mlff_forceerrors_gnup_$structure_$name2_$GGA, mlff_energyerrors_gnup_$structure_$name2_$GGA, mlff_stresserrors_gnup_$structure_$name2_$GGA.</p>
+
 
 <hr>
+
+<h2>Applying Machine Learned Force Fields (MLFFs):</h2>
+
+<p>Apply a machine learned force field that has been trained using the trainmlff function to an arbitrary task:</p>
+
+<p><b>applymlff $name $task</b></p>
+
+<p>The force field that shall be used is specified by <b>$name</b>, which refers to the name assigned to it while training. <b>$task</b> refers to any 23vaspAS task that shall be performed using said force field (for example phonondispersion sup_fcc defaultpath).</p>
+
+<p>This function will copy the relevant ML_FF file and add the following tags to INCAR files:</p>
+
+<ul>
+<li>ML_LMLFF = .TRUE.</li>
+<li>ML_ISTART = 2</li>
+</ul>
+
+<hr>
+
 
 <h2>Energy-Volume Curves:</h2>
 

@@ -260,13 +260,14 @@ table, th, td {
 <li><b>LCHARG</b> - Default = ".FALSE." (*)</li>
 <li><b>NWRITE</b> - Default = 2</li>
 <br>
-<li><b>ENCUT</b> - Default = 400 (*)</li>
 <li><b>ALGO</b> - Default = "Normal"</li>
+<li><b>PREC</b> - Default = "Normal"</li>
 <li><b>NELM</b> - Default = 100 (*)</li>
 <li><b>EDIFF</b> - Default = 1E-06 (*)</li>
 <br>
 <li><b>NOMEGA</b> - Default = 12 (If ALGO=RPAR)</li>
 <br>
+<li><b>ENCUT</b> - Default = 400 (*)</li>
 <li><b>ISMEAR</b> - Default = 1</li>
 <li><b>SIGMA</b> - Default = 0.2</li>
 <li><b>ISYM</b> - Default = 2</li>
@@ -287,6 +288,15 @@ table, th, td {
 
 <hr>
 
+<p>One last input-related variable: If needed, it can be used to specify additional input files that should be considered in every calculation. Just specify the files location and the file in question will be coppied (can also be multiple files).</p>
+
+<ul>
+<li><b>OTHERINPUTFILES</b> - Default = ""</li>
+</ul>
+
+
+<hr>
+
 <p>Besides the input-realted variables listed above, there are also output-related variables that are mainly used to store calculated results:</p>
 
 <ul>
@@ -301,6 +311,7 @@ table, th, td {
 <li><b>RELREPETITIONS</b> (integer) - Default = 1.  See <a href="ionicstructure.html">relaxation</a> for more info.</li>
 <li><b>RECALCBULK</b> (true/false) - Default = true. See <a href="formationenergies.html">formation energies</a> for more info.</li>
 <li><b>RECALCSURFACE</b> (true/false) - Default = true. See <a href="formationenergies.html">formation energies</a> for more info.</li>
+<li><b>ADDASYMMETRY</b></li>
 </ul>
 
 

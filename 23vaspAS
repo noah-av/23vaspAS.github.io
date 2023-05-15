@@ -6,7 +6,7 @@
 ########################################################################################### 
  
  
-allcrystals="alphaquartz anatase aucu bcc bcc_c bct betaquartz betatin cdi2 cristobalite cscl cuprite dhcp diamond diamond_c fcc fcc_c fluorite graphite hcp molybdenite nacl nickeline pyrite rutile sc tridymite wurtzite x2o3 x2o5 xo3 zincblende"
+allcrystals="alphaquartz anatase aucu bcc bcc_c bct betaquartz betatin cdi2 cristobalite cscl cubiclaves cuprite dhcp diamond diamond_c fcc fcc_c fluorite graphite hcp hexagonallaves molybdenite nacl nickeline pyrite rutile sc tridymite wurtzite x2o3 x2o5 xo3 zincblende"
 allcrystals_supercells="sup_alphaquartz sup_anatase sup_aucu sup_bcc sup_bcc_c sup_bct sup_betaquartz sup_betatin sup_cdi2 sup_cristobalite sup_cscl sup_cubiclaves sup_cuprite sup_dhcp sup_diamond sup_diamond_c sup_fcc sup_fcc_c sup_fluorite sup_graphite sup_hcp sup_hexagonallaves sup_molybdenite sup_nacl sup_nickeline sup_pyrite sup_rutile sup_sc sup_tridymite sup_wurtzite sup_x2o3 sup_x2o5 sup_xo3 sup_zincblende"
 allsurfaces="bcc_100 bcc_110 bcc_111 diamond_100 fcc_100 fcc_110 fcc_111 hcp_001 hcp_100"
 allsurfaces_supercells="sup_bcc_100 sup_bcc_110 sup_bcc_111 sup_diamond_100 sup_fcc_100 sup_fcc_110 sup_fcc_111 sup_hcp_001 sup_hcp_100"
@@ -1306,6 +1306,122 @@ fi
 ########################################################################################### 
  
  
+cubiclaves () {
+
+cat > poscardescription << EOF
+poscardescription () {
+
+THISISSUPERCELL=false
+SUPERCELL_FACTOR=1
+
+STRUCTURE_TYPE=crystal
+LATTICE_SYSTEM=cubic
+BRAVAIS_LATTICE=F
+
+ATOMS_PER_CONVENTIONAL_CELL=24
+ATOMS_PER_SUBCELL=6
+
+NUMBER_OF_SHIFTS=0
+
+NUMBER_OF_ELEMENTS=2
+NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT="2 4"
+
+}
+EOF
+
+source poscardescription
+poscardescription
+
+cat > defaultshiftsandratios << EOF
+defaultshiftsandratios () {
+
+x=x
+
+}
+EOF
+
+v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_cubiclaves \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
+
+array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
+natoms1=${array[0]}
+natoms2=${array[1]}
+
+natoms1=`echo $natoms1 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
+natoms2=`echo $natoms2 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
+
+cat > POSCAR << EOF
+cubiclaves crystal $SUPERCELL_FACTOR
+-$v
+0.0 0.5 0.5
+0.5 0.0 0.5
+0.5 0.5 0.0
+$POTCAR
+$natoms1 $natoms2
+Direct
+EOF
+
+d=`echo 1.0 / $SUPERCELL_FACTOR | bc -l`
+
+for nx in $(seq 1 1 $SUPERCELL_FACTOR); do
+for ny in $(seq 1 1 $SUPERCELL_FACTOR); do
+for nz in $(seq 1 1 $SUPERCELL_FACTOR); do
+x1=`echo $d \* $nx - $d + $d \* 0.125 | bc -l`
+y1=`echo $d \* $ny - $d + $d \* 0.125 | bc -l`
+z1=`echo $d \* $nz - $d + $d \* 0.125 | bc -l`
+x2=`echo $d \* $nx - $d + $d \* 0.875 | bc -l`
+y2=`echo $d \* $ny - $d + $d \* 0.875 | bc -l`
+z2=`echo $d \* $nz - $d + $d \* 0.875 | bc -l`
+echo $x1 " " $y1 " " $z1 >> POSCAR
+echo $x2 " " $y2 " " $z2 >> POSCAR
+done
+done
+done
+for nx in $(seq 1 1 $SUPERCELL_FACTOR); do
+for ny in $(seq 1 1 $SUPERCELL_FACTOR); do
+for nz in $(seq 1 1 $SUPERCELL_FACTOR); do
+x3=`echo $d \* $nx - $d + $d \* 0.5 | bc -l`
+y3=`echo $d \* $ny - $d + $d \* 0.5 | bc -l`
+z3=`echo $d \* $nz - $d + $d \* 0.5 | bc -l`
+x4=`echo $d \* $nx - $d + $d \* 0.0 | bc -l`
+y4=`echo $d \* $ny - $d + $d \* 0.5 | bc -l`
+z4=`echo $d \* $nz - $d + $d \* 0.5 | bc -l`
+x5=`echo $d \* $nx - $d + $d \* 0.5 | bc -l`
+y5=`echo $d \* $ny - $d + $d \* 0.0 | bc -l`
+z5=`echo $d \* $nz - $d + $d \* 0.5 | bc -l`
+x6=`echo $d \* $nx - $d + $d \* 0.5 | bc -l`
+y6=`echo $d \* $ny - $d + $d \* 0.5 | bc -l`
+z6=`echo $d \* $nz - $d + $d \* 0.0 | bc -l`
+echo $x3 " " $y3 " " $z3 >> POSCAR
+echo $x4 " " $y4 " " $z4 >> POSCAR
+echo $x5 " " $y5 " " $z5 >> POSCAR
+echo $x6 " " $y6 " " $z6 >> POSCAR
+done
+done
+done
+
+if [ "$READSHIFTS" = true ]; then
+cat > readshifts << EOF
+readshifts () {
+
+x=x
+
+}
+EOF
+fi
+
+}
+
+
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
 cuprite () {
 
 cat > poscardescription << EOF
@@ -2211,6 +2327,174 @@ cat > readshifts << EOF
 readshifts () {
 
 x=x
+
+}
+EOF
+fi
+
+}
+
+
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+hexagonallaves () {
+
+cat > poscardescription << EOF
+poscardescription () {
+
+THISISSUPERCELL=false
+SUPERCELL_FACTOR=1
+
+STRUCTURE_TYPE=crystal
+LATTICE_SYSTEM=hexagonal
+BRAVAIS_LATTICE=P
+
+ATOMS_PER_CONVENTIONAL_CELL=12
+ATOMS_PER_SUBCELL=12
+
+NUMBER_OF_SHIFTS=2
+
+NUMBER_OF_ELEMENTS=2
+NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT="8 4"
+
+}
+EOF
+
+source poscardescription
+poscardescription
+
+cat > defaultshiftsandratios << EOF
+defaultshiftsandratios () {
+
+C_A_RATIO_hexagonallaves=1.64479
+SHIFT_hexagonallaves_1=-0.16988
+SHIFT_hexagonallaves_2=0.06681
+
+}
+EOF
+
+if [ -z $C_A_RATIO_hexagonallaves ] ; then
+source defaultshiftsandratios
+defaultshiftsandratios
+fi
+
+v=`echo $ATOMS_PER_SUBCELL \* $VOLUME_hexagonallaves \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
+
+array=($NUMBER_OF_ATOMS_PER_SUBCELL_PER_ELEMENT)
+natoms1=${array[0]}
+natoms2=${array[1]}
+
+natoms1=`echo $natoms1 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
+natoms2=`echo $natoms2 \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR \* $SUPERCELL_FACTOR | bc -l`
+
+s1=`echo $SHIFT_hexagonallaves_1 | bc -l`
+s2=`echo 2 \* $SHIFT_hexagonallaves_1 | bc -l`
+s3=`echo -2 \* $SHIFT_hexagonallaves_1 | bc -l`
+s4=`echo 0.0 - $SHIFT_hexagonallaves_1 | bc -l`
+
+s5=`echo $SHIFT_hexagonallaves_2 | bc -l`
+s6=`echo -$SHIFT_hexagonallaves_2 | bc -l`
+s7=`echo 0.5 + $SHIFT_hexagonallaves_2 | bc -l`
+s8=`echo 0.5 - $SHIFT_hexagonallaves_2 | bc -l`
+
+cat > POSCAR << EOF
+hexagonallaves crystal $SUPERCELL_FACTOR
+-$v
+0.5 -0.86602540378443864676372317075294 0
+0.5 0.86602540378443864676372317075294 0
+0 0 $C_A_RATIO_hexagonallaves
+$POTCAR
+$natoms1 $natoms2
+Direct
+EOF
+
+d=`echo 1.0 / $SUPERCELL_FACTOR | bc -l`
+
+for nx in $(seq 1 1 $SUPERCELL_FACTOR); do
+for ny in $(seq 1 1 $SUPERCELL_FACTOR); do
+for nz in $(seq 1 1 $SUPERCELL_FACTOR); do
+x1=`echo $d \* $nx - $d + $d \* 0.0 | bc -l`
+y1=`echo $d \* $ny - $d + $d \* 0.0 | bc -l`
+z1=`echo $d \* $nz - $d + $d \* 0.0 | bc -l`
+x2=`echo $d \* $nx - $d + $d \* 0.0 | bc -l`
+y2=`echo $d \* $ny - $d + $d \* 0.0 | bc -l`
+z2=`echo $d \* $nz - $d + $d \* 0.5 | bc -l`
+x3=`echo $d \* $nx - $d + $d \* $s1 | bc -l`
+y3=`echo $d \* $ny - $d + $d \* $s2 | bc -l`
+z3=`echo $d \* $nz - $d + $d \* 0.25 | bc -l`
+x4=`echo $d \* $nx - $d + $d \* $s3 | bc -l`
+y4=`echo $d \* $ny - $d + $d \* $s4 | bc -l`
+z4=`echo $d \* $nz - $d + $d \* 0.25 | bc -l`
+x5=`echo $d \* $nx - $d + $d \* $s1 | bc -l`
+y5=`echo $d \* $ny - $d + $d \* $s4 | bc -l`
+z5=`echo $d \* $nz - $d + $d \* 0.25 | bc -l`
+x6=`echo $d \* $nx - $d + $d \* $s4 | bc -l`
+y6=`echo $d \* $ny - $d + $d \* $s3 | bc -l`
+z6=`echo $d \* $nz - $d + $d \* 0.75 | bc -l`
+x7=`echo $d \* $nx - $d + $d \* $s2 | bc -l`
+y7=`echo $d \* $ny - $d + $d \* $s1 | bc -l`
+z7=`echo $d \* $nz - $d + $d \* 0.75 | bc -l`
+x8=`echo $d \* $nx - $d + $d \* $s4 | bc -l`
+y8=`echo $d \* $ny - $d + $d \* $s1 | bc -l`
+z8=`echo $d \* $nz - $d + $d \* 0.75 | bc -l`
+echo $x1 " " $y1 " " $z1 >> POSCAR
+echo $x2 " " $y2 " " $z2 >> POSCAR
+echo $x3 " " $y3 " " $z3 >> POSCAR
+echo $x4 " " $y4 " " $z4 >> POSCAR
+echo $x5 " " $y5 " " $z5 >> POSCAR
+echo $x6 " " $y6 " " $z6 >> POSCAR
+echo $x7 " " $y7 " " $z7 >> POSCAR
+echo $x8 " " $y8 " " $z8 >> POSCAR
+done
+done
+done
+for nx in $(seq 1 1 $SUPERCELL_FACTOR); do
+for ny in $(seq 1 1 $SUPERCELL_FACTOR); do
+for nz in $(seq 1 1 $SUPERCELL_FACTOR); do
+x9=`echo $d \* $nx - $d + $d \* 0.3333333333333333333333 | bc -l`
+y9=`echo $d \* $ny - $d + $d \* 0.6666666666666666666666 | bc -l`
+z9=`echo $d \* $nz - $d + $d \* $s5 | bc -l`
+x10=`echo $d \* $nx - $d + $d \* 0.6666666666666666666666 | bc -l`
+y10=`echo $d \* $ny - $d + $d \* 0.3333333333333333333333 | bc -l`
+z10=`echo $d \* $nz - $d + $d \* $s6 | bc -l`
+x11=`echo $d \* $nx - $d + $d \* 0.6666666666666666666666 | bc -l`
+y11=`echo $d \* $ny - $d + $d \* 0.3333333333333333333333 | bc -l`
+z11=`echo $d \* $nz - $d + $d \* $s7 | bc -l`
+x12=`echo $d \* $nx - $d + $d \* 0.3333333333333333333333 | bc -l`
+y12=`echo $d \* $ny - $d + $d \* 0.6666666666666666666666 | bc -l`
+z12=`echo $d \* $nz - $d + $d \* $s8 | bc -l`
+echo $x9 " " $y9 " " $z9 >> POSCAR
+echo $x10 " " $y10 " " $z10 >> POSCAR
+echo $x11 " " $y11 " " $z11 >> POSCAR
+echo $x12 " " $y12 " " $z12 >> POSCAR
+done
+done
+done
+
+if [ "$READSHIFTS" = true ]; then
+cat > readshifts << EOF
+readshifts () {
+
+row=$(sed -n '11p' < CONTCAR)    # nth atom + 8
+column=${row[0]}
+shift_hexagonallaves_1=`echo $column \* $SUPERCELL_FACTOR | bc -l`
+
+row=$(sed -n '17p' < CONTCAR)    # nth atom + 8
+column=${row[2]}
+shift_hexagonallaves_2=`echo $column \* $SUPERCELL_FACTOR | bc -l`
+
+if [ "$UPDATEVARIABLES" = true ]; then
+SHIFT_hexagonallaves_1=$shift_hexagonallaves_1
+SHIFT_hexagonallaves_2=$shift_hexagonallaves_2
+fi
 
 }
 EOF
@@ -11198,6 +11482,7 @@ encutconvergence () {
 
 secsencutconvergence=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -11217,6 +11502,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -11394,6 +11680,7 @@ kpointsconvergence () {
 
 secskpointsconvergence=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -11421,6 +11708,7 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of kpoints      Result                      Difference" >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -11591,6 +11879,7 @@ nomegaconvergence () {
 
 secsnomegaconvergence=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -11610,6 +11899,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -11784,6 +12074,7 @@ numberoflayersconvergence () {
 
 secsnumberoflayersconvergence=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -11811,6 +12102,7 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of layers       Result                      Difference" >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -11982,6 +12274,7 @@ sigmaconvergence () {
 
 secssigmaconvergence=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -12001,6 +12294,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: sigmaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -12179,6 +12473,7 @@ supercellconvergence () {
 
 secssupercellconvergence=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -12198,6 +12493,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -12374,6 +12670,7 @@ vacuumsizeconvergence () {
 
 secsvacuumsizeconvergence=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -12401,6 +12698,7 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -12576,6 +12874,7 @@ secs=$SECONDS
 mkdir densityofstates_${1}
 cd densityofstates_${1}
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -12595,6 +12894,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: densityofstates $1 $2  ;   $ALGO $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -12663,6 +12963,11 @@ fi
 
 if [ -n "${77}" ]; then
 ${77} "${78}" "${79}" "${80}" "${81}"
+fi
+
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
 fi
 
 buildkpoints $1
@@ -12927,6 +13232,7 @@ secs=$SECONDS
 mkdir electronicmin_${1}
 cd electronicmin_${1}
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -12946,6 +13252,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: electronicmin $1 $2  ;   $ALGO $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -13014,6 +13321,11 @@ fi
 
 if [ -n "${77}" ]; then
 ${77} "${78}" "${79}" "${80}" "${81}"
+fi
+
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
 fi
 
 buildkpoints $1
@@ -13180,6 +13492,7 @@ secsadsorptionenergy=$SECONDS
 mkdir adsorptionenergy_${1}
 cd adsorptionenergy_${1}
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -13199,6 +13512,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: adsorptionenergy $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -13317,6 +13631,10 @@ cat temp_file1 >> POSCAR
 cat temp_file2 >> POSCAR
 rm temp_file1
 rm temp_file2
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
 
 $VASP
 
@@ -13437,6 +13755,7 @@ secssurfaceenergy=$SECONDS
 mkdir surfaceenergy_${1}
 cd surfaceenergy_${1}
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -13456,6 +13775,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: surfaceenergy $1  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -13722,6 +14042,7 @@ secsvacancyformationenergy=$SECONDS
 mkdir vacancyformationenergy_${1}
 cd vacancyformationenergy_${1}
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -13741,6 +14062,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: vacancyformationenergy $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -13966,10 +14288,83 @@ cd ..
 ########################################################################################### 
  
  
+applymlff () {                       # $2 is for addvacancy ... / addadsorbant ...
+
+secs=$SECONDS
+
+
+mkdir applymlff_${1}_${2}_${3}
+cd applymlff_${1}_${2}_${3}
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: applymlff $1 $2 $3 $4 $5 $6  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: applymlff $1 $2 $3 $4 $5 $6  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: applymlff $1 $2 $3 $4 $5 $6  ;   $GGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: applymlff $1 $2 $3 $4 $5 $6  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+
+
+backupbvotherincartags=$OTHERINCARTAGS
+OTHERINCARTAGS="$backupbvotherincartags    ; ML_LMLFF = .TRUE. ; ML_ISTART = 2 ;"
+
+
+vjsnjsfnv=$(pwd)
+mkdir $MAINDIR/tempfjnjn
+cd $MAINDIR/tempfjnjn
+cp $MAINDIR/mlffs/$1/ML_FFN ML_FF
+backupbvotherinputfiles=$OTHERINPUTFILES
+OTHERINPUTFILES="$backupbvotherinputfiles    $MAINDIR/tempfjnjn/ML_FF"
+cd $vjsnjsfnv
+
+
+backupbvencut=$ENCUT
+ENCUT=20
+
+
+MLFFBEIGAPPLIED=true
+$2 "$3" "$4" "$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}"
+MLFFBEIGAPPLIED=false
+
+
+OTHERINCARTAGS="$backupbvotherincartags"
+OTHERINPUTFILES="backupbvotherinputfiles"
+ENCUT=$backupbvencut
+
+rm -r $MAINDIR/tempfjnjn
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
 elasticmoduli () {
 
 secs=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -13991,9 +14386,15 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: elasticmoduli $1  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 fi
 fi
+fi
 
 mkdir elasticmoduli_${1}
 cd elasticmoduli_${1}
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
+
 $1
 buildkpoints $1
 buildincar
@@ -14160,6 +14561,7 @@ energyvolumecurves () {
 
 secsenergyvolumecurves=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -14179,6 +14581,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: energyvolumecurves \"$1\" $2 $3  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -14515,6 +14918,7 @@ fitbirchmurnaghan () {
 
 secsfitbirchmurnaghan=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -14534,6 +14938,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: fitbirchmurnaghan $1 $2 $3 $4  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -14824,6 +15229,7 @@ fitmurnaghan () {
 
 secsfitmurnaghan=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -14843,6 +15249,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: fitmurnaghan $1 $2 $3 $4  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -15030,6 +15437,7 @@ secs=$SECONDS
 mkdir moleculardynamics_${1}
 cd moleculardynamics_${1}
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -15049,6 +15457,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: moleculardynamics $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -15118,6 +15527,11 @@ if [ -n "${77}" ]; then
 ${77} "${78}" "${79}" "${80}" "${81}"
 fi
 
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
+
 buildkpoints $1
 isymbackup=$ISYM
 nwritebackup=$NWRITE
@@ -15142,6 +15556,8 @@ echo " " >> INCAR
 echo "#machine learned force fields:" >> INCAR
 echo "ML_LMLFF = $ML_LMLFF" >> INCAR
 echo "ML_ISTART = $ML_ISTART" >> INCAR
+echo "ML_CTIFOR = $ML_CTIFOR" >> INCAR
+echo "ML_ICRITERIA = $ML_ICRITERIA " >> INCAR
 echo "ML_RCUT1 = $ML_RCUT1" >> INCAR
 echo "ML_RCUT2 = $ML_RCUT2" >> INCAR
 echo " " >> INCAR
@@ -15159,6 +15575,128 @@ fi
 
 
 
+if [ "$ML_LMLFF" = .TRUE. ]; then
+
+grep "BEEF " ML_LOGFILE > beef.dat
+
+if [ -n "$METAGGA" ]; then
+cat > mlff_forceerrors_gnup_${1}_${METAGGA} << EOF
+set title "$1 MLFF Bayesian error estimates ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in force (max) (eV/{\305})"
+set term png
+set output "mlff_forceerrors_${1}_${METAGGA}.png"
+p 'beef.dat' u 2:4 w l title 'Estimated Bayesian error', 'beef.dat' u 2:6 w l title 'Threshold for Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_forceerrors_gnup_${1}_${METAGGA}
+fi
+else
+cat > mlff_forceerrors_gnup_${1}_${GGA} << EOF
+set title "$1 MLFF Bayesian error estimates ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in force (max) (eV/{\305})"
+set term png
+set output "mlff_forceerrors_${1}_${GGA}.png"
+p 'beef.dat' u 2:4 w l title 'Estimated Bayesian error', 'beef.dat' u 2:6 w l title 'Threshold for Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_forceerrors_gnup_${1}_${GGA}
+fi
+fi
+
+
+if [ -n "$METAGGA" ]; then
+cat > mlff_energyerrors_gnup_${1}_${METAGGA} << EOF
+set title "$1 MLFF Bayesian error estimates ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in energy (eV)"
+set term png
+set output "mlff_energyerrors_${1}_${METAGGA}.png"
+p 'beef.dat' u 2:3 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_energyerrors_gnup_${1}_${METAGGA}
+fi
+else
+cat > mlff_energyerrors_gnup_${1}_${GGA} << EOF
+set title "$1 MLFF Bayesian error estimates ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in energy (eV)"
+set term png
+set output "mlff_energyerrors_${1}_${GGA}.png"
+p 'beef.dat' u 2:3 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_energyerrors_gnup_${1}_${GGA}
+fi
+fi
+
+
+if [ -n "$METAGGA" ]; then
+cat > mlff_stresserrors_gnup_${1}_${METAGGA} << EOF
+set title "$1 MLFF Bayesian error estimates ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in stress (max) (kB)"
+set term png
+set output "mlff_stresserrors_${1}_${METAGGA}.png"
+p 'beef.dat' u 2:7 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_stresserrors_gnup_${1}_${METAGGA}
+fi
+else
+cat > mlff_stresserrors_gnup_${1}_${GGA} << EOF
+set title "$1 MLFF Bayesian error estimates ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in stress (max) (kB)"
+set term png
+set output "mlff_stresserrors_${1}_${GGA}.png"
+p 'beef.dat' u 2:7 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_stresserrors_gnup_${1}_${GGA}
+fi
+fi
+
+
+arrayconf=($(grep 'Configuration num.' ML_ABN | tail -1))
+confnum=${arrayconf[2]}
+
+
+if [ "$ML_ISTART" = 0 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " "
+  echo " A force field has been trained. "
+  echo " Total number of configurations: $confnum "
+  echo " " >> $MAINDIR/output.txt
+  echo " A force field has been trained. " >> $MAINDIR/output.txt
+  echo " Total number of configurations: $confnum " >> $MAINDIR/output.txt
+fi
+fi
+elif [ "$ML_ISTART" = 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " "
+  echo " Force field training has been continued. "
+  echo " Total number of configurations: $confnum "
+  echo " " >> $MAINDIR/output.txt
+  echo " Force field training has been continued. " >> $MAINDIR/output.txt
+  echo " Total number of configurations: $confnum " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+
+
+fi
 
 
 
@@ -15198,6 +15736,7 @@ phonondispersion () {
 
 secs=$SECONDS
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -15219,9 +15758,15 @@ echo " " >> $MAINDIR/output.txt
 echo " Running now: phonondispersion $1 \"$2\"  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 fi
 fi
+fi
 
 mkdir phonondispersion_${1}
 cd phonondispersion_${1}
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
+
 $1
 buildkpoints $1
 buildqpoints $1 $2
@@ -15261,12 +15806,272 @@ line_q=$(($q_cur*($NBANDS+5)+3))
 line_f=$(($line_q+$b+3))
 #echo $line_q
 q=$(awk -v n=$line_q '/Phonons/ { for (i=1; i<=n ; i++) getline; print $5} ' temp.dat)
+q_x=$(awk -v n=$line_q '/Phonons/ { for (i=1; i<=n ; i++) getline; print $2} ' temp.dat)
+q_y=$(awk -v n=$line_q '/Phonons/ { for (i=1; i<=n ; i++) getline; print $3} ' temp.dat)
+q_z=$(awk -v n=$line_q '/Phonons/ { for (i=1; i<=n ; i++) getline; print $4} ' temp.dat)
 f[$b]=$(awk -v n=$line_f '/Phonons/ { for (i=1; i<=n ; i++) getline; print $2} ' temp.dat)
 done
-echo $q ${f[*]} >> phonons.dat
+echo " l" $q " xyz" $q_x $q_y $q_z " f" ${f[*]} >> phonons.dat
+echo $q ${f[*]} >> phononsx.dat
 done
 
 rm temp.dat
+
+
+
+for value in $path ; do
+
+if [ "$LATTICE_SYSTEM" = cubic ]; then
+
+if [ "$BRAVAIS_LATTICE" = F ]; then
+
+if [ "$value" = G ]; then
+arrayghv=($(grep "xyz 0.000000 0.000000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  G : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = X ]; then
+arrayghv=($(grep "xyz 0.000000 0.500000 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  X : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = U ]; then
+arrayghv=($(grep "xyz 0.250000 0.625000 0.625000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  U : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = K ]; then
+arrayghv=($(grep "xyz 0.375000 0.750000 0.375000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  K : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = L ]; then
+arrayghv=($(grep "xyz 0.500000 0.500000 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  L : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = W ]; then
+arrayghv=($(grep "xyz 0.250000 0.750000 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  W : " ${arrayghv[@]}  >> tempvvfhb
+fi
+
+fi
+
+if [ "$BRAVAIS_LATTICE" = I ]; then
+
+if [ "$value" = G ]; then
+arrayghv=($(grep "xyz 0.000000 0.000000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  G : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = H ]; then
+arrayghv=($(grep "xyz -0.500000 0.500000 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  H : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = P ]; then
+arrayghv=($(grep "xyz 0.250000 0.250000 0.250000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  P : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = N ]; then
+arrayghv=($(grep "xyz 0.000000 0.500000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  N : " ${arrayghv[@]}  >> tempvvfhb
+fi
+
+fi
+
+if [ "$BRAVAIS_LATTICE" = P ]; then
+
+if [ "$value" = G ]; then
+arrayghv=($(grep "xyz 0.000000 0.000000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  G : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = R ]; then
+arrayghv=($(grep "xyz 0.500000 0.500000 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  R : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = X ]; then
+arrayghv=($(grep "xyz 0.000000 0.500000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  X : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = M ]; then
+arrayghv=($(grep "xyz 0.500000 0.500000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  M : " ${arrayghv[@]}  >> tempvvfhb
+fi
+
+fi
+
+fi
+
+if [ "$LATTICE_SYSTEM" = hexagonal ]; then
+
+if [ "$BRAVAIS_LATTICE" = P ]; then
+
+if [ "$value" = G ]; then
+arrayghv=($(grep "xyz 0.000000 0.000000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  G : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = A ]; then
+arrayghv=($(grep "xyz 0.000000 0.000000 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  A : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = K ]; then
+arrayghv=($(grep "xyz 0.666667 0.333333 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  K : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = H ]; then
+arrayghv=($(grep "xyz 0.666667 0.333333 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  H : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = M ]; then
+arrayghv=($(grep "xyz 0.500000 0.000000 0.000000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  M : " ${arrayghv[@]}  >> tempvvfhb
+
+elif [ "$value" = L ]; then
+arrayghv=($(grep "xyz 0.500000 0.000000 0.500000" phonons.dat | tail -1))
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+arrayghv=("${arrayghv[@]:1}")
+echo "  L : " ${arrayghv[@]}  >> tempvvfhb
+fi
+
+fi
+
+fi
+
+done
+
+
 
 if [ -n "$METAGGA" ]; then
 cat > phonondispersion_gnup_${1}_${METAGGA} << EOF
@@ -15276,7 +16081,7 @@ set ylabel "Frequency (THz)"
 unset key
 set term png
 set output "phonondispersion_${1}_${METAGGA}.png"
-p 'phonons.dat' u 1:2 w l, 'phonons.dat' u 1:3 w l, 'phonons.dat' u 1:4 w l, 'phonons.dat' u 1:5 w l, 'phonons.dat' u 1:6 w l, 'phonons.dat' u 1:7 w l
+p 'phonons.dat' u 2:8 w l, 'phonons.dat' u 2:9 w l, 'phonons.dat' u 2:10 w l, 'phonons.dat' u 2:11 w l, 'phonons.dat' u 2:12 w l, 'phonons.dat' u 2:13 w l
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT phonondispersion_gnup_${1}_${METAGGA}
@@ -15289,7 +16094,7 @@ set ylabel "Frequency (THz)"
 unset key
 set term png
 set output "phonondispersion_${1}_${GGA}.png"
-p 'phonons.dat' u 1:2 w l, 'phonons.dat' u 1:3 w l, 'phonons.dat' u 1:4 w l, 'phonons.dat' u 1:5 w l, 'phonons.dat' u 1:6 w l, 'phonons.dat' u 1:7 w l
+p 'phonons.dat' u 2:8 w l, 'phonons.dat' u 2:9 w l, 'phonons.dat' u 2:10 w l, 'phonons.dat' u 2:11 w l, 'phonons.dat' u 2:12 w l, 'phonons.dat' u 2:13 w l
 EOF
 if [ -n "$GNUPLOT" ]; then
 $GNUPLOT phonondispersion_gnup_${1}_${GGA}
@@ -15297,8 +16102,8 @@ fi
 fi
 
 
-numberofcolumns=$(awk '{print NF; exit}' phonons.dat)
-local data=$(cat phonons.dat)
+numberofcolumns=$(awk '{print NF; exit}' phononsx.dat)
+local data=$(cat phononsx.dat)
 if [ "$numberofcolumns" = 2 ]; then
 local ymax=$(echo "$data" | awk '{print $2}' | tr ' ' '\n'| sort -n | tail -1)
 fi
@@ -15330,14 +16135,21 @@ fi
 hjbshbhrjbs=$ymax
 
 echo " "
-echo " path: $path"
+#echo " path: $path"
+echo " phonon frequencies (THz) at high symmetry points (ordered according to specified path): "
+cat tempvvfhb
 echo " maximum phonon frequency: $ymax THz"
+
 echo " " >> $MAINDIR/output.txt
-echo " path: $path" >> $MAINDIR/output.txt
+#echo " path: $path" >> $MAINDIR/output.txt
+echo " phonon frequencies (THz) at high symmetry points (ordered according to specified path): " >> $MAINDIR/output.txt
+cat tempvvfhb >> $MAINDIR/output.txt
 echo " maximum phonon frequency: $ymax THz" >> $MAINDIR/output.txt
 
-plotxydata+ phonons.dat
+plotxydata+ phononsx.dat
 
+rm phononsx.dat
+rm tempvvfhb
 
 let secs=$SECONDS-$secs
 let TOTALTIME=$TOTALTIME+$secs
@@ -15347,6 +16159,11 @@ echo " "
 echo " ellapsed time: $hrs h $mins min $secs s"
 echo " " >> $MAINDIR/output.txt
 echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
 fi
 
 if [ "$PRINTOUTPUT" = true ]; then
@@ -15381,6 +16198,7 @@ secs=$SECONDS
 mkdir relaxation_${1}
 cd relaxation_${1}
 
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
 if [ -n "$METAGGA" ]; then
 echo " "
@@ -15400,6 +16218,7 @@ echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Running now: relaxation $1 $2  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
 fi
 fi
 
@@ -15470,6 +16289,10 @@ ${77} "${78}" "${79}" "${80}" "${81}"
 fi
 
 
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
+
 buildkpoints $1
 buildincar
 echo "#ionic relaxation:" >> INCAR
@@ -15503,6 +16326,9 @@ ichargbackup=$ICHARG
 LWAVE=.TRUE.
 LCHARG=.TRUE.
 buildincar
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
 echo "#ionic relaxation:" >> INCAR
 echo "IBRION = $IBRION" >> INCAR
 echo "EDIFFG = $EDIFFG" >> INCAR
@@ -15530,6 +16356,9 @@ cp CHGCAR continuation_${qrgqek}
 cp CHG continuation_${qrgqek}
 cd continuation_${qrgqek}
 buildincar
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
 echo "#ionic relaxation:" >> INCAR
 echo "IBRION = $IBRION" >> INCAR
 echo "EDIFFG = $EDIFFG" >> INCAR
@@ -15641,6 +16470,14 @@ if [ "$STRUCTURE_TYPE" = crystal ]; then
 mkdir temp
 cat CONTCAR_ > temp/POSCAR
 cd temp
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
+
+isymbackup=$ISYM
+ISYM=2
+
 buildkpoints 1
 nelmbackup=$NELM
 NELM=1
@@ -15648,6 +16485,8 @@ buildincar
 buildpotcar
 $VASP
 NELM=$nelmbackup
+
+ISYM=$isymbackup
 
 arraylatticeconst=($(grep 'ALAT' OUTCAR))
 latticeconstt=${arraylatticeconst[2]}
@@ -15682,8 +16521,11 @@ name="VOLUME_$1"
 eval $name=$volume
 fi
 
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR  XDATCAR
+fi
+
 cd ..
-rm -rf temp
 
 if [ "$PRINTOUTPUT" = true ]; then
 if [ "$LATTICE_SYSTEM" = cubic ]; then
@@ -15769,6 +16611,14 @@ if [ "$vacuumsize" = 0 ]; then
 mkdir temp
 cat CONTCAR_ > temp/POSCAR
 cd temp
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
+
+isymbackup=$ISYM
+ISYM=2
+
 buildkpoints 1
 nelmbackup=$NELM
 NELM=1
@@ -15776,6 +16626,8 @@ buildincar
 buildpotcar
 $VASP
 NELM=$nelmbackup
+
+ISYM=$isymbackup
 
 arraylatticeconst=($(grep 'ALAT' OUTCAR | tail -1))
 latticeconstt=${arraylatticeconst[2]}
@@ -15810,8 +16662,11 @@ name="VOLUME_$1"
 eval $name=$volume
 fi
 
+if [ "$RMFILES" = true ]; then
+rm -rf ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR  XDATCAR
+fi
+
 cd ..
-rm -rf temp
 
 if [ "$PRINTOUTPUT" = true ]; then
 if [ "$LATTICE_SYSTEM" = cubic ]; then
@@ -16104,6 +16959,365 @@ cd ..
 ########################################################################################### 
  
  
+trainmlff () {                       # $2 is for addvacancy ... / addadsorbant ...
+
+secs=$SECONDS
+
+if [ -f $MAINDIR/mlffs ] ; then
+x=x
+else
+mkdir $MAINDIR/mlffs
+fi
+
+mkdir $MAINDIR/mlffs/$2
+
+
+mkdir trainmlff_${2}
+cd trainmlff_${2}
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: trainmlff $1 $2 $3 $4  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: trainmlff $1 $2 $3 $4  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: trainmlff $1 $2 $3 $4  ;   $GGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: trainmlff $1 $2 $3 $4  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+
+$3 ;
+
+if [ -n "$4" ]; then
+$4 "$5" "$6" "$7" "$8"
+fi
+
+if [ -n "$9" ]; then
+$9 "${10}" "${11}" "${12}" "${13}"
+fi
+
+if [ -n "${14}" ]; then
+${14} "${15}" "${16}" "${17}" "${18}"
+fi
+
+if [ -n "${19}" ]; then
+${19} "${20}" "${21}" "${22}" "${23}"
+fi
+
+if [ -n "${24}" ]; then
+${24} "${25}" "${26}" "${27}" "${28}"
+fi
+
+if [ -n "${29}" ]; then
+${29} "${30}" "${31}" "${32}" "${33}"
+fi
+
+if [ -n "${34}" ]; then
+${34} "${35}" "${36}" "${37}" "${38}"
+fi
+
+if [ -n "${39}" ]; then
+${39} "${40}" "${41}" "${42}" "${43}"
+fi
+
+if [ -n "${44}" ]; then
+${44} "${45}" "${46}" "${47}" "${48}"
+fi
+
+if [ -n "${49}" ]; then
+${49} "${50}" "${51}" "${52}" "${53}"
+fi
+
+if [ -n "${54}" ]; then
+${54} "${55}" "${56}" "${57}" "${58}"
+fi
+
+if [ -n "${59}" ]; then
+${59} "${60}" "${61}" "${62}" "${63}"
+fi
+
+if [ -n "${64}" ]; then
+${64} "${65}" "${66}" "${67}" "${68}"
+fi
+
+if [ -n "${69}" ]; then
+${69} "${70}" "${71}" "${72}" "${73}"
+fi
+
+if [ -n "${74}" ]; then
+${74} "${75}" "${76}" "${77}" "${78}"
+fi
+
+if [ -n "${79}" ]; then
+${79} "${80}" "${81}" "${82}" "${83}"
+fi
+
+
+if [ "$ADDASYMMETRY" = true ]; then
+last_row_number=$(tail -n 1 "POSCAR" | awk -v col=3 '{print $col}')
+new_number=$(echo "$last_row_number + 0.0001" | bc)
+sed -i "\$s/[^[:space:]]\+\$/ $new_number/" "POSCAR"
+fi
+
+
+if [ "$1" = "new" ]; then
+x=x
+else
+cp $MAINDIR/mlffs/$1/ML_ABN ML_AB
+fi
+
+
+if [ -n "$OTHERINPUTFILES" ]; then
+cp $OTHERINPUTFILES .
+fi
+
+buildkpoints $3
+isymbackup=$ISYM
+nwritebackup=$NWRITE
+ISYM=0
+NWRITE=1
+buildincar
+ISYM=$isymbackup
+NWRITE=$nwritebackup
+echo "#molecular dynamics:" >> INCAR
+echo "IBRION = 0" >> INCAR
+echo "TEBEG = $TEBEG" >> INCAR
+echo "TEEND = $TEEND" >> INCAR
+echo "POTIM = $POTIM" >> INCAR
+echo "NSW = $NSW" >> INCAR
+echo " " >> INCAR
+echo "#thermostat & ensembles:" >> INCAR
+echo "ISIF = $ISIF" >> INCAR
+echo "MDALGO = $MDALGO" >> INCAR
+echo "LANGEVIN_GAMMA = $LANGEVIN_GAMMA" >> INCAR
+echo "LANGEVIN_GAMMA_L = $LANGEVIN_GAMMA_L" >> INCAR
+echo " " >> INCAR
+echo "#machine learned force fields:" >> INCAR
+echo "ML_LMLFF = .TRUE." >> INCAR
+if [ "$1" = "new" ]; then
+echo "ML_ISTART = 0" >> INCAR
+else
+echo "ML_ISTART = 1" >> INCAR
+fi
+echo "ML_CTIFOR = $ML_CTIFOR" >> INCAR
+echo "ML_ICRITERIA = $ML_ICRITERIA " >> INCAR
+echo "ML_MB = $ML_MB " >> INCAR
+echo "ML_MCONF = $ML_MCONF " >> INCAR
+echo "ML_RCUT1 = $ML_RCUT1" >> INCAR
+echo "ML_RCUT2 = $ML_RCUT2" >> INCAR
+echo " " >> INCAR
+buildpotcar
+$VASP
+
+if [ "$RMFILES" = true ]; then
+rm -rf defaultshiftsandratios poscardescription ML_REG ML_HIS HILLSPOT ICONST CHG  CHGCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  minipotcar  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  WAVECAR
+fi
+
+isInFile=$(cat OUTCAR | grep -c "General timing and accounting information")
+if [ $isInFile -eq 0 ]; then
+ANERROROCCURED=true
+fi
+
+
+cp ML_ABN ML_FFN $MAINDIR/mlffs/$2
+
+
+
+grep "BEEF " ML_LOGFILE > beef.dat
+
+if [ -n "$METAGGA" ]; then
+cat > mlff_forceerrors_gnup_${2}_${METAGGA} << EOF
+set title "$2 MLFF Bayesian error estimates ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in force (max) (eV/{\305})"
+set term png
+set output "mlff_forceerrors_${2}_${METAGGA}.png"
+p 'beef.dat' u 2:4 w l title 'Estimated Bayesian error', 'beef.dat' u 2:6 w l title 'Threshold for Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_forceerrors_gnup_${2}_${METAGGA}
+fi
+else
+cat > mlff_forceerrors_gnup_${2}_${GGA} << EOF
+set title "$2 MLFF Bayesian error estimates ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in force (max) (eV/{\305})"
+set term png
+set output "mlff_forceerrors_${2}_${GGA}.png"
+p 'beef.dat' u 2:4 w l title 'Estimated Bayesian error', 'beef.dat' u 2:6 w l title 'Threshold for Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_forceerrors_gnup_${2}_${GGA}
+fi
+fi
+
+
+if [ -n "$METAGGA" ]; then
+cat > mlff_energyerrors_gnup_${2}_${METAGGA} << EOF
+set title "$2 MLFF Bayesian error estimates ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in energy (eV)"
+set term png
+set output "mlff_energyerrors_${2}_${METAGGA}.png"
+p 'beef.dat' u 2:3 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_energyerrors_gnup_${2}_${METAGGA}
+fi
+else
+cat > mlff_energyerrors_gnup_${2}_${GGA} << EOF
+set title "$2 MLFF Bayesian error estimates ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in energy (eV)"
+set term png
+set output "mlff_energyerrors_${2}_${GGA}.png"
+p 'beef.dat' u 2:3 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_energyerrors_gnup_${2}_${GGA}
+fi
+fi
+
+
+if [ -n "$METAGGA" ]; then
+cat > mlff_stresserrors_gnup_${2}_${METAGGA} << EOF
+set title "$2 MLFF Bayesian error estimates ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in stress (max) (kB)"
+set term png
+set output "mlff_stresserrors_${2}_${METAGGA}.png"
+p 'beef.dat' u 2:7 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_stresserrors_gnup_${2}_${METAGGA}
+fi
+else
+cat > mlff_stresserrors_gnup_${2}_${GGA} << EOF
+set title "$2 MLFF Bayesian error estimates ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Molecular dynamics step"
+set ylabel "Error in stress (max) (kB)"
+set term png
+set output "mlff_stresserrors_${2}_${GGA}.png"
+p 'beef.dat' u 2:7 w l title 'Estimated Bayesian error',
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT mlff_stresserrors_gnup_${2}_${GGA}
+fi
+fi
+
+
+arrayconf=($(grep 'Configuration num.' ML_ABN | tail -1))
+confnum=${arrayconf[2]}
+
+
+#if [ "$1" = "new" ]; then
+#echo "    $2     $3     $POTCAR        $NSW          $TEBEG - $TEEND           $confnum     ($4)" >> $MAINDIR/mlffs/$2/traininghistory
+#else
+#cp $MAINDIR/mlffs/$1/traininghistory $MAINDIR/mlffs/$2/traininghistory
+#oldconfnum=$(awk '{sum += $8} END {print sum}' $MAINDIR/mlffs/$1/traininghistory )
+#let diffconfnum=$confnum-$oldconfnum
+#echo "    $2     $3     $POTCAR        $NSW          $TEBEG - $TEEND           $diffconfnum     ($4)" >> $MAINDIR/mlffs/$2/traininghistory
+#fi
+#
+#
+#if [ "$PRINTOUTPUT" = true ]; then
+#if [ "$UPDATEVARIABLES" = true ]; then
+#  echo " "
+#  echo " Training run has concluded. New MLFF has been stored under the name $name2"
+#  echo " Complete training history: "
+#  echo "   name     structure     POTCAR     # MD steps     temp. range (K)     # added conf."
+#cat $MAINDIR/mlffs/$2/traininghistory
+#  echo " Total number of configurations: $confnum "
+#
+#  echo " " >> $MAINDIR/output.txt
+#  echo " Training run has concluded. New MLFF has been stored under the name $name2" >> $MAINDIR/output.txt
+#  echo " Complete training history: " >> $MAINDIR/output.txt
+#  echo "   name     structure     POTCAR     # MD steps     temp. range (K)     # added conf." >> $MAINDIR/output.txt
+#cat $MAINDIR/mlffs/$2/traininghistory >> $MAINDIR/output.txt
+#  echo " Total number of configurations: $confnum " >> $MAINDIR/output.txt
+#fi
+#fi
+
+
+if [ "$1" = "new" ]; then
+echo "    $2         $NSW         $TEBEG - $TEEND         $confnum " >> $MAINDIR/mlffs/$2/traininghistory
+else
+cp $MAINDIR/mlffs/$1/traininghistory $MAINDIR/mlffs/$2/traininghistory
+oldconfnum=$(awk '{sum += $6} END {print sum}' $MAINDIR/mlffs/$1/traininghistory )
+let diffconfnum=$confnum-$oldconfnum
+echo "    $2         $NSW         $TEBEG - $TEEND         $diffconfnum " >> $MAINDIR/mlffs/$2/traininghistory
+fi
+
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " "
+  echo " Training run has concluded. New MLFF has been stored under the name $name2"
+  echo " Complete training history: "
+  echo "   name       # MD steps       temp. range (K)       # added conf."
+cat $MAINDIR/mlffs/$2/traininghistory
+  echo " Total number of configurations: $confnum "
+
+  echo " " >> $MAINDIR/output.txt
+  echo " Training run has concluded. New MLFF has been stored under the name $name2" >> $MAINDIR/output.txt
+  echo " Complete training history: " >> $MAINDIR/output.txt
+  echo "   name       # MD steps       temp. range (K)       # added conf." >> $MAINDIR/output.txt
+cat $MAINDIR/mlffs/$2/traininghistory >> $MAINDIR/output.txt
+  echo " Total number of configurations: $confnum " >> $MAINDIR/output.txt
+fi
+fi
+
+
+
+let secs=$SECONDS-$secs
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+cd ..
+
+}
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
 buildincar () {
 
 if [ -e INCAR ] ; then
@@ -16122,8 +17336,8 @@ LCHARG = $LCHARG
 NWRITE =  $NWRITE
 
 #electronic optimization:
-ENCUT = $ENCUT
 ALGO = $ALGO
+PREC = $PREC
 NELM = $NELM
 EDIFF = $EDIFF
 #NBANDS = $NBANDS
@@ -16153,6 +17367,7 @@ fi
 cat >> INCAR << EOF
 
 #kpoint sampling:
+ENCUT = $ENCUT
 ISMEAR = $ISMEAR
 SIGMA = $SIGMA
 ISYM = $ISYM
@@ -16200,6 +17415,10 @@ buildkpoints () {
 if [ -e KPOINTS ] ; then
 rm KPOINTS
 fi
+
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+
 
 if [ -n "$KSPACING" ]; then
 x=x
@@ -16314,6 +17533,31 @@ fi
 
 fi
 
+
+else
+
+
+cat >> KPOINTS << EOF
+Minimal k-point mesh for MLFF
+0
+EOF
+if [ "$KGAMMA" = .TRUE. ]; then
+cat >> KPOINTS << EOF
+Gamma
+EOF
+elif [ "$KGAMMA" = .FALSE. ]; then
+cat >> KPOINTS << EOF
+Monkhorst-Pack
+EOF
+fi
+cat >> KPOINTS << EOF
+1 1 1
+0 0 0
+EOF
+
+fi
+
+
 }
 
  
@@ -16369,17 +17613,17 @@ EOF
 array=($(echo $path))
 value=${array[0]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = X ]; then
-echo "0.00000  0.50000  0.50000   1" >> QPOINTS
+echo "0.000000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = U ]; then
-echo "0.25000  0.62500  0.62500   1" >> QPOINTS
+echo "0.250000  0.625000  0.625000   1" >> QPOINTS
 elif [ "$value" = K ]; then
-echo "0.37500  0.75000  0.37500   1" >> QPOINTS
+echo "0.375000  0.750000  0.375000   1" >> QPOINTS
 elif [ "$value" = L ]; then
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = W ]; then
-echo "0.25000  0.75000  0.50000   1" >> QPOINTS
+echo "0.250000  0.750000  0.500000   1" >> QPOINTS
 fi
 total_number_of_characters=`echo $path |tr " " "\n" |wc -l`
 total_number_of_separation_character=`echo $path | tr -cd '-' | wc -c`
@@ -16389,46 +17633,46 @@ for high_symmetry_point in $(seq 1 1 $k); do
 array=($(echo $path))
 value=${array[$high_symmetry_point]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = X ]; then
-echo "0.00000  0.50000  0.50000   1" >> QPOINTS
+echo "0.000000  0.500000  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.50000  0.50000   1" >> QPOINTS
+echo "0.000000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = U ]; then
-echo "0.25000  0.62500  0.62500   1" >> QPOINTS
+echo "0.250000  0.625000  0.625000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.25000  0.62500  0.62500   1" >> QPOINTS
+echo "0.250000  0.625000  0.625000   1" >> QPOINTS
 elif [ "$value" = K ]; then
-echo "0.37500  0.75000  0.37500   1" >> QPOINTS
+echo "0.375000  0.750000  0.375000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.37500  0.75000  0.37500   1" >> QPOINTS
+echo "0.375000  0.750000  0.375000   1" >> QPOINTS
 elif [ "$value" = L ]; then
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = W ]; then
-echo "0.25000  0.75000  0.50000   1" >> QPOINTS
+echo "0.250000  0.750000  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.25000  0.75000  0.50000   1" >> QPOINTS
+echo "0.250000  0.750000  0.500000   1" >> QPOINTS
 fi
 done
 let k=$total_number_of_characters-1
 array=($(echo $path))
 value=${array[$k]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = X ]; then
-echo "0.00000  0.50000  0.50000   1" >> QPOINTS
+echo "0.000000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = U ]; then
-echo "0.25000  0.62500  0.62500   1" >> QPOINTS
+echo "0.250000  0.625000  0.625000   1" >> QPOINTS
 elif [ "$value" = K ]; then
-echo "0.37500  0.75000  0.37500   1" >> QPOINTS
+echo "0.375000  0.750000  0.375000   1" >> QPOINTS
 elif [ "$value" = L ]; then
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = W ]; then
-echo "0.25000  0.75000  0.50000   1" >> QPOINTS
+echo "0.250000  0.750000  0.500000   1" >> QPOINTS
 fi
 for character in $(seq 0 1 $k); do
 array=($(echo $path))
@@ -16464,13 +17708,13 @@ EOF
 array=($(echo $path))
 value=${array[0]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = H ]; then
-echo "-0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "-0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = P ]; then
-echo "0.25000  0.25000  0.25000   1" >> QPOINTS
+echo "0.250000  0.250000  0.205000   1" >> QPOINTS
 elif [ "$value" = N ]; then
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 fi
 total_number_of_characters=`echo $path |tr " " "\n" |wc -l`
 total_number_of_separation_character=`echo $path | tr -cd '-' | wc -c`
@@ -16480,34 +17724,34 @@ for high_symmetry_point in $(seq 1 1 $k); do
 array=($(echo $path))
 value=${array[$high_symmetry_point]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = H ]; then
-echo "-0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "-0.500000  0.500000  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "-0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "-0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = P ]; then
-echo "0.25000  0.25000  0.25000   1" >> QPOINTS
+echo "0.250000  0.250000  0.250000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.25000  0.25000  0.25000   1" >> QPOINTS
+echo "0.250000  0.250000  0.250000   1" >> QPOINTS
 elif [ "$value" = N ]; then
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 fi
 done
 let k=$total_number_of_characters-1
 array=($(echo $path))
 value=${array[$k]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = H ]; then
-echo "-0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "-0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = P ]; then
-echo "0.25000  0.25000  0.25000   1" >> QPOINTS
+echo "0.250000  0.250000  0.250000   1" >> QPOINTS
 elif [ "$value" = N ]; then
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 fi
 for character in $(seq 0 1 $k); do
 array=($(echo $path))
@@ -16543,13 +17787,13 @@ EOF
 array=($(echo $path))
 value=${array[0]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = R ]; then
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = X ]; then
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 elif [ "$value" = M ]; then
-echo "0.50000  0.50000  0.00000   1" >> QPOINTS
+echo "0.500000  0.500000  0.000000   1" >> QPOINTS
 fi
 total_number_of_characters=`echo $path |tr " " "\n" |wc -l`
 total_number_of_separation_character=`echo $path | tr -cd '-' | wc -c`
@@ -16559,34 +17803,34 @@ for high_symmetry_point in $(seq 1 1 $k); do
 array=($(echo $path))
 value=${array[$high_symmetry_point]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = R ]; then
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = X ]; then
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 elif [ "$value" = M ]; then
-echo "0.50000  0.50000  0.00000   1" >> QPOINTS
+echo "0.500000  0.500000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.50000  0.50000  0.00000   1" >> QPOINTS
+echo "0.500000  0.500000  0.000000   1" >> QPOINTS
 fi
 done
 let k=$total_number_of_characters-1
 array=($(echo $path))
 value=${array[$k]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = R ]; then
-echo "0.50000  0.50000  0.50000   1" >> QPOINTS
+echo "0.500000  0.500000  0.500000   1" >> QPOINTS
 elif [ "$value" = X ]; then
-echo "0.00000  0.50000  0.00000   1" >> QPOINTS
+echo "0.000000  0.500000  0.000000   1" >> QPOINTS
 elif [ "$value" = M ]; then
-echo "0.50000  0.50000  0.00000   1" >> QPOINTS
+echo "0.500000  0.500000  0.000000   1" >> QPOINTS
 fi
 for character in $(seq 0 1 $k); do
 array=($(echo $path))
@@ -16626,17 +17870,17 @@ EOF
 array=($(echo $path))
 value=${array[0]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = A ]; then
-echo "0.00000  0.00000  0.50000   1" >> QPOINTS
+echo "0.000000  0.000000  0.500000   1" >> QPOINTS
 elif [ "$value" = K ]; then
-echo "0.66667  0.33333  0.00000   1" >> QPOINTS
+echo "0.666667  0.333333  0.000000   1" >> QPOINTS
 elif [ "$value" = H ]; then
-echo "0.66667  0.33333  0.50000   1" >> QPOINTS
+echo "0.666667  0.333333  0.500000   1" >> QPOINTS
 elif [ "$value" = M ]; then
-echo "0.50000  0.00000  0.00000   1" >> QPOINTS
+echo "0.500000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = L ]; then
-echo "0.50000  0.00000  0.50000   1" >> QPOINTS
+echo "0.500000  0.000000  0.500000   1" >> QPOINTS
 fi
 total_number_of_characters=`echo $path |tr " " "\n" |wc -l`
 total_number_of_separation_character=`echo $path | tr -cd '-' | wc -c`
@@ -16646,46 +17890,46 @@ for high_symmetry_point in $(seq 1 1 $k); do
 array=($(echo $path))
 value=${array[$high_symmetry_point]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = A ]; then
-echo "0.00000  0.00000  0.50000   1" >> QPOINTS
+echo "0.000000  0.000000  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.00000  0.00000  0.50000   1" >> QPOINTS
+echo "0.000000  0.000000  0.500000   1" >> QPOINTS
 elif [ "$value" = K ]; then
-echo "0.66667  0.33333  0.00000   1" >> QPOINTS
+echo "0.666667  0.333333  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.66667  0.33333  0.00000   1" >> QPOINTS
+echo "0.666667  0.333333  0.000000   1" >> QPOINTS
 elif [ "$value" = H ]; then
-echo "0.66667  0.33333  0.50000   1" >> QPOINTS
+echo "0.666667  0.333333  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.66667  0.33333  0.50000   1" >> QPOINTS
+echo "0.666667  0.333333  0.500000   1" >> QPOINTS
 elif [ "$value" = M ]; then
-echo "0.50000  0.00000  0.00000   1" >> QPOINTS
+echo "0.500000  0.000000  0.000000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.50000  0.00000  0.00000   1" >> QPOINTS
+echo "0.500000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = L ]; then
-echo "0.50000  0.00000  0.50000   1" >> QPOINTS
+echo "0.500000  0.000000  0.500000   1" >> QPOINTS
 echo " " >> QPOINTS
-echo "0.50000  0.00000  0.50000   1" >> QPOINTS
+echo "0.500000  0.000000  0.500000   1" >> QPOINTS
 fi
 done
 let k=$total_number_of_characters-1
 array=($(echo $path))
 value=${array[$k]}
 if [ "$value" = G ]; then
-echo "0.00000  0.00000  0.00000   1" >> QPOINTS
+echo "0.000000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = A ]; then
-echo "0.00000  0.00000  0.50000   1" >> QPOINTS
+echo "0.000000  0.000000  0.500000   1" >> QPOINTS
 elif [ "$value" = K ]; then
-echo "0.66667  0.33333  0.00000   1" >> QPOINTS
+echo "0.666667  0.333333  0.000000   1" >> QPOINTS
 elif [ "$value" = H ]; then
-echo "0.66667  0.33333  0.50000   1" >> QPOINTS
+echo "0.666667  0.333333  0.500000   1" >> QPOINTS
 elif [ "$value" = M ]; then
-echo "0.50000  0.00000  0.00000   1" >> QPOINTS
+echo "0.500000  0.000000  0.000000   1" >> QPOINTS
 elif [ "$value" = L ]; then
-echo "0.50000  0.00000  0.50000   1" >> QPOINTS
+echo "0.500000  0.000000  0.500000   1" >> QPOINTS
 fi
 for character in $(seq 0 1 $k); do
 array=($(echo $path))
@@ -17262,6 +18506,14 @@ RELREPETITIONS=1
 RECALCBULK=true
 RECALCSURFACE=true
 
+
+ADDASYMMETRY=true
+
+
+
+
+MLFFBEIGAPPLIED=false
+
 setincardefaults  2>&-
 setkpointsdefaults  2>&-
 setstructuraldefaults  2>&-
@@ -17344,8 +18596,8 @@ LCHARG=".FALSE."
 NWRITE=2
 
 #electronic optimization:
-ENCUT=400
 ALGO="Normal"
+PREC="Normal"
 NELM=100
 EDIFF="1E-06"
 NBANDS=48
@@ -17357,6 +18609,7 @@ LASPH=".TRUE."
 NOMEGA=12
 
 #kpoint sampling:
+ENCUT=400
 ISMEAR=1
 SIGMA=0.2
 ISYM=2
@@ -17385,7 +18638,7 @@ EMIN=
 
 #defaults for MD:
 TEBEG=100
-TEEND=700
+TEEND=500
 
 #defaults for thermostat & ensembles:
 MDALGO=3
@@ -17395,8 +18648,13 @@ LANGEVIN_GAMMA_L="1*5.0"
 #defaults for machine learned force fields:
 ML_LMLFF=".TRUE."
 ML_ISTART=0
+ML_CTIFOR=0.002
+ML_ICRITERIA=1
+ML_MB=5000
+ML_MCONF=5000
 ML_RCUT1=8.0
 ML_RCUT2=5.0
+
 
 
 }
@@ -17744,7 +19002,7 @@ ICHARG=$ICHARG
 LWAVE=$LWAVE
 LCHARG=$LCHARG
 NWRITE=$NWRITE
-ENCUT=$ENCUT
+PREC=$PREC
 ALGO=$ALGO
 NELM=$NELM
 EDIFF=$EDIFF
@@ -17752,6 +19010,7 @@ GGA=$GGA
 METAGGA=$METAGGA
 LASPH=$LASPH
 NOMEGA=$NOMEGA
+ENCUT=$ENCUT
 ISMEAR=$ISMEAR
 SIGMA=$SIGMA
 ISYM=$ISYM
@@ -17781,6 +19040,8 @@ LANGEVIN_GAMMA_L="$LANGEVIN_GAMMA_L"
 #for machine learned force fields:
 ML_LMLFF=$ML_LMLFF
 ML_ISTART=$ML_ISTART
+ML_CTIFOR=$ML_CTIFOR
+ML_ICRITERIA=$ML_ICRITERIA
 ML_RCUT1=$ML_RCUT1
 ML_RCUT2=$ML_RCUT2
 
