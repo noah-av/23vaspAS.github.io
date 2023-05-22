@@ -176,6 +176,136 @@ table, th, td {
 
 <hr>
 
+<h2>Local Convergence Tests:</h2>
+
+<p>There are multiple functions that perform local convergence tests for a variety of variables (see below). They all follow the same syntax. Lets look at only one of them in more detail:</p>
+
+<p>To perform a local kpoints convergence test on a structure <b>$structure</b>, use the following function:</p>
+
+<p><b>lkpointsconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>It gradually increases kpoints from an initial value <b>$n0</b> in steps of <b>$dx</b> up to a maximal value <b>$n1</b>. At every kpoint it will perform one specific task <b>$task</b> in the form of a function and its entries (for example electronicmin $structure or relaxation $structure). Then it will check how one specific variable <b>$variable</b> changes (for example FREE_ENERGY_$structure). If the change in this value is smaller than <b>$criterion</b> (in one step), then the convergence test will break.</p>
+
+<p>If $variable = autovar, then $variable will be chosen automatically based on the specified $task.</p>
+
+<p>At the end, if UPDATEVARIABLES=true, the value stored in KPOINTS_$structure will be updated to its converged value. If the convergence criterion is not reached, it will be updated to $n1</p>
+
+<p>A gnuplot input file will also be prepared automatically: kpointsconvergence_gnup_$structure_$GGA</p>
+
+<h3>Table of Currently Available Local Convergence Test Functions (same input, syntax as above):</h3>
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:300px">Name <br> </th>
+  <th style="width:300px">Key Variable </th>
+</tr>
+<tr>
+  <th>lkpointsconvergence</th>
+  <th>$KPOINTS_$structure</th>
+</tr>
+<tr>
+  <th>lencutconvergence</th>
+  <th>$ENCUT</th>
+</tr>
+<tr>
+  <th>lnomegaconvergence</th>
+  <th>$NOMEGA</th>
+</tr>
+<tr>
+  <th>lsupercellconvergence</th>
+  <th>$SUPERCELL_FACTOR_$structure</th>
+</tr>
+<tr>
+  <th>lvacuumsizeconvergence</th>
+  <th>$VACUUM_SIZE_$structure</th>
+</tr>
+<tr>
+  <th>lnumberoflayersconvergence</th>
+  <th>$NUMBER_OF_LAYERS_$structure</th>
+</tr>
+</table>
+
+<br>
+<hr>
+
+<h2>Global Convergence Tests:</h2>
+
+<p>Each local convergence test function has a global convergence test counterpart (see below). These follow a very similar syntax that only differs marginally (so read section on local convergence tests (above) to understand this one):</p>
+
+<p>To perform a global kpoints convergence test on a structure <b>$structure</b>, use the following function:</p>
+
+<p><b>gkpointsconvergence $structure "$n0 $dn $n1 $nm" $criterion $variable $task</b></p>
+
+<p>In contrast to local convergence tests, here the test is not aborted as soon as the convergence criterion is met locally. Instead the calculation will continue until $n1. Then it will check retroactively, at which point all results started to stay within the interval of the last computed value +- <b>$criterion</b>. Try to choose high values for $n1.</p> 
+<p>At the end, if UPDATEVARIABLES=true, the value stored in KPOINTS_$structure will be updated to its converged value. But notice how the variable <b>$nm</b> has to be set in addition to $n1. If the convergence criterion is not reached, it will be updated to $nm instead of $n1. This allows you to seccurely set large values for $n1.</p>
+
+
+
+<h3>Table of Currently Available Global Convergence Test Functions (same input, syntax as above):</h3>
+
+<table>
+<tr style="background-color: RosyBrown;">
+  <th style="width:300px">Name <br> </th>
+  <th style="width:300px">Key Variable </th>
+</tr>
+<tr>
+  <th>gkpointsconvergence</th>
+  <th>$KPOINTS_$structure</th>
+</tr>
+<tr>
+  <th>gencutconvergence</th>
+  <th>$ENCUT</th>
+</tr>
+<tr>
+  <th>gnomegaconvergence</th>
+  <th>$NOMEGA</th>
+</tr>
+<tr>
+  <th>gsupercellconvergence</th>
+  <th>$SUPERCELL_FACTOR_$structure</th>
+</tr>
+<tr>
+  <th>gvacuumsizeconvergence</th>
+  <th>$VACUUM_SIZE_$structure</th>
+</tr>
+<tr>
+  <th>gnumberoflayersconvergence</th>
+  <th>$NUMBER_OF_LAYERS_$structure</th>
+</tr>
+</table>
+
+<br>
+<hr>
+
+<!-------------
+
+<h3>Other Local & Global Convergence Tests:</h3>
+
+<p>Analogous to kpointsconvergence, there are other available functions that seek to perform convergence tests on other variables:</p>
+
+<p>Converges ENCUT: <b>encutconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+------------>
+
+<!-----<p>Converges SIGMA: <b>sigmaconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>---->
+
+<!-------------
+
+<p>Converges NOMEGA: <b>nomegaconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges SUPERCELL_FACTOR_$structure: <b>supercellconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges VACUUM_SIZE_$structure: <b>vacuumsizeconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+<p>Converges NUMBER_OF_LAYERS_$structure: <b>numberoflayersconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
+
+
+
+<hr>
+<hr>
+
+
+
 <h2>Kpoints Convergence Test:</h2>
 
 <p>To perform a kpoints convergence test on a structure <b>$structure</b>, use the following function:</p>
@@ -198,7 +328,11 @@ table, th, td {
 
 <p>Converges ENCUT: <b>encutconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
 
+---------->
+
 <!-----<p>Converges SIGMA: <b>sigmaconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>---->
+
+<!-----------
 
 <p>Converges NOMEGA: <b>nomegaconvergence $structure "$n0 $dn $n1" $criterion $variable $task</b></p>
 
@@ -210,7 +344,10 @@ table, th, td {
 
 <hr>
 
-<h3>Tipp for encutconvergence: readenmax</h3>
+
+------>
+
+<h3>Tipp for lencutconvergence / gencutconvergence: readenmax</h3>
 
 <p>Running the function <b>readenmax</b> before encutconvergence enables you to use the variable $ENMAX in $n0, $dn, and $n1. You can even apply operators to it. $ENMAX refers to the highest ENMAX found in the POTCAR file.<p>
 

@@ -16,7 +16,7 @@ allmolecules_supercells=""
 TOTALTIME=0 
 ANERROROCCURED=false 
  
-ALLPOTCARS=/gpfs/data/fs71334/noah/potcars
+ALLPOTCARS=/home/ws2006/potcars
  
  
 ########################################################################################### 
@@ -11364,36 +11364,59 @@ numberofatomsthatwereaddedbefore=0
 ########################################################################################### 
  
  
-supercellconvergence () {
+gencutconvergence () {
 
+secsgencutconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
+echo " Running now: gencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "       #gencutconvergence fcc "15 1 35 25" 0.001 autovar electronicmin fcc addvacancy $potcar 1 "1 1 1" v
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: gencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       #gencutconvergence fcc "15 1 35 25" 0.001 autovar electronicmin fcc addvacancy $potcar 1 "1 1 1" v
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
 fi
 
-name="SUPERCELL_FACTOR_$1"
-backupsup=`echo ${!name}`
+backupencut=$ENCUT
 
-mkdir supercellconvergence_${1}
-cd supercellconvergence_${1}
+mkdir gencutconvergence_${1}
+cd gencutconvergence_${1}
+
 VARIABLEFORCONVERGENCE_last=0
+
 if [ "$PRINTOUTPUT" = true ]; then
 echo " "
-echo " supercell factor        Result                      Difference"
+echo " ENCUT                  Result                      Difference"
 echo " " >> $MAINDIR/output.txt
-echo " supercell factor        Result                      Difference" >> $MAINDIR/output.txt
+echo " ENCUT                  Result                      Difference" >> $MAINDIR/output.txt
 fi
-for i in $(seq $2); do
+
+array=($(echo "$2"))
+value1=`echo ${array[0]} | bc -l`
+value2=`echo ${array[1]} | bc -l`
+value3=`echo ${array[2]} | bc -l`
+
+counterfff=0
+for i in $(seq ${value1%.*} ${value2%.*} ${value3%.*}); do
+let counterfff=$counterfff+1
 mkdir $i
 cd $i
-name="SUPERCELL_FACTOR_$1"
-eval $name=$i
+ENCUT=$i
 PRINTOUTPUT=false
 "$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
 PRINTOUTPUT=true
@@ -11404,66 +11427,279 @@ name="$4"
 VARIABLEFORCONVERGENCE=`echo ${!name}`
 fi
 
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
 diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
-echo " $i                       $VARIABLEFORCONVERGENCE     $diff"
-echo " $i                       $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
-if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
-if [ $(echo "$3 > $diff" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
-fi
-fi
-  break
-fi
-fi
-if [ $(echo "0.0 > $diff" | bc) -eq 1 ]; then
-if [ $(echo "$diff > -$3" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
-fi
-fi
-  break
-fi
-fi
-hhh=($2)
-hhhhhh=${hhh[2]}
-if [ $(echo "$i == $hhhhhh" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!"
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!" >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
-fi
-fi
-fi
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+
 VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
 done
 
-if [ "$UPDATEVARIABLES" = false ]; then
-name="SUPERCELL_FACTOR_$i"
-eval $name=$backupsup
+
+hhh=($(echo "$2"))
+hhhh=${hhh[3]}
+hhhhhh=${hhhh%.*}
+
+referencevaluedcarr=($(tail -n 1 data.dat | head -n 1))
+referencevaluedc=${referencevaluedcarr[1]}
+
+secondreferencevaluedcarr=($(tail -n 2 data.dat | head -n 1))
+secondreferencevaluedc=${secondreferencevaluedcarr[1]}
+
+diff=`echo $referencevaluedc - $secondreferencevaluedc | bc -l`
+
+notconverged=false
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh "
 fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+elif [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+fi
+
+if [ "$notconverged" = false ]; then
+
+for i in $(seq 2 1 $counterfff); do
+#let fhjvjnejv=$i+1
+argkgvnjarr=($(tail -n $i data.dat | head -n 1))
+argkgvnj=${argkgvnjarr[1]}
+isniin=${argkgvnjarr[0]}
+
+ENCUT=$isniin
+
+diff=`echo $referencevaluedc - $argkgvnj | bc -l`
+
+if [ $(echo "$isniin < $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at ENCUT = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at ENCUT = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at ENCUT = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at ENCUT = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin == $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin > $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER ENCUT = $hhhhhh (at ENCUT = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " ENCUT has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+
+done
+
+fi
+
+
+
+
+
+if [ "$UPDATEVARIABLES" = false ]; then
+ENCUT=$backupencut
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > gencutconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 ENCUT convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Cutoff energy (eV)"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gencutconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gencutconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > gencutconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 ENCUT convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Cutoff energy (eV)"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gencutconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gencutconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+let secs=$SECONDS-$secsgencutconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
 
 cd ..
 
@@ -11478,9 +11714,9 @@ cd ..
 ########################################################################################### 
  
  
-encutconvergence () {
+gkpointsconvergence () {
 
-secsencutconvergence=$SECONDS
+secsgkpointsconvergence=$SECONDS
 
 if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
@@ -11488,28 +11724,1802 @@ if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "       #encutconvergence fcc "15 1 25" 0.001 autovar electronicmin fcc addvacancy $potcar 1 "1 1 1" v
+echo " Running now: gkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "      
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: gkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
 else
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       #encutconvergence fcc "15 1 25" 0.001 autovar electronicmin fcc addvacancy $potcar 1 "1 1 1" v
+echo " Running now: gkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: encutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: gkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+name="KPOINTS_$1"
+backupkpts=`echo ${!name}`
+
+mkdir gkpointsconvergence_${1}
+cd gkpointsconvergence_${1}
+
+VARIABLEFORCONVERGENCE_last=0
+
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " Number of kpoints      Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " Number of kpoints      Result                      Difference" >> $MAINDIR/output.txt
+fi
+
+jnvjskvnfkj=($2)
+arewvwt1=${jnvjskvnfkj[0]}
+arewvwt2=${jnvjskvnfkj[1]}
+arewvwt3=${jnvjskvnfkj[2]}
+
+counterfff=0
+for i in $(seq $arewvwt1 $arewvwt2 $arewvwt3); do
+let counterfff=$counterfff+1
+mkdir $i
+cd $i
+
+name="KPOINTS_$1"
+eval $name=$i
+
+PRINTOUTPUT=false
+"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
+PRINTOUTPUT=true
+cd ..
+
+if [ "$4" != "autovar" ]; then
+name="$4"
+VARIABLEFORCONVERGENCE=`echo ${!name}`
+fi
+
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
+diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+
+VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
+done
+
+
+hhh=($(echo "$2"))
+hhhh=${hhh[3]}
+hhhhhh=${hhhh%.*}
+
+referencevaluedcarr=($(tail -n 1 data.dat | head -n 1))
+referencevaluedc=${referencevaluedcarr[1]}
+
+secondreferencevaluedcarr=($(tail -n 2 data.dat | head -n 1))
+secondreferencevaluedc=${secondreferencevaluedcarr[1]}
+
+diff=`echo $referencevaluedc - $secondreferencevaluedc | bc -l`
+
+notconverged=false
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+elif [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+fi
+
+if [ "$notconverged" = false ]; then
+
+for i in $(seq 2 1 $counterfff); do
+#let fhjvjnejv=$i+1
+argkgvnjarr=($(tail -n $i data.dat | head -n 1))
+argkgvnj=${argkgvnjarr[1]}
+isniin=${argkgvnjarr[0]}
+
+name="KPOINTS_$1"
+eval $name=$isniin
+
+diff=`echo $referencevaluedc - $argkgvnj | bc -l`
+
+if [ $(echo "$isniin < $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at KPOINTS_$1 = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at KPOINTS_$1 = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at KPOINTS_$1 = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at KPOINTS_$1 = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin == $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin > $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER KPOINTS_$1 = $hhhhhh (at KPOINTS_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " KPOINTS_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+
+done
+
+fi
+
+
+
+
+
+if [ "$UPDATEVARIABLES" = false ]; then
+name="KPOINTS_$1"
+eval $name=$backupkpts
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > gkpointsconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 kpoints convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of kpoints along x-, y-, z- direction"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gkpointsconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gkpointsconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > gkpointsconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 kpoints convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of kpoints along x-, y-, z- direction"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gkpointsconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gkpointsconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+let secs=$SECONDS-$secsgkpointsconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+gnomegaconvergence () {
+
+secsgnomegaconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "      
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+backupnomega=$NOMEGA
+
+mkdir gnomegaconvergence_${1}
+cd gnomegaconvergence_${1}
+
+VARIABLEFORCONVERGENCE_last=0
+
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " NOMEGA                 Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " NOMEGA                 Result                      Difference" >> $MAINDIR/output.txt
+fi
+
+jnvjskvnfkj=($2)
+arewvwt1=${jnvjskvnfkj[0]}
+arewvwt2=${jnvjskvnfkj[1]}
+arewvwt3=${jnvjskvnfkj[2]}
+
+counterfff=0
+for i in $(seq $arewvwt1 $arewvwt2 $arewvwt3); do
+let counterfff=$counterfff+1
+mkdir $i
+cd $i
+NOMEGA=$i
+PRINTOUTPUT=false
+"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
+PRINTOUTPUT=true
+cd ..
+
+if [ "$4" != "autovar" ]; then
+name="$4"
+VARIABLEFORCONVERGENCE=`echo ${!name}`
+fi
+
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
+diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+
+VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
+done
+
+
+hhh=($(echo "$2"))
+hhhh=${hhh[3]}
+hhhhhh=${hhhh%.*}
+
+referencevaluedcarr=($(tail -n 1 data.dat | head -n 1))
+referencevaluedc=${referencevaluedcarr[1]}
+
+secondreferencevaluedcarr=($(tail -n 2 data.dat | head -n 1))
+secondreferencevaluedc=${secondreferencevaluedcarr[1]}
+
+diff=`echo $referencevaluedc - $secondreferencevaluedc | bc -l`
+
+notconverged=false
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+elif [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+fi
+
+if [ "$notconverged" = false ]; then
+
+for i in $(seq 2 1 $counterfff); do
+#let fhjvjnejv=$i+1
+argkgvnjarr=($(tail -n $i data.dat | head -n 1))
+argkgvnj=${argkgvnjarr[1]}
+isniin=${argkgvnjarr[0]}
+
+NOMEGA=$isniin
+
+diff=`echo $referencevaluedc - $argkgvnj | bc -l`
+
+if [ $(echo "$isniin < $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at NOMEGA = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at NOMEGA = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at NOMEGA = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at NOMEGA = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin == $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin > $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NOMEGA = $hhhhhh (at NOMEGA = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NOMEGA has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+
+done
+
+fi
+
+
+
+
+
+if [ "$UPDATEVARIABLES" = false ]; then
+NOMEGA=$backupnomega
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > gnomegaconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 NOMEGA convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of imaginary frequency and time points"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gnomegaconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gnomegaconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > gnomegaconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 NOMEGA convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of imaginary frequency and time points"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gnomegaconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gnomegaconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+let secs=$SECONDS-$secsgnomegaconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+gnumberoflayersconvergence () {
+
+secsgnumberoflayersconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "      
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+name="NUMBER_OF_LAYERS_$i"
+backupnumberoflayers=`echo ${!name}`
+
+mkdir gnumberoflayersconvergence_${1}
+cd gnumberoflayersconvergence_${1}
+
+VARIABLEFORCONVERGENCE_last=0
+
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " Number of layers       Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " Number of layers       Result                      Difference" >> $MAINDIR/output.txt
+fi
+
+jnvjskvnfkj=($2)
+arewvwt1=${jnvjskvnfkj[0]}
+arewvwt2=${jnvjskvnfkj[1]}
+arewvwt3=${jnvjskvnfkj[2]}
+
+counterfff=0
+for i in $(seq $arewvwt1 $arewvwt2 $arewvwt3); do
+let counterfff=$counterfff+1
+mkdir $i
+cd $i
+
+name="NUMBER_OF_LAYERS_$i"
+eval $name=$i
+
+PRINTOUTPUT=false
+"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
+PRINTOUTPUT=true
+cd ..
+
+if [ "$4" != "autovar" ]; then
+name="$4"
+VARIABLEFORCONVERGENCE=`echo ${!name}`
+fi
+
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
+diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+
+VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
+done
+
+
+hhh=($(echo "$2"))
+hhhh=${hhh[3]}
+hhhhhh=${hhhh%.*}
+
+referencevaluedcarr=($(tail -n 1 data.dat | head -n 1))
+referencevaluedc=${referencevaluedcarr[1]}
+
+secondreferencevaluedcarr=($(tail -n 2 data.dat | head -n 1))
+secondreferencevaluedc=${secondreferencevaluedcarr[1]}
+
+diff=`echo $referencevaluedc - $secondreferencevaluedc | bc -l`
+
+notconverged=false
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+elif [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+fi
+
+if [ "$notconverged" = false ]; then
+
+for i in $(seq 2 1 $counterfff); do
+#let fhjvjnejv=$i+1
+argkgvnjarr=($(tail -n $i data.dat | head -n 1))
+argkgvnj=${argkgvnjarr[1]}
+isniin=${argkgvnjarr[0]}
+
+name="NUMBER_OF_LAYERS_$i"
+eval $name=$isniin
+
+diff=`echo $referencevaluedc - $argkgvnj | bc -l`
+
+if [ $(echo "$isniin < $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at NUMBER_OF_LAYERS_$i = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at NUMBER_OF_LAYERS_$i = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at NUMBER_OF_LAYERS_$i = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at NUMBER_OF_LAYERS_$i = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin == $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin > $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER NUMBER_OF_LAYERS_$i = $hhhhhh (at NUMBER_OF_LAYERS_$i = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " NUMBER_OF_LAYERS_$i has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+
+done
+
+fi
+
+
+
+
+
+if [ "$UPDATEVARIABLES" = false ]; then
+name="NUMBER_OF_LAYERS_$i"
+eval $name=$backupnumberoflayers
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > gnumberoflayersconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 number of layers convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of layers per surface slab"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gnumberoflayersconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gnumberoflayersconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > gnumberoflayersconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 number of layers convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Number of layers per surface slab"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gnumberoflayersconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gnumberoflayersconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+let secs=$SECONDS-$secsgnumberoflayersconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+gsupercellconvergence () {
+
+secsgsupercellconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "      
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+name="SUPERCELL_FACTOR_$1"
+backupsupercell=`echo ${!name}`
+
+mkdir gsupercellconvergence_${1}
+cd gsupercellconvergence_${1}
+
+VARIABLEFORCONVERGENCE_last=0
+
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " Supercell factor       Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " Supercell factor       Result                      Difference" >> $MAINDIR/output.txt
+fi
+
+jnvjskvnfkj=($2)
+arewvwt1=${jnvjskvnfkj[0]}
+arewvwt2=${jnvjskvnfkj[1]}
+arewvwt3=${jnvjskvnfkj[2]}
+
+counterfff=0
+for i in $(seq $arewvwt1 $arewvwt2 $arewvwt3); do
+let counterfff=$counterfff+1
+mkdir $i
+cd $i
+
+name="SUPERCELL_FACTOR_$1"
+eval $name=$i
+
+PRINTOUTPUT=false
+"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
+PRINTOUTPUT=true
+cd ..
+
+if [ "$4" != "autovar" ]; then
+name="$4"
+VARIABLEFORCONVERGENCE=`echo ${!name}`
+fi
+
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
+diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+
+VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
+done
+
+
+hhh=($(echo "$2"))
+hhhh=${hhh[3]}
+hhhhhh=${hhhh%.*}
+
+referencevaluedcarr=($(tail -n 1 data.dat | head -n 1))
+referencevaluedc=${referencevaluedcarr[1]}
+
+secondreferencevaluedcarr=($(tail -n 2 data.dat | head -n 1))
+secondreferencevaluedc=${secondreferencevaluedcarr[1]}
+
+diff=`echo $referencevaluedc - $secondreferencevaluedc | bc -l`
+
+notconverged=false
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+elif [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+fi
+
+if [ "$notconverged" = false ]; then
+
+for i in $(seq 2 1 $counterfff); do
+#let fhjvjnejv=$i+1
+argkgvnjarr=($(tail -n $i data.dat | head -n 1))
+argkgvnj=${argkgvnjarr[1]}
+isniin=${argkgvnjarr[0]}
+
+name="SUPERCELL_FACTOR_$1"
+eval $name=$isniin
+
+diff=`echo $referencevaluedc - $argkgvnj | bc -l`
+
+if [ $(echo "$isniin < $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at SUPERCELL_FACTOR_$1 = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at SUPERCELL_FACTOR_$1 = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at SUPERCELL_FACTOR_$1 = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at SUPERCELL_FACTOR_$1 = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin == $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin > $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER SUPERCELL_FACTOR_$1 = $hhhhhh (at SUPERCELL_FACTOR_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+
+done
+
+fi
+
+
+
+
+
+if [ "$UPDATEVARIABLES" = false ]; then
+name="SUPERCELL_FACTOR_$1"
+eval $name=$backupsupercell
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > gsupercellconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 supercell convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Supercell factor"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gsupercellconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gsupercellconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > gsupercellconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 supercell convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Supercell factor"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gsupercellconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gsupercellconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+let secs=$SECONDS-$secsgsupercellconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+gvacuumsizeconvergence () {
+
+secsgvacuumsizeconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "      
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: gvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: gvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+name="VACUUM_SIZE_$1"
+backupvacuumsize=`echo ${!name}`
+
+mkdir gvacuumsizeconvergence_${1}
+cd gvacuumsizeconvergence_${1}
+
+VARIABLEFORCONVERGENCE_last=0
+
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " Vacuum size            Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
+fi
+
+jnvjskvnfkj=($2)
+arewvwt1=${jnvjskvnfkj[0]}
+arewvwt2=${jnvjskvnfkj[1]}
+arewvwt3=${jnvjskvnfkj[2]}
+
+counterfff=0
+for i in $(seq $arewvwt1 $arewvwt2 $arewvwt3); do
+let counterfff=$counterfff+1
+mkdir $i
+cd $i
+
+name="VACUUM_SIZE_$1"
+eval $name=$i
+
+PRINTOUTPUT=false
+"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
+PRINTOUTPUT=true
+cd ..
+
+if [ "$4" != "autovar" ]; then
+name="$4"
+VARIABLEFORCONVERGENCE=`echo ${!name}`
+fi
+
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
+diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                     $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+
+VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
+done
+
+
+hhh=($(echo "$2"))
+hhhh=${hhh[3]}
+hhhhhh=${hhhh%.*}
+
+referencevaluedcarr=($(tail -n 1 data.dat | head -n 1))
+referencevaluedc=${referencevaluedcarr[1]}
+
+secondreferencevaluedcarr=($(tail -n 2 data.dat | head -n 1))
+secondreferencevaluedc=${secondreferencevaluedcarr[1]}
+
+diff=`echo $referencevaluedc - $secondreferencevaluedc | bc -l`
+
+notconverged=false
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+elif [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+notconverged=true
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " GLOBAL CONVERGENCE CRITERION OF " $3 " WAS NEVER REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+fi
+
+if [ "$notconverged" = false ]; then
+
+for i in $(seq 2 1 $counterfff); do
+#let fhjvjnejv=$i+1
+argkgvnjarr=($(tail -n $i data.dat | head -n 1))
+argkgvnj=${argkgvnjarr[1]}
+isniin=${argkgvnjarr[0]}
+
+name="VACUUM_SIZE_$1"
+eval $name=$isniin
+
+diff=`echo $referencevaluedc - $argkgvnj | bc -l`
+
+if [ $(echo "$isniin < $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at VACUUM_SIZE_$1 = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at VACUUM_SIZE_$1 = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was reached at VACUUM_SIZE_$1 = " $isniin
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was reached at VACUUM_SIZE_$1 = " $isniin >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin == $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+if [ $(echo "$isniin > $hhhhhh" | bc) -eq 1 ]; then
+
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 < $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+if [ $(echo "$diff < 0.0" | bc) -eq 1 ]; then
+if [ $(echo "-$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " global convergence criterion of " $3 " was only met AFTER VACUUM_SIZE_$1 = $hhhhhh (at VACUUM_SIZE_$1 = $isniin)" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+
+fi
+
+
+
+done
+
+fi
+
+
+
+
+
+if [ "$UPDATEVARIABLES" = false ]; then
+name="VACUUM_SIZE_$1"
+eval $name=$backupvacuumsize
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > gvacuumsizeconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 vacuum size convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Vacuum size ({\305})"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gvacuumsizeconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gvacuumsizeconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > gvacuumsizeconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 vacuum size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Vacuum size ({\305})"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "gvacuumsizeconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT gvacuumsizeconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+let secs=$SECONDS-$secsgvacuumsizeconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+lencutconvergence () {
+
+secslencutconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: lencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "       #lencutconvergence fcc "15 1 25" 0.001 autovar electronicmin fcc addvacancy $potcar 1 "1 1 1" v
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: lencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: lencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "       #lencutconvergence fcc "15 1 25" 0.001 autovar electronicmin fcc addvacancy $potcar 1 "1 1 1" v
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: lencutconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 fi
 fi
 fi
 
 backupencut=$ENCUT
 
-mkdir encutconvergence_${1}
-cd encutconvergence_${1}
+mkdir lencutconvergence_${1}
+cd lencutconvergence_${1}
 VARIABLEFORCONVERGENCE_last=0
 if [ "$PRINTOUTPUT" = true ]; then
 echo " "
@@ -11613,36 +13623,36 @@ ylabel="$4"
 fi
 
 if [ -n "$METAGGA" ]; then
-cat > encutconvergence_gnup_${1}_${METAGGA} << EOF
+cat > lencutconvergence_gnup_${1}_${METAGGA} << EOF
 set title "$1 ENCUT convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
 set xlabel "Cutoff energy (eV)"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "encutconvergence_${1}_${METAGGA}.png"
+set output "lencutconvergence_${1}_${METAGGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT encutconvergence_gnup_${1}_${METAGGA}
+$GNUPLOT lencutconvergence_gnup_${1}_${METAGGA}
 fi
 else
-cat > encutconvergence_gnup_${1}_${GGA} << EOF
+cat > lencutconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 ENCUT convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
 set xlabel "Cutoff energy (eV)"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "encutconvergence_${1}_${GGA}.png"
+set output "lencutconvergence_${1}_${GGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT encutconvergence_gnup_${1}_${GGA}
+$GNUPLOT lencutconvergence_gnup_${1}_${GGA}
 fi
 fi
 
-let secs=$SECONDS-$secsencutconvergence
+let secs=$SECONDS-$secslencutconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
 if [ "$PRINTOUTPUT" = true ]; then
@@ -11676,9 +13686,9 @@ cd ..
 ########################################################################################### 
  
  
-kpointsconvergence () {
+lkpointsconvergence () {
 
-secskpointsconvergence=$SECONDS
+secslkpointsconvergence=$SECONDS
 
 if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
@@ -11686,34 +13696,34 @@ if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " Running now: lkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
 echo " "
 echo " Number of kpoints      Result                      Difference"
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: lkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of kpoints      Result                      Difference" >> $MAINDIR/output.txt
 else
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
+echo " Running now: lkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
 echo " "
 echo " Number of kpoints      Result                      Difference"
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: kpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: lkpointsconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of kpoints      Result                      Difference" >> $MAINDIR/output.txt
 fi
 fi
 fi
 
-mkdir kpointsconvergence_${1}
-cd kpointsconvergence_${1}
+mkdir lkpointsconvergence_${1}
+cd lkpointsconvergence_${1}
 VARIABLEFORCONVERGENCE_last=0
 
 name="KPOINTS_$1"
@@ -11813,36 +13823,36 @@ ylabel="$4"
 fi
 
 if [ -n "$METAGGA" ]; then
-cat > kpointsconvergence_gnup_${1}_${METAGGA} << EOF
+cat > lkpointsconvergence_gnup_${1}_${METAGGA} << EOF
 set title "$1 kpoints convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
 set xlabel "Number of kpoints along x-, y-, z- direction"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "kpointsconvergence_${1}_${METAGGA}.png"
+set output "lkpointsconvergence_${1}_${METAGGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT kpointsconvergence_gnup_${1}_${METAGGA}
+$GNUPLOT lkpointsconvergence_gnup_${1}_${METAGGA}
 fi
 else
-cat > kpointsconvergence_gnup_${1}_${GGA} << EOF
+cat > lkpointsconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 kpoints convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
 set xlabel "Number of kpoints along x-, y-, z- direction"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "kpointsconvergence_${1}_${GGA}.png"
+set output "lkpointsconvergence_${1}_${GGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT kpointsconvergence_gnup_${1}_${GGA}
+$GNUPLOT lkpointsconvergence_gnup_${1}_${GGA}
 fi
 fi
 
-let secs=$SECONDS-$secskpointsconvergence
+let secs=$SECONDS-$secslkpointsconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
 if [ "$PRINTOUTPUT" = true ]; then
@@ -11875,9 +13885,9 @@ cd ..
 ########################################################################################### 
  
  
-nomegaconvergence () {
+lnomegaconvergence () {
 
-secsnomegaconvergence=$SECONDS
+secslnomegaconvergence=$SECONDS
 
 if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
@@ -11885,28 +13895,28 @@ if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " Running now: lnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: lnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
 else
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
+echo " Running now: lnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: nomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: lnomegaconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 fi
 fi
 fi
 
 backupnomega=$NOMEGA
 
-mkdir nomegaconvergence_${1}
-cd nomegaconvergence_${1}
+mkdir lnomegaconvergence_${1}
+cd lnomegaconvergence_${1}
 VARIABLEFORCONVERGENCE_last=0
 if [ "$PRINTOUTPUT" = true ]; then
 echo " "
@@ -12006,38 +14016,38 @@ ylabel="$4"
 fi
 
 if [ -n "$METAGGA" ]; then
-cat > nomegaconvergence_gnup_${1}_${METAGGA} << EOF
+cat > lnomegaconvergence_gnup_${1}_${METAGGA} << EOF
 set title "$1 NOMEGA convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
 set xlabel "Number of imaginary frequency and time points"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "nomegaconvergence_${1}_${METAGGA}.png"
+set output "lnomegaconvergence_${1}_${METAGGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT nomegaconvergence_gnup_${1}_${METAGGA}
+$GNUPLOT lnomegaconvergence_gnup_${1}_${METAGGA}
 fi
 else
-cat > nomegaconvergence_gnup_${1}_${GGA} << EOF
+cat > lnomegaconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 NOMEGA convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
 set xlabel "Number of imaginary frequency and time points"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "nomegaconvergence_${1}_${GGA}.png"
+set output "lnomegaconvergence_${1}_${GGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT nomegaconvergence_gnup_${1}_${GGA}
+$GNUPLOT lnomegaconvergence_gnup_${1}_${GGA}
 fi
 fi
 
 
 
-let secs=$SECONDS-$secsnomegaconvergence
+let secs=$SECONDS-$secslnomegaconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
 if [ "$PRINTOUTPUT" = true ]; then
@@ -12070,9 +14080,9 @@ cd ..
 ########################################################################################### 
  
  
-numberoflayersconvergence () {
+lnumberoflayersconvergence () {
 
-secsnumberoflayersconvergence=$SECONDS
+secslnumberoflayersconvergence=$SECONDS
 
 if [ "$MLFFBEIGAPPLIED" = false ]; then
 if [ "$PRINTOUTPUT" = true ]; then
@@ -12080,34 +14090,34 @@ if [ -n "$METAGGA" ]; then
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " Running now: lnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
 echo " "
 echo " Number of layers       Result                      Difference"
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: lnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of layers       Result                      Difference" >> $MAINDIR/output.txt
 else
 echo " "
 echo " ###########################################################################################"
 echo " "
-echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
+echo " Running now: lnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
 echo " "
 echo " Number of layers       Result                      Difference"
 echo " " >> $MAINDIR/output.txt
 echo " ###########################################################################################" >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
-echo " Running now: numberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " Running now: lnumberoflayersconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
 echo " " >> $MAINDIR/output.txt
 echo " Number of layers       Result                      Difference" >> $MAINDIR/output.txt
 fi
 fi
 fi
 
-mkdir numberoflayersconvergence_${1}
-cd numberoflayersconvergence_${1}
+mkdir lnumberoflayersconvergence_${1}
+cd lnumberoflayersconvergence_${1}
 VARIABLEFORCONVERGENCE_last=0
 
 name="NUMBER_OF_LAYERS_$1"
@@ -12207,37 +14217,37 @@ ylabel="$4"
 fi
 
 if [ -n "$METAGGA" ]; then
-cat > numberoflayersconvergence_gnup_${1}_${METAGGA} << EOF
+cat > lnumberoflayersconvergence_gnup_${1}_${METAGGA} << EOF
 set title "$1 number of layers convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
-set xlabel "Number of surface layers"
+set xlabel "Number of layers per surface slab"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "numberoflayersconvergence_${1}_${METAGGA}.png"
+set output "lnumberoflayersconvergence_${1}_${METAGGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT numberoflayersconvergence_gnup_${1}_${METAGGA}
+$GNUPLOT lnumberoflayersconvergence_gnup_${1}_${METAGGA}
 fi
 else
-cat > numberoflayersconvergence_gnup_${1}_${GGA} << EOF
+cat > lnumberoflayersconvergence_gnup_${1}_${GGA} << EOF
 set title "$1 number of layers convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
 set encoding iso_8859_1
-set xlabel "Number of surface layers"
+set xlabel "Number of layers per surface slab"
 set ylabel "$ylabel"
 unset key
 set term png
-set output "numberoflayersconvergence_${1}_${GGA}.png"
+set output "lnumberoflayersconvergence_${1}_${GGA}.png"
 p 'data.dat' u 1:2 w lp
 EOF
 if [ -n "$GNUPLOT" ]; then
-$GNUPLOT numberoflayersconvergence_gnup_${1}_${GGA}
+$GNUPLOT lnumberoflayersconvergence_gnup_${1}_${GGA}
 fi
 fi
 
 
-let secs=$SECONDS-$secsnumberoflayersconvergence
+let secs=$SECONDS-$secslnumberoflayersconvergence
 let TOTALTIME=$TOTALTIME+$secs
 hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
 if [ "$PRINTOUTPUT" = true ]; then
@@ -12256,6 +14266,404 @@ if [ "$ANERROROCCURED" = true ]; then
 ANERROROCCURED=false
 fi
 fi
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+lsupercellconvergence () {
+
+secslsupercellconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: lsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: lsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: lsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: lsupercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+name="SUPERCELL_FACTOR_$1"
+backupsup=`echo ${!name}`
+
+mkdir lsupercellconvergence_${1}
+cd lsupercellconvergence_${1}
+VARIABLEFORCONVERGENCE_last=0
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " supercell factor        Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " supercell factor        Result                      Difference" >> $MAINDIR/output.txt
+fi
+for i in $(seq $2); do
+mkdir $i
+cd $i
+name="SUPERCELL_FACTOR_$1"
+eval $name=$i
+PRINTOUTPUT=false
+"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
+PRINTOUTPUT=true
+cd ..
+
+if [ "$4" != "autovar" ]; then
+name="$4"
+VARIABLEFORCONVERGENCE=`echo ${!name}`
+fi
+
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
+diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
+echo " $i                       $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                       $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+if [ $(echo "0.0 > $diff" | bc) -eq 1 ]; then
+if [ $(echo "$diff > -$3" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+hhh=($2)
+hhhhhh=${hhh[2]}
+if [ $(echo "$i == $hhhhhh" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
+done
+
+if [ "$UPDATEVARIABLES" = false ]; then
+name="SUPERCELL_FACTOR_$i"
+eval $name=$backupsup
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > lsupercellconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 supercell size convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Supercell factor"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "lsupercellconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT lsupercellconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > lsupercellconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 supercell size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Supercell factor"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "lsupercellconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT lsupercellconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+
+let secs=$SECONDS-$secslsupercellconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
+cd ..
+
+}
+
+ 
+ 
+ 
+ 
+########################################################################################### 
+########################################################################################### 
+########################################################################################### 
+ 
+ 
+lvacuumsizeconvergence () {
+
+secslvacuumsizeconvergence=$SECONDS
+
+if [ "$MLFFBEIGAPPLIED" = false ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+if [ -n "$METAGGA" ]; then
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: lvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
+echo " "
+echo " Vacuum size            Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: lvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
+else
+echo " "
+echo " ###########################################################################################"
+echo " "
+echo " Running now: lvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
+echo " "
+echo " Vacuum size            Result                      Difference"
+echo " " >> $MAINDIR/output.txt
+echo " ###########################################################################################" >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Running now: lvacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
+echo " " >> $MAINDIR/output.txt
+echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
+fi
+fi
+fi
+
+mkdir lvacuumsizeconvergence_${1}
+cd lvacuumsizeconvergence_${1}
+VARIABLEFORCONVERGENCE_last=0
+
+name="VACUUM_SIZE_$1"
+backupvac=`echo ${!name}`
+
+for i in $(seq $2); do
+mkdir $i
+cd $i
+name="VACUUM_SIZE_$1"
+eval $name=$i
+PRINTOUTPUT=false
+"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
+PRINTOUTPUT=true
+cd ..
+
+if [ "$4" != "autovar" ]; then
+name="$4"
+VARIABLEFORCONVERGENCE=`echo ${!name}`
+fi
+
+echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
+
+diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
+echo " $i                       $VARIABLEFORCONVERGENCE     $diff"
+echo " $i                       $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
+if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
+if [ $(echo "$3 > $diff" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom."
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom." >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+if [ $(echo "0.0 > $diff" | bc) -eq 1 ]; then
+if [ $(echo "$diff > -$3" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom."
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom." >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
+fi
+fi
+  break
+fi
+fi
+hhh=($2)
+hhhhhh=${hhh[2]}
+if [ $(echo "$i == $hhhhhh" | bc) -eq 1 ]; then
+if [ "$PRINTOUTPUT" = true ]; then
+  echo " "
+  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!"
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
+fi
+  echo " " >> $MAINDIR/output.txt
+  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!" >> $MAINDIR/output.txt
+if [ "$UPDATEVARIABLES" = true ]; then
+  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
+fi
+fi
+fi
+VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
+done
+
+if [ "$UPDATEVARIABLES" = false ]; then
+name="VACUUM_SIZE_$i"
+eval $name=$backupvac
+fi
+
+plotxydata data.dat
+
+if [ "$4" = "autovar" ]; then
+if [ "$5" = "electronicmin" ]; then
+ylabel="Total free energy per atom (eV)"
+fi
+if [ "$5" = "relaxation" ]; then
+ylabel="Volume per atom ({\305}^3)"
+fi
+fi
+
+if [ "$4" != "autovar" ]; then
+ylabel="$4"
+fi
+
+if [ -n "$METAGGA" ]; then
+cat > lvacuumsizeconvergence_gnup_${1}_${METAGGA} << EOF
+set title "$1 vacuum size convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Vacuum size ({\305})"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "lvacuumsizeconvergence_${1}_${METAGGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT lvacuumsizeconvergence_gnup_${1}_${METAGGA}
+fi
+else
+cat > lvacuumsizeconvergence_gnup_${1}_${GGA} << EOF
+set title "$1 vacuum size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
+set encoding iso_8859_1
+set xlabel "Vacuum size ({\305})"
+set ylabel "$ylabel"
+unset key
+set term png
+set output "lvacuumsizeconvergence_${1}_${GGA}.png"
+p 'data.dat' u 1:2 w lp
+EOF
+if [ -n "$GNUPLOT" ]; then
+$GNUPLOT lvacuumsizeconvergence_gnup_${1}_${GGA}
+fi
+fi
+
+
+let secs=$SECONDS-$secslvacuumsizeconvergence
+let TOTALTIME=$TOTALTIME+$secs
+hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
+if [ "$PRINTOUTPUT" = true ]; then
+echo " "
+echo " ellapsed time: $hrs h $mins min $secs s"
+echo " " >> $MAINDIR/output.txt
+echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
+fi
+
+if [ "$PRINTOUTPUT" = true ]; then
+if [ "$ANERROROCCURED" = true ]; then
+  echo " "
+  echo " An ERROR occured during this calculation - please check what happened!"
+  echo " " >> $MAINDIR/output.txt
+  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
+ANERROROCCURED=false
+fi
+fi
+
 
 cd ..
 
@@ -12455,404 +14863,6 @@ if [ "$ANERROROCCURED" = true ]; then
 ANERROROCCURED=false
 fi
 fi
-
-cd ..
-
-}
-
- 
- 
- 
- 
-########################################################################################### 
-########################################################################################### 
-########################################################################################### 
- 
- 
-supercellconvergence () {
-
-secssupercellconvergence=$SECONDS
-
-if [ "$MLFFBEIGAPPLIED" = false ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-if [ -n "$METAGGA" ]; then
-echo " "
-echo " ###########################################################################################"
-echo " "
-echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
-echo " " >> $MAINDIR/output.txt
-echo " ###########################################################################################" >> $MAINDIR/output.txt
-echo " " >> $MAINDIR/output.txt
-echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
-else
-echo " "
-echo " ###########################################################################################"
-echo " "
-echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
-echo " " >> $MAINDIR/output.txt
-echo " ###########################################################################################" >> $MAINDIR/output.txt
-echo " " >> $MAINDIR/output.txt
-echo " Running now: supercellconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
-fi
-fi
-fi
-
-name="SUPERCELL_FACTOR_$1"
-backupsup=`echo ${!name}`
-
-mkdir supercellconvergence_${1}
-cd supercellconvergence_${1}
-VARIABLEFORCONVERGENCE_last=0
-if [ "$PRINTOUTPUT" = true ]; then
-echo " "
-echo " supercell factor        Result                      Difference"
-echo " " >> $MAINDIR/output.txt
-echo " supercell factor        Result                      Difference" >> $MAINDIR/output.txt
-fi
-for i in $(seq $2); do
-mkdir $i
-cd $i
-name="SUPERCELL_FACTOR_$1"
-eval $name=$i
-PRINTOUTPUT=false
-"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
-PRINTOUTPUT=true
-cd ..
-
-if [ "$4" != "autovar" ]; then
-name="$4"
-VARIABLEFORCONVERGENCE=`echo ${!name}`
-fi
-
-echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
-
-diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
-echo " $i                       $VARIABLEFORCONVERGENCE     $diff"
-echo " $i                       $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
-if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
-if [ $(echo "$3 > $diff" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
-fi
-fi
-  break
-fi
-fi
-if [ $(echo "0.0 > $diff" | bc) -eq 1 ]; then
-if [ $(echo "$diff > -$3" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " convergence criterion of " $3 " was reached at a supercell factor of " $i >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
-fi
-fi
-  break
-fi
-fi
-hhh=($2)
-hhhhhh=${hhh[2]}
-if [ $(echo "$i == $hhhhhh" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!"
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!" >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " SUPERCELL_FACTOR_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
-fi
-fi
-fi
-VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
-done
-
-if [ "$UPDATEVARIABLES" = false ]; then
-name="SUPERCELL_FACTOR_$i"
-eval $name=$backupsup
-fi
-
-plotxydata data.dat
-
-if [ "$4" = "autovar" ]; then
-if [ "$5" = "electronicmin" ]; then
-ylabel="Total free energy per atom (eV)"
-fi
-if [ "$5" = "relaxation" ]; then
-ylabel="Volume per atom ({\305}^3)"
-fi
-fi
-
-if [ "$4" != "autovar" ]; then
-ylabel="$4"
-fi
-
-if [ -n "$METAGGA" ]; then
-cat > supercellconvergence_gnup_${1}_${METAGGA} << EOF
-set title "$1 supercell size convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
-set encoding iso_8859_1
-set xlabel "Supercell factor"
-set ylabel "$ylabel"
-unset key
-set term png
-set output "supercellconvergence_${1}_${METAGGA}.png"
-p 'data.dat' u 1:2 w lp
-EOF
-if [ -n "$GNUPLOT" ]; then
-$GNUPLOT supercellconvergence_gnup_${1}_${METAGGA}
-fi
-else
-cat > supercellconvergence_gnup_${1}_${GGA} << EOF
-set title "$1 supercell size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
-set encoding iso_8859_1
-set xlabel "Supercell factor"
-set ylabel "$ylabel"
-unset key
-set term png
-set output "supercellconvergence_${1}_${GGA}.png"
-p 'data.dat' u 1:2 w lp
-EOF
-if [ -n "$GNUPLOT" ]; then
-$GNUPLOT supercellconvergence_gnup_${1}_${GGA}
-fi
-fi
-
-
-let secs=$SECONDS-$secssupercellconvergence
-let TOTALTIME=$TOTALTIME+$secs
-hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
-if [ "$PRINTOUTPUT" = true ]; then
-echo " "
-echo " ellapsed time: $hrs h $mins min $secs s"
-echo " " >> $MAINDIR/output.txt
-echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
-fi
-
-if [ "$PRINTOUTPUT" = true ]; then
-if [ "$ANERROROCCURED" = true ]; then
-  echo " "
-  echo " An ERROR occured during this calculation - please check what happened!"
-  echo " " >> $MAINDIR/output.txt
-  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
-ANERROROCCURED=false
-fi
-fi
-
-cd ..
-
-}
-
- 
- 
- 
- 
-########################################################################################### 
-########################################################################################### 
-########################################################################################### 
- 
- 
-vacuumsizeconvergence () {
-
-secsvacuumsizeconvergence=$SECONDS
-
-if [ "$MLFFBEIGAPPLIED" = false ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-if [ -n "$METAGGA" ]; then
-echo " "
-echo " ###########################################################################################"
-echo " "
-echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR "
-echo " "
-echo " Vacuum size            Result                      Difference"
-echo " " >> $MAINDIR/output.txt
-echo " ###########################################################################################" >> $MAINDIR/output.txt
-echo " " >> $MAINDIR/output.txt
-echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $METAGGA $POTCAR " >> $MAINDIR/output.txt
-echo " " >> $MAINDIR/output.txt
-echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
-else
-echo " "
-echo " ###########################################################################################"
-echo " "
-echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR "
-echo " "
-echo " Vacuum size            Result                      Difference"
-echo " " >> $MAINDIR/output.txt
-echo " ###########################################################################################" >> $MAINDIR/output.txt
-echo " " >> $MAINDIR/output.txt
-echo " Running now: vacuumsizeconvergence $1 \"$2\" $3 $4 $5 $6 $7 $8 $9  ;   $GGA $POTCAR " >> $MAINDIR/output.txt
-echo " " >> $MAINDIR/output.txt
-echo " Vacuum size            Result                      Difference" >> $MAINDIR/output.txt
-fi
-fi
-fi
-
-mkdir vacuumsizeconvergence_${1}
-cd vacuumsizeconvergence_${1}
-VARIABLEFORCONVERGENCE_last=0
-
-name="VACUUM_SIZE_$1"
-backupvac=`echo ${!name}`
-
-for i in $(seq $2); do
-mkdir $i
-cd $i
-name="VACUUM_SIZE_$1"
-eval $name=$i
-PRINTOUTPUT=false
-"$5" "$6" "$7" "$8" "$9" "${10}" "${11}" "${12}" "${13}" "${14}" "${15}" "${16}" "${17}" "${18}" "${19}" "${20}" "${21}" "${22}" "${23}" "${24}" "${25}" "${26}" "${27}" "${28}" "${29}" "${30}" "${31}" "${32}" "${33}" "${34}" "${35}" "${36}" "${37}" "${38}" "${39}" "${40}" "${41}" "${42}" "${43}" "${44}" "${45}" "${46}" "${47}" "${48}" "${49}" "${50}" "${51}" "${52}" "${53}" "${54}" "${55}" "${56}" "${57}" "${58}" "${59}" "${60}" "${61}" "${62}" "${63}" "${64}" "${65}" "${66}" "${67}" "${68}" "${69}" "${70}" "${71}" "${72}" "${73}" "${74}" "${75}" "${76}" "${77}" "${78}" "${79}" "${80}" "${81}" "${82}" "${83}" "${84}" "${85}" "${86}"
-PRINTOUTPUT=true
-cd ..
-
-if [ "$4" != "autovar" ]; then
-name="$4"
-VARIABLEFORCONVERGENCE=`echo ${!name}`
-fi
-
-echo " $i $VARIABLEFORCONVERGENCE " >> data.dat
-
-diff=`echo $VARIABLEFORCONVERGENCE - $VARIABLEFORCONVERGENCE_last | bc -l`
-echo " $i                       $VARIABLEFORCONVERGENCE     $diff"
-echo " $i                       $VARIABLEFORCONVERGENCE     $diff" >> $MAINDIR/output.txt
-if [ $(echo "$diff > 0.0" | bc) -eq 1 ]; then
-if [ $(echo "$3 > $diff" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom."
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " VACUUM_SIZE_$1 has been updated to the optimized value "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom." >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " VACUUM_SIZE_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
-fi
-fi
-  break
-fi
-fi
-if [ $(echo "0.0 > $diff" | bc) -eq 1 ]; then
-if [ $(echo "$diff > -$3" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom."
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " VACUUM_SIZE_$1 has been updated to the optimized value "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " convergence criterion of " $3 " was reached at a vacuum size of " $i " Angstrom." >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " VACUUM_SIZE_$1 has been updated to the optimized value " >> $MAINDIR/output.txt
-fi
-fi
-  break
-fi
-fi
-hhh=($2)
-hhhhhh=${hhh[2]}
-if [ $(echo "$i == $hhhhhh" | bc) -eq 1 ]; then
-if [ "$PRINTOUTPUT" = true ]; then
-  echo " "
-  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!"
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh "
-fi
-  echo " " >> $MAINDIR/output.txt
-  echo " CONVERGENCE CRITERION OF " $3 " WAS NOT REACHED!!!" >> $MAINDIR/output.txt
-if [ "$UPDATEVARIABLES" = true ]; then
-  echo " VACUUM_SIZE_$1 has been updated to $hhhhhh " >> $MAINDIR/output.txt
-fi
-fi
-fi
-VARIABLEFORCONVERGENCE_last=$VARIABLEFORCONVERGENCE
-done
-
-if [ "$UPDATEVARIABLES" = false ]; then
-name="VACUUM_SIZE_$i"
-eval $name=$backupvac
-fi
-
-plotxydata data.dat
-
-if [ "$4" = "autovar" ]; then
-if [ "$5" = "electronicmin" ]; then
-ylabel="Total free energy per atom (eV)"
-fi
-if [ "$5" = "relaxation" ]; then
-ylabel="Volume per atom ({\305}^3)"
-fi
-fi
-
-if [ "$4" != "autovar" ]; then
-ylabel="$4"
-fi
-
-if [ -n "$METAGGA" ]; then
-cat > vacuumsizeconvergence_gnup_${1}_${METAGGA} << EOF
-set title "$1 vacuum size convergence test ;  METAGGA = $METAGGA, POTCAR = $POTCAR"
-set encoding iso_8859_1
-set xlabel "Vacuum size ({\305})"
-set ylabel "$ylabel"
-unset key
-set term png
-set output "vacuumsizeconvergence_${1}_${METAGGA}.png"
-p 'data.dat' u 1:2 w lp
-EOF
-if [ -n "$GNUPLOT" ]; then
-$GNUPLOT vacuumsizeconvergence_gnup_${1}_${METAGGA}
-fi
-else
-cat > vacuumsizeconvergence_gnup_${1}_${GGA} << EOF
-set title "$1 vacuum size convergence test ;  GGA = $GGA, POTCAR = $POTCAR"
-set encoding iso_8859_1
-set xlabel "Vacuum size ({\305})"
-set ylabel "$ylabel"
-unset key
-set term png
-set output "vacuumsizeconvergence_${1}_${GGA}.png"
-p 'data.dat' u 1:2 w lp
-EOF
-if [ -n "$GNUPLOT" ]; then
-$GNUPLOT vacuumsizeconvergence_gnup_${1}_${GGA}
-fi
-fi
-
-
-let secs=$SECONDS-$secsvacuumsizeconvergence
-let TOTALTIME=$TOTALTIME+$secs
-hrs=$(( secs/3600 )); mins=$(( (secs-hrs*3600)/60 )); secs=$(( secs-hrs*3600-mins*60 ))
-if [ "$PRINTOUTPUT" = true ]; then
-echo " "
-echo " ellapsed time: $hrs h $mins min $secs s"
-echo " " >> $MAINDIR/output.txt
-echo " ellapsed time: $hrs h $mins min $secs s" >> $MAINDIR/output.txt
-fi
-
-if [ "$PRINTOUTPUT" = true ]; then
-if [ "$ANERROROCCURED" = true ]; then
-  echo " "
-  echo " An ERROR occured during this calculation - please check what happened!"
-  echo " " >> $MAINDIR/output.txt
-  echo " An ERROR occured during this calculation - please check what happened!" >> $MAINDIR/output.txt
-ANERROROCCURED=false
-fi
-fi
-
 
 cd ..
 
@@ -17271,14 +19281,14 @@ if [ "$UPDATEVARIABLES" = true ]; then
   echo " "
   echo " Training run has concluded. New MLFF has been stored under the name $name2"
   echo " Complete training history: "
-  echo "   name       # MD steps       temp. range (K)       # added conf."
+  echo "   name          # MD steps       temp. range (K)       # added conf."
 cat $MAINDIR/mlffs/$2/traininghistory
   echo " Total number of configurations: $confnum "
 
   echo " " >> $MAINDIR/output.txt
   echo " Training run has concluded. New MLFF has been stored under the name $name2" >> $MAINDIR/output.txt
   echo " Complete training history: " >> $MAINDIR/output.txt
-  echo "   name       # MD steps       temp. range (K)       # added conf." >> $MAINDIR/output.txt
+  echo "   name          # MD steps       temp. range (K)       # added conf." >> $MAINDIR/output.txt
 cat $MAINDIR/mlffs/$2/traininghistory >> $MAINDIR/output.txt
   echo " Total number of configurations: $confnum " >> $MAINDIR/output.txt
 fi
